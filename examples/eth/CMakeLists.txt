@@ -1,0 +1,25 @@
+# Add defs for the compiler
+if(UNIX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++0x")
+endif()
+# MSVC does not require any special flags
+
+# include dirs
+include_directories(.)
+include_directories(../../../metasim/src)
+
+
+# Create the executable.
+# The extension is already found. Any number of sources could be listed here.
+if(WIN32)
+add_executable(eth example.cpp link.cpp	link.hpp message.cpp message.hpp netinterface.cpp
+	netinterface.hpp node.cpp node.hpp)
+elseif(UNIX)
+add_executable(eth example.cpp link.cpp	link.hpp message.cpp message.hpp netinterface.cpp
+	netinterface.hpp node.cpp node.hpp)
+else()
+message( FATAL_ERROR "Unsupported environment (!?)." )
+endif()
+
+# Indicate that the executable needs metasim and rtlib library
+target_link_libraries( eth metasim )
