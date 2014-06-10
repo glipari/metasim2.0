@@ -6,7 +6,7 @@ endif()
 
 # include dirs
 include_directories(.)
-include_directories(../../../metasim/src)
+include_directories(../../src)
 
 
 # Create the executable.
