@@ -1,25 +1,26 @@
-# Add defs for the compiler
-if(UNIX)
-   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
-   #Add current directory
-	include_directories(.)
+# Add current directory.
+include_directories(.)
 
-	# Create a library called "metasim" which includes the source files.
-	# The extension is already found. Any number of sources could be listed here.
-	add_library(metasim SHARED basestat.cpp entity.cpp genericvar.cpp
-	  regvar.cpp strtoken.cpp trace.cpp debugstream.cpp event.cpp
-  randomvar.cpp simul.cpp tick.cpp)
-  
-elseif(WINDOWS)
-   #Add current directory
-	include_directories(.)
+# Environment-dependable settings.
+if(APPLE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+	set(METASIM_LIB "SHARED")
+	
+elseif(UNIX)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+	set(METASIM_LIB "SHARED")
+	
+elseif(MSYS)
+	set(METASIM_LIB "STATIC")
 
-	# Create a library called "metasim" which includes the source files.
-	# The extension is already found. Any number of sources could be listed here.
-	add_library(metasim STATIC basestat.cpp entity.cpp genericvar.cpp
-	  regvar.cpp strtoken.cpp trace.cpp debugstream.cpp event.cpp
-  randomvar.cpp simul.cpp tick.cpp)  
 endif()
 
-
-
+# Create a library called "metasim" which includes the source files.
+add_library(metasim ${METASIM_LIB} basestat.cpp entity.cpp genericvar.cpp
+  regvar.cpp strtoken.cpp trace.cpp debugstream.cpp event.cpp
+  randomvar.cpp simul.cpp tick.cpp)
+  
+# Export.
+export(TARGETS metasim FILE "./metasimConfig.cmake")
+export(PACKAGE metasim)
+  

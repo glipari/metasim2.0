@@ -1,23 +1,8 @@
-# Add defs for the compiler
-if(UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++0x")
-endif()
-# MSVC does not require any special flags
-
-# include dirs
-include_directories(.)
-include_directories(../../src)
-
+# Include Environment-based settings.
+include(${CMAKE_CURRENT_DOURCE_DIR}../common_settings.txt)
 
 # Create the executable.
-# The extension is already found. Any number of sources could be listed here.
-if(WIN32)
 add_executable(queue queue.cpp queue.hpp)
-elseif(UNIX)
-add_executable(queue queue.cpp queue.hpp)
-else()
-message( FATAL_ERROR "Unsupported environment (!?)." )
-endif()
 
-# Indicate that the executable needs metasim and rtlib library
+# Indicate that the executable needs metasim library.
 target_link_libraries( queue metasim )
