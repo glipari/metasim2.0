@@ -10,7 +10,7 @@ elseif(UNIX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 	set(METASIM_LIB "SHARED")
 	
-elseif(MSYS)
+elseif(WIN32)
 	set(METASIM_LIB "STATIC")
 
 endif()
