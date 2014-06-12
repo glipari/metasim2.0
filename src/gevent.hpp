@@ -68,16 +68,6 @@ namespace MetaSim {
 
     public:
 	/**
-	   Constructore for GEvent, simply initializes to null all
-	   internal methods. It is possible to specify a priority.
-       
-	   @param p Priority of this event
-	*/
-	GEvent(int p = Event::_DEFAULT_PRIORITY) : 
-	    Event(p), _obj(NULL), _fun(NULL)
-	    {}
-
-	/**
 	   Copy constructor. Useful when creating many events of the same
 	   type for the same \b object. (Remember: all these events point
 	   to the same object!)
