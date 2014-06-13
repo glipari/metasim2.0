@@ -54,138 +54,124 @@ namespace MetaSim {
 
             \ingroup metasim_ee   
         */
-        class Entity {
-                /** 
-                    It contains pairs <ID, pointer to entity>. It's
-                    used mainly to keep track of all the entities
-                    present in the system. */
-                static std::map<int , Entity *> _globMap;
+    class Entity {
+	// Hide copy constructor and assignment operator. Entities are
+	// not copyable.
+	Entity(const Entity &);
+	Entity &operator=(const Entity &);
+
+	/** 
+	    It contains pairs <ID, pointer to entity>. It's
+	    used mainly to keep track of all the entities
+	    present in the system. */
+	static std::map<int , Entity *> _globMap;
   
-                /**
-                   It contains pairs <string, pointer to entity>. It
-                   is used to refer entities by name. The string must
-                   be unique!! */
-                static std::map<std::string, Entity *> _index;
+	/**
+	   It contains pairs <string, pointer to entity>. It
+	   is used to refer entities by name. The string must
+	   be unique!! */
+	static std::map<std::string, Entity *> _index;
 
-                /// counter for assigning unique IDs to entities
-                static int _IDcount;
+	/// counter for assigning unique IDs to entities
+	static int _IDcount;
 
-                /// unique ID for the entity
-                int _ID;
+	/// unique ID for the entity
+	int _ID;
 
-                /// unique name for the entity
-                std::string _name;
+	/// unique name for the entity
+	std::string _name;
 
-                /**
-                   \ingroup metasim_exc
+	/**
+	   \ingroup metasim_exc
        
-                   Exceptions for the Entity class.
-                */
-                class Exc : public BaseExc {
-                public:
-                        Exc(std::string msg) : 
-                                BaseExc(msg, "Entity", "entity.cpp") {}
-                };
+	   Exceptions for the Entity class.
+	*/
+	class Exc : public BaseExc {
+	public:
+	    Exc(std::string msg) : 
+		BaseExc(msg, "Entity", "entity.cpp") {}
+	};
 
-                /**
-                   Initialize the entity. It is called by the
-                   different constructors, Entity(char *) and
-                   Entity(string) */
-                void _init();
+	/**
+	   Initialize the entity. It is called by the
+	   different constructors, Entity(char *) and
+	   Entity(string) */
+	void _init();
 
-        public:
-                /** 
-                    Base constructor.  
-       
-                    @param n A (possibly unique) name for the entity:
-                    by default the entity name is set equal to the
-                    typeid() + the entity ID.*/
-                //Entity(const char *n = "");
-
-                /** 
-                    Base constructor.
+    public:
+	/** 
+	    Base constructor.
       
-                    @param n A (possibly unique) name for the entity:
-                    by default the entity name is set equal to the
-                    typeid() + the entity ID. */
-                Entity(const std::string &n);
+	    @param n A (possibly unique) name for the entity:
+	    by default the entity name is set equal to the
+	    typeid() + the entity ID. */
+	Entity(const std::string &n);
   
-                /// Destructor
-                virtual ~Entity();
+	/// Destructor
+	virtual ~Entity();
 
-                /** 
-                    Obtains the pointer to the object from the ID.
-                    Quite useful for debugging.
-        
-                    @param id the object ID.  
+	/** 
+	    Obtains the pointer to the object from the ID.
+	    Quite useful for debugging.
+	    
+	    @param id the object ID.  
 
-                    @returns the pointer to the entity corresponding
-                    to that ID, or NULL if it doesn't exist an object
-                    with that ID. */
-                static inline Entity* getPointer(int id)
-                {
-                        std::map<int, Entity*>::const_iterator p = _globMap.find(id);
-                        if (p == _globMap.end()) return NULL;
-                        else return p->second;
-                };
+	    @returns the pointer to the entity corresponding
+	    to that ID, or NULL if it doesn't exist an object
+	    with that ID. */
+	static inline Entity* getPointer(int id)
+	    {
+		std::map<int, Entity*>::const_iterator p = _globMap.find(id);
+		if (p == _globMap.end()) return NULL;
+		else return p->second;
+	    };
 
-                /** 
-                    Returns the pointer to the entity with the
-                    spoecified name or NULL if such entity does not
-                    exists.  */
-                static Entity * _find(std::string n);  
+	/** 
+	    Returns the pointer to the entity with the
+	    spoecified name or NULL if such entity does not
+	    exists.  */
+	static Entity * _find(std::string n);  
 
-                /** 
-                    Returns the pointer to the entity with the
-                    specified name or NULL if such entity does not
-                    exists.
-                */
-//                 static inline Entity* _find(const char *n)
-//                 { 
-//                         return _find(std::string(n));
-//                 }
-
-                /** 
-                    Recursively calls newRun() on every entity in the
-                    system.  It is automatically called at the
-                    beginning of every run by the Simulation
-                    class. Not to be called by the user!!  In a future
-                    release will be hidden.
+	/** 
+	    Calls newRun() on every entity in the system.  It is
+	    automatically called at the beginning of every run by the
+	    Simulation class. Not to be called by the user!!  In a
+	    future release will be hidden.
       
-                    @see callNewRun */
-                static void callNewRun();
+	    @see callNewRun */
+	static void callNewRun();
 
-                /** 
-                    The same as callNewRun(), but it is called at the
-                    end of every run.
+	/** 
+	    The same as callNewRun(), but it is called at the
+	    end of every run.
        
-                    @see callEndRun */
-                static void callEndRun();
+	    @see callEndRun */
+	static void callEndRun();
 
-                /// Get the entity ID
-                inline int getID() const { return _ID; }
+	/// Get the entity ID
+	inline int getID() const { return _ID; }
 
-                ///Get the Entity name
-                inline std::string getName() const { return _name; }
+	///Get the Entity name
+	inline std::string getName() const { return _name; }
 
-                /** 
-                    Resets the entity status at the beginning of every
-                    run.  This function is called automatically at the
-                    beginning of every run, and its job consists in
-                    initializing the entity status.  Warning: in
-                    newRun() is not permitted to create/destroy new
-                    entity objects. */
-                virtual void newRun() = 0;
+	/** 
+	    Resets the entity status at the beginning of every
+	    run.  This function is called automatically at the
+	    beginning of every run, and its job consists in
+	    initializing the entity status.  Warning: in
+	    newRun() is not permitted to create/destroy new
+	    entity objects. */
+	virtual void newRun() = 0;
   
-                /** 
-                    Reset the entity status at the end of every run.
-                    This function is called automatically at the end
-                    of every run, and its job consists in resetting
-                    the entity status (for example closing files,
-                    etc.)  Warning: in endRun() is not permitted to
-                    create/destroy new entity objects. */
-                virtual void endRun() = 0;
-        };
+	/** 
+	    Reset the entity status at the end of every run.
+	    This function is called automatically at the end
+	    of every run, and its job consists in resetting
+	    the entity status (for example closing files,
+	    etc.)  Warning: in endRun() is not permitted to
+	    create/destroy new entity objects. */
+	virtual void endRun() = 0;
+    };
 }
 
 #endif

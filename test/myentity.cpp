@@ -12,21 +12,27 @@ using namespace std;
 MyEntity::MyEntity() : Entity(""),
 		       afirst(false),
 		       bfirst(false),
-		       count(0)
+		       count(0),
+		       eventA(this, &MyEntity::onEventA),
+		       eventB(this, &MyEntity::onEventB),
+		       eventC(this, &MyEntity::onEventC)
 {
-    register_handler(eventA, this, &MyEntity::onEventA);
-    register_handler(eventB, this, &MyEntity::onEventB);
-    register_handler(eventC, this, &MyEntity::onEventC);
+    // register_handler(eventA, this, &MyEntity::onEventA);
+    // register_handler(eventB, this, &MyEntity::onEventB);
+    // register_handler(eventC, );
 }
 
 MyEntity::MyEntity(const std::string &n) : Entity(n),
-			      afirst(false),
-			      bfirst(false),
-			      count(0)
+					   afirst(false),
+					   bfirst(false),
+					   count(0),
+					   eventA(this, &MyEntity::onEventA),
+					   eventB(this, &MyEntity::onEventB),
+					   eventC(this, &MyEntity::onEventC)
 {
-    register_handler(eventA, this, &MyEntity::onEventA);
-    register_handler(eventB, this, &MyEntity::onEventB);
-    register_handler(eventC, this, &MyEntity::onEventC);
+    // register_handler(eventA, this, &MyEntity::onEventA);
+    // register_handler(eventB, this, &MyEntity::onEventB);
+    // register_handler(eventC, this, &MyEntity::onEventC);
 }
 
 void MyEntity::onEventA(Event *) {
