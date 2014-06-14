@@ -166,7 +166,7 @@ example:
 	add_subdirectory(name_of_your_example)
 	
 Once you wrote the code of your example, you should re-generate the makefile. Follow
-the instructions ins section 3 for the generation of the makefile and compile.
+the instructions in section 3 for the generation of the makefile and compile.
 
 ## 7. BUGS AND CONTRIBUTIONS
 
