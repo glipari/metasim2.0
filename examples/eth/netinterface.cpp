@@ -11,9 +11,9 @@ using namespace std;
 using namespace MetaSim;
 
 NetInterface::NetInterface(const char *name, Node &n) :
-        Entity(name), _node(&n)
+    Entity(name), _node(&n)
 {
-        _node->setNetInterface(*this);
+    _node->setNetInterface(*this);
 }
 
 NetInterface::~NetInterface()
@@ -21,14 +21,12 @@ NetInterface::~NetInterface()
 }
 
 EthernetInterface::EthernetInterface(const char *name, Node &n, EthernetLink &l) :
-        NetInterface(name,n), _link(&l), _queue(), _received(), _blocked(),
-        _trans_evt()
+    NetInterface(name,n), _link(&l), _queue(), _received(), _blocked(),
+    _trans_evt(this, &EthernetInterface::onTransmit)
 {
-        register_handler(_trans_evt, this, &EthernetInterface::onTransmit);
-
-        _cont_per = _link->getContentionPeriod();
-        _backoff = _cont_per;
-        _coll = 0;
+    _cont_per = _link->getContentionPeriod();
+    _backoff = _cont_per;
+    _coll = 0;
 }
 
 EthernetInterface::~EthernetInterface()
