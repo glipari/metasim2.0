@@ -90,7 +90,7 @@ The library is located in src/
 
 ### 3.3. Compiling under Windows
 
-    lunch CMake
+    execute CMake
 
 In the location "Where is the source code:" indicate the path to the folder metasim2.0
 In the location "Where to build the binaries:" indicate the path to the folder where you
