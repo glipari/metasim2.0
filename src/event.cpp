@@ -74,11 +74,20 @@ namespace MetaSim {
 
     void Event::post(Tick myTime, bool disp) throw (Exc, BaseExc)
     {
-        if (_isInQueue) throw Exc("Event already enqueued");
+        if (_isInQueue) {
+	    std::stringstream str;
+	    str << "Time: " << SIMUL.getTime() 
+		<< " -- Event" 
+		<< typeid(*this).name() << " already posted";
+	    throw Exc(str.str());
+	}
 
         if (myTime < SIMUL.getTime()) {
 	    std::stringstream str;
-	    str << "Time: " << SIMUL.getTime() << " -- Posting event" << typeid(*this).name() << " in the past at time: " << myTime;
+	    str << "Time: " << SIMUL.getTime() 
+		<< " -- Posting event" 
+		<< typeid(*this).name() << " in the past at time: " 
+		<< myTime;
             throw Exc(str.str());
 	}
 
@@ -90,7 +99,11 @@ namespace MetaSim {
         p =_eventQueue.insert(this);
     
         if (!p.second) {
-            throw Exc("Already in queue!\n");
+	    std::stringstream str;
+	    str << "Time: " << SIMUL.getTime() 
+		<< " -- Posting event" 
+		<< typeid(*this).name() << " Already in queue!, at time = " << myTime;
+            throw Exc(str.str());
         }
 
         _isInQueue = true;
