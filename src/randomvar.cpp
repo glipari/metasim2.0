@@ -138,7 +138,7 @@ namespace MetaSim {
 
     double ExponentialVar::get()
     {
-        return -log(UniformVar::get()) * _lambda;
+        return -log(UniformVar::get()) / _lambda;
     };
 
     RandomVar *ExponentialVar::createInstance(vector<string> &par) 
