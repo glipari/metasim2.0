@@ -26,8 +26,8 @@
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4290) // A function is declared using exception specification,
-							   // which Visual C++ accepts but does not implement.
-							   // http://msdn.microsoft.com/en-us/library/sa28fef8.aspx
+                               // which Visual C++ accepts but does not implement.
+                               // http://msdn.microsoft.com/en-us/library/sa28fef8.aspx
 /*#if _MSC_VER >= 1400
 #define sprintf sprintf_s
 #endif*/
@@ -37,12 +37,15 @@
 
 #define FRIEND_DECL_SYMM_OPS(RET, OP)  \
         friend RET operator OP (const Tick &t1, const Tick &t2); \
+        friend RET operator OP (const Tick &t1, long long int t2); \
+        friend RET operator OP (long long int t1, const Tick &t2); \
         friend RET operator OP (const Tick &t1, long int t2); \
         friend RET operator OP (long int t1, const Tick &t2); \
         friend RET operator OP (const Tick &t1, int t2);      \
         friend RET operator OP (int t1, const Tick &t2)
 
 #define FRIEND_DECL_ASYMM_OPS(RET, OP)  \
+        friend RET operator OP (const Tick &t1, long long int t2); \
         friend RET operator OP (const Tick &t1, long int t2); \
         friend RET operator OP (const Tick &t1, int t2)
 
@@ -51,20 +54,29 @@
     inline RET operator OP(const Tick &t1, const Tick &t2) { \
         return t1.v OP t2.v;                                 \
     }                                                        \
-    inline RET operator OP(const Tick &t1, long int t2) {    \
+    inline RET operator OP(const Tick &t1, long long int t2) {    \
         return t1.v OP t2;                                   \
     }                                                        \
-    inline RET operator OP(const Tick &t1, int t2) {         \
+    inline RET operator OP(long long int t1, const Tick &t2) {    \
+        return t1 OP t2.v;                                   \
+    }                                                        \
+    inline RET operator OP(const Tick &t1, long int t2) {    \
         return t1.v OP t2;                                   \
     }                                                        \
     inline RET operator OP(long int t1, const Tick &t2) {    \
         return t1 OP t2.v;                                   \
+    }                                                        \
+    inline RET operator OP(const Tick &t1, int t2) {         \
+        return t1.v OP t2;                                   \
     }                                                        \
     inline RET operator OP(int t1, const Tick &t2) {         \
         return t1 OP t2.v;                                   \
     }
 
 #define IMPL_ASYMM_OPS(RET, OP) \
+    inline RET operator OP(const Tick &t1, long long int t2) {    \
+        return t1.v OP t2;                                   \
+    }                                                        \
     inline RET operator OP(const Tick &t1, long int t2) {    \
         return t1.v OP t2;                                   \
     }                                                        \
@@ -98,7 +110,7 @@ namespace MetaSim {
        - micro (us);
        - nano (ns);
 
-       The simulator handles all time variables in Ticks. 
+       The simulator handles all time variables in Ticks.
     */
 
     class Tick {
@@ -118,6 +130,7 @@ namespace MetaSim {
 // #endif
         Tick(impl_t t) { v = t; }
         Tick(int t) { v = t; }
+        Tick(long long int t) { v = t; }
 
         /// implementation in tick.pp
         Tick(const std::string &s);
@@ -126,8 +139,8 @@ namespace MetaSim {
         explicit Tick(double t) { v = (impl_t) t; }
 
         /// rounding
-		/// FIXME: detect first if ::round() is available (e.g., VC2013)
-		#define xx_round(dbl) dbl >= 0.0 ? (int)(dbl + 0.5) : ((dbl - (double)(int)dbl) <= -0.5 ? (int)dbl : (int)(dbl - 0.5))
+        /// FIXME: detect first if ::round() is available (e.g., VC2013)
+        #define xx_round(dbl) dbl >= 0.0 ? (int)(dbl + 0.5) : ((dbl - (double)(int)dbl) <= -0.5 ? (int)dbl : (int)(dbl - 0.5))
         static Tick round(double t) { Tick q; q.v = (impl_t) xx_round(t); return q; }
 
         /// ceiling
@@ -135,27 +148,29 @@ namespace MetaSim {
 
         /// floor
         static Tick floor(double t) { Tick q; q.v = (impl_t) ::floor(t); return q; }
-        
+
         // default assignment operator and copy constructor
 
         Tick& operator+=(const Tick &t) { v += t.v; return *this; }
         Tick& operator-=(const Tick &t) { v -= t.v; return *this; }
 
-        Tick& operator*=(long int t) { v *= t; return *this; }
-        Tick& operator/=(long int t) { v /= t; return *this; }
-        
+        Tick& operator*=(long long int t) { v *= t; return *this; }
+        Tick& operator/=(long long int t) { v /= t; return *this; }
+
         /// pre-increment
-        Tick& operator++() { v++; return *this; } 
+        Tick& operator++() { v++; return *this; }
         /// post-increment
-        Tick operator++(int) { v++; return Tick(v-1); } 
+        Tick operator++(int) { v++; return Tick(v-1); }
 
         /// pre-decrement
-        Tick& operator--() { v++; return *this; } 
+        Tick& operator--() { v++; return *this; }
         /// post-decrement
         Tick operator--(int) { v--; return Tick(v+1); }
 
         // automatic conversion to double
         operator double() const { return (double) v; }
+        /// automatic conversion to long long int
+        operator long long int () const { return v; }
         /// automatic conversion to long int
         operator long int () const { return v; }
         /// automatic conversion to int (warning, this may be imprecise!)
@@ -164,7 +179,7 @@ namespace MetaSim {
         static void set_default_unit(Tick::unit_t d) { default_unit = d; }
 
         /// implementation in tick.pp
-        static void set_resolution(const std::string &t) throw (parse_util::ParseExc);        
+        static void set_resolution(const std::string &t) throw (parse_util::ParseExc);
 
         FRIEND_DECL_SYMM_OPS(bool, <);
         FRIEND_DECL_SYMM_OPS(bool, <=);
@@ -191,13 +206,13 @@ namespace MetaSim {
     IMPL_SYMM_OPS(bool, !=);
     IMPL_SYMM_OPS(bool, >=);
     IMPL_SYMM_OPS(bool, >);
-    
+
     IMPL_SYMM_OPS(Tick, *);
     IMPL_SYMM_OPS(Tick, +);
     IMPL_SYMM_OPS(Tick, -);
 
     IMPL_ASYMM_OPS(Tick, /);
-    
+
     inline Tick operator-(const Tick &t) { return Tick(-t.v); }
 
     std::ostream& operator<<(std::ostream &os, const Tick &t1);
