@@ -61,38 +61,38 @@ namespace MetaSim {
     */
     template<class X>
     class GEvent : public Event {
-	typedef void (X::* Pmemfun)(Event *);
-
-	X *_obj;
-	Pmemfun _fun;
-
+        typedef void (X::* Pmemfun)(Event *);
+        
+        X *_obj;
+        Pmemfun _fun;
+        
     public:
-	/**
-	   Copy constructor. Useful when creating many events of the same
-	   type for the same \b object. (Remember: all these events point
-	   to the same object!)
-	*/
-	GEvent(GEvent<X> &e) : Event(e) { 
-	    _obj = e._obj; _fun = e._fun; 
-	}
-
-	GEvent(X *obj, typename GEvent<X>::Pmemfun fun, int p = Event::_DEFAULT_PRIORITY) :
-	    Event(p), _obj(obj), _fun(fun) {}
-
-	/**
-	   Simply calls the specified handler on the specified object.
-
-	   \sa register_handler
-	*/
-	virtual void doit() { 
-	    if ((_obj != NULL) && (_fun != NULL))
-		(_obj->*_fun)(this);
-	}
+        /**
+           Copy constructor. Useful when creating many events of the same
+           type for the same \b object. (Remember: all these events point
+           to the same object!)
+        */
+        GEvent(GEvent<X> &e) : Event(e) { 
+            _obj = e._obj; _fun = e._fun; 
+        }
+        
+        GEvent(X *obj, typename GEvent<X>::Pmemfun fun, int p = Event::_DEFAULT_PRIORITY) :
+            Event(p), _obj(obj), _fun(fun) {}
+        
+        /**
+           Simply calls the specified handler on the specified object.
+           
+           \sa register_handler
+        */
+        virtual void doit() { 
+            if ((_obj != NULL) && (_fun != NULL))
+                (_obj->*_fun)(this);
+        }
     };
-
+    
     /**
        \ingroup metasim_ee
-
+       
        This function is used to specify that a certain event of type
        GEvent<X> must refer to object obj and call its method fun.
      
