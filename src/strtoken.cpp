@@ -28,7 +28,7 @@ namespace parse_util {
 
                 while (pos != string::npos) {
                         pos = code.find(sep, old_pos);
-                        if (pos != string::npos) { 
+                        if (pos != string::npos) {
                                 temp.push_back(remove_spaces(code.substr(old_pos,pos-old_pos)));
                                 old_pos = pos + sep.size();
                                 count ++;
@@ -50,7 +50,7 @@ namespace parse_util {
 
                 while (pos != string::npos) {
                         pos = code.find(';', old_pos);
-                        if (pos != string::npos) { 
+                        if (pos != string::npos) {
                                 temp.push_back(remove_spaces(code.substr(old_pos,pos-old_pos)));
                                 old_pos = ++pos;
                         }
@@ -81,7 +81,7 @@ namespace parse_util {
                         string::size_type end = instr.find_last_of(close_par);
                         temp = instr.substr(pos+1, end-pos-1);
                 }
-  
+
                 return temp;
         }
 
@@ -103,7 +103,7 @@ namespace parse_util {
                                         if (pos == p.size()) pos = string::npos;
                                         else ++pos;
                                 }
-      
+
                         if (pos != string::npos) {
                                 string t = remove_spaces(p.substr(old_pos, pos - old_pos));
 
@@ -131,20 +131,19 @@ namespace parse_util {
 
                 pos = tmp.find_first_of(symb, pos);
 
-                if (pos != string::npos) 
+                if (pos != string::npos)
                         unit = tmp.substr(pos, tmp.size() - pos);
-                else unit = "";  
-    
+                else unit = "";
+
                 string snum = tmp.substr(0,pos);
                 res = atof(snum.c_str());
         }
-        ParseExc::ParseExc(const string &where, const string &par)
-                : _where(where), _par(par)
-        {
-        }
 
-        string ParseExc::what() 
+        ParseExc::ParseExc(const string &where, const string &par) :
+          std::runtime_error("")
         {
-                return "Parse error: in " + _where + " param(s) " + _par + " is unknown"; 
+              std::stringstream ss;
+              ss << "Parse error: in " << where << " param(s) " << par << " is unknown";
+              static_cast<std::runtime_error&>(*this) = std::runtime_error(ss.str());
         }
 }

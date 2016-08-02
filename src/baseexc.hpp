@@ -14,50 +14,47 @@
 #ifndef __BASEEXC_HPP__
 #define __BASEEXC_HPP__
 
-#include <exception>
+#include <stdexcept>
 #include <string>
+#include <sstream>
 
 namespace MetaSim {
 
-    /** 
+    /**
         \ingroup metasim_exc
-      
+
         Basic exception class.
-      
+
         This class is the base used for handling exceptions. Any
-        exception of the simulator has to be derived from this class .
-      
-        @version 1.1 
-        @author Antonino Casile, Luigi Palopoli
+        exception of the simulator has to be derived from this class.
+
+        @version 1.2
+        @author Antonino Casile, Luigi Palopoli, Alessio Balsini
     */
-    class BaseExc : public std::exception {
+    class BaseExc : public std::runtime_error {
     protected:
         /// Contains a brief description of the exception.
         std::string _what;
 
     public:
-        /** Constructor. 
+        /** Constructor.
          *  @param message contains the error message.
-         *  @param cl contains the name of the class where the exception has been 
+         *  @param cl contains the name of the class where the exception has been
          *  raised.
-         *  @param md contains the name of the module where the exception 
-         *  has been raised. 
+         *  @param md contains the name of the module where the exception
+         *  has been raised.
          */
         BaseExc(const std::string &message,
                 const std::string &cl="unknown",
                 const std::string &md="unknown") :
-            _what("Class=" + cl + 
-                  " Module=" + md + 
-                  " Message:" + message)
-            {}
-  
-        /** Returns the error string. 
-         *  This is the standard diagnostic behavior, since it is 
-         *  virtual it can be overidden 
-         */
-        virtual const char* what() const throw() {
-            return _what.c_str();    
-        }
+          std::runtime_error("")
+              {
+                  std::stringstream ss;
+                  ss << "Class=" << cl
+                     << " Module=" << md
+                     << " Message:" << message;
+                  static_cast<std::runtime_error&>(*this) = std::runtime_error(ss.str());
+              }
 
         virtual ~BaseExc() throw() {}
     };
@@ -67,7 +64,7 @@ namespace MetaSim {
 #define DECL_EXC(EXC, CLASS) \
     class EXC : public BaseExc { public: \
             EXC(const std::string &m) : BaseExc(m, CLASS, __FILE__) {} }
-    
+
 #define THROW_EXC(EXC, MSG) throw EXC(MSG  ":" __LINE__)
 
 } // namespace MetaSim
