@@ -59,7 +59,7 @@ class genericFactory
     genericFactory();
     genericFactory(const genericFactory&); // Not implemented
     genericFactory &operator=(const genericFactory&); // Not implemented
-    public:
+public:
 
     // Singleton access.
     static genericFactory &instance();
