@@ -14,8 +14,9 @@
 #ifndef __STRTOKEN_HPP__
 #define __STRTOKEN_HPP__
 
-#include <exception>
+#include <stdexcept>
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include <baseexc.hpp>
@@ -34,13 +35,13 @@ namespace parse_util {
     /**
        Removes trailing spaces from the beginning and from the end of
        the string \c tk.
-    */ 
+    */
     string remove_spaces(const string &tk);
 
     /**
        Given a string \c code, consisting of many substrings separated
        by the sequence \c sep, returns a vector containing the substrings.
-       For example, given the string "fixed(1);wait(R);" returns the 
+       For example, given the string "fixed(1);wait(R);" returns the
        vector containing strings "fixed(1)" and "wait(R)".
     */
     vector<string> split(const string &code, const string &sep);
@@ -48,8 +49,8 @@ namespace parse_util {
     /**
        Given a sequence of "instructions" spearated by ';', returns a
        vector containing the istructions. Notice that the last
-       instructions must finish with a ';', otherwise it is ignored. 
-     
+       instructions must finish with a ';', otherwise it is ignored.
+
        @todo add sintax error checking!
     */
     vector<string> split_instr(const string &code);
@@ -80,7 +81,7 @@ namespace parse_util {
     */
     vector<string> split_param(const string &p, const string &sep = ",",
                                char open_par = '(', char close_par = ')');
-  
+
     /**
        Given a string of the form "123.75ms" returns the double number
        at the beginning of the string in res and the unit of measure in
@@ -91,13 +92,10 @@ namespace parse_util {
     /**
        Exception raised by the above functions
     */
-    class ParseExc : public exception {
-        string _where;
-        string _par;
+    class ParseExc : public std::runtime_error {
 
     public:
         ParseExc(const string &where, const string &par);
-        string what();
         virtual ~ParseExc() throw () {}
     };
 }
