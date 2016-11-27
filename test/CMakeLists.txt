@@ -12,7 +12,7 @@ elseif(WIN32)
 endif()
 
 # Create the executable.
-add_executable(test_metasim myentity.cpp TestEntityOrder.cpp TestEntitySameName.cpp TestParseUtil.cpp TestTick.cpp)
+add_executable(test_metasim myentity.cpp TestEntityOrder.cpp TestEntitySameName.cpp TestParseUtil.cpp TestTick.cpp TestFactory.cpp)
 
 # Indicate that rtlib need metasim library.
 target_link_libraries(test_metasim metasim)
