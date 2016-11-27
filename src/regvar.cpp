@@ -104,7 +104,7 @@ namespace MetaSim {
         for (size_t i = 0; i < parms.size(); ++i) 
             DBGPRINT_4("par[", i, "] = ", parms[i]);
                 
-        auto_ptr<RandomVar> 
+        unique_ptr<RandomVar> 
             var(genericFactory<RandomVar>::instance().create(token,parms));
                 
         if (var.get() == 0) throw ParseExc("parsevar", str);

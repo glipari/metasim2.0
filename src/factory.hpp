@@ -42,11 +42,11 @@ template <class manufacturedObj, typename classIDKey=defaultIDKeyType>
 class genericFactory 
 {
     // a BASE_CREATE_FN is a function that takes no parameters
-    // and returns an auto_ptr to a manufactuedObj.  Note that
+    // and returns an unique_ptr<> to a manufactuedObj.  Note that
     // we use no parameters, but you could add them
     // easily enough to allow overloaded ctors, e.g.:
-    //   typedef std::auto_ptr<manufacturedObj> (*BASE_CREATE_FN)(int);
-    typedef std::auto_ptr<manufacturedObj> (*BASE_CREATE_FN)(std::vector<std::string> &par);
+    //   typedef std::unique_ptr<manufacturedObj> (*BASE_CREATE_FN)(int);
+    typedef std::unique_ptr<manufacturedObj> (*BASE_CREATE_FN)(std::vector<std::string> &par);
 
     // FN_REGISTRY is the registry of all the BASE_CREATE_FN
     // pointers registered.  Functions are registered using the
@@ -70,7 +70,7 @@ public:
     void regCreateFn(const classIDKey &, BASE_CREATE_FN);
 
     // Create a new class of the type specified by className.
-    std::auto_ptr<manufacturedObj> create(const classIDKey &className, std::vector<std::string> &parms) const;
+    std::unique_ptr<manufacturedObj> create(const classIDKey &className, std::vector<std::string> &parms) const;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -103,9 +103,9 @@ void genericFactory<manufacturedObj, classIDKey>::regCreateFn(const classIDKey &
 // The create function simple looks up the class ID, and if it's in the list,
 // the statement "(*i).second();" calls the function.
 template <class manufacturedObj, typename classIDKey>
-std::auto_ptr<manufacturedObj> genericFactory<manufacturedObj, classIDKey>::create(const classIDKey &className, std::vector<std::string> &parms) const
+std::unique_ptr<manufacturedObj> genericFactory<manufacturedObj, classIDKey>::create(const classIDKey &className, std::vector<std::string> &parms) const
 {
-  std::auto_ptr<manufacturedObj> ret(0);
+  std::unique_ptr<manufacturedObj> ret(nullptr);
   
   typename FN_REGISTRY::const_iterator regEntry=registry.find(className);
   if (regEntry != registry.end()) {
@@ -120,9 +120,9 @@ template <class ancestorType,
           typename classIDKey=defaultIDKeyType>
 class registerInFactory {
   public:
-  static std::auto_ptr<ancestorType> createInstance(std::vector<std::string> &par)
+  static std::unique_ptr<ancestorType> createInstance(std::vector<std::string> &par)
   {
-    return std::auto_ptr<ancestorType>(manufacturedObj::createInstance(par));
+    return std::unique_ptr<ancestorType>(manufacturedObj::createInstance(par));
   }
   registerInFactory(const classIDKey &id)
   {

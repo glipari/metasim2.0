@@ -19,11 +19,11 @@ class B : public A {
 public:
     B(const std::string &n, const std::string &p) : A(n, 1) { param = p; }
 
-    static std::auto_ptr<A> create(std::vector<std::string> &params) {
+    static std::unique_ptr<A> create(std::vector<std::string> &params) {
         if (params.size() > 0)
-            return std::auto_ptr<A>(new B("This is B", params[0]));
+            return std::unique_ptr<A>(new B("This is B", params[0]));
         else
-            return std::auto_ptr<A>(new B("This is B", ""));
+            return std::unique_ptr<A>(new B("This is B", ""));
     }
 
     virtual std::string getParam() const { return param; }
@@ -33,8 +33,8 @@ class C : public A {
 public:
     C(const std::string &n) : A(n, 2) {}
     
-    static std::auto_ptr<A> create(std::vector<std::string> &params) {
-        return std::auto_ptr<A>(new C("This is C"));
+    static std::unique_ptr<A> create(std::vector<std::string> &params) {
+        return std::unique_ptr<A>(new C("This is C"));
     }
 
     virtual std::string getParam() const { return "Error"; }
@@ -50,8 +50,8 @@ TEST_CASE("Factory1", "factory1")
 
     SECTION("check type") {
     
-        std::auto_ptr<A> ptr1 = FACT(A).create("B", parameters);
-        std::auto_ptr<A> ptr2 = FACT(A).create("C", parameters);
+        std::unique_ptr<A> ptr1 = FACT(A).create("B", parameters);
+        std::unique_ptr<A> ptr2 = FACT(A).create("C", parameters);
         
         REQUIRE(ptr1->getIndex() == 1);
         REQUIRE(ptr2->getIndex() == 2);
@@ -60,8 +60,8 @@ TEST_CASE("Factory1", "factory1")
         parameters.push_back("First");
         parameters.push_back("Second");
         
-        std::auto_ptr<A> ptr1 = FACT(A).create("B", parameters);
-        std::auto_ptr<A> ptr2 = FACT(A).create("C", parameters);
+        std::unique_ptr<A> ptr1 = FACT(A).create("B", parameters);
+        std::unique_ptr<A> ptr2 = FACT(A).create("C", parameters);
         
         REQUIRE(ptr1->getParam() == "First");
         REQUIRE(ptr2->getParam() == "Error");
