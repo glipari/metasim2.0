@@ -49,12 +49,7 @@ TEST_CASE("TestTick3", "testOverflow")
     Tick i_M = INT_MAX;
     REQUIRE(i_m == INT_MIN);
     REQUIRE(i_M == INT_MAX);
-
-    Tick l_m = LONG_MIN;
-    Tick l_M = LONG_MAX;
-    REQUIRE(l_m == LONG_MIN);
-    REQUIRE(l_M == LONG_MAX);
-
+	
     Tick ll_m = LLONG_MIN;
     Tick ll_M = LLONG_MAX;
     REQUIRE(ll_m == LLONG_MIN);

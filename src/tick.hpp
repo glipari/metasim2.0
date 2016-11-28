@@ -15,10 +15,10 @@
 #define __TICK_HPP__
 
 #include <string>
-#include <stdint.h>
 #include <limits.h>
 #include <cmath>
 #include <iostream>
+#include <cstdint>
 
 #include <baseexc.hpp>
 #include <strtoken.hpp>
@@ -37,50 +37,38 @@
 
 #define FRIEND_DECL_SYMM_OPS(RET, OP)  \
         friend RET operator OP (const Tick &t1, const Tick &t2); \
-        friend RET operator OP (const Tick &t1, long long int t2); \
-        friend RET operator OP (long long int t1, const Tick &t2); \
-        friend RET operator OP (const Tick &t1, long int t2); \
-        friend RET operator OP (long int t1, const Tick &t2); \
-        friend RET operator OP (const Tick &t1, int t2);      \
-        friend RET operator OP (int t1, const Tick &t2)
+        friend RET operator OP (int64_t t1, const Tick &t2); \
+        friend RET operator OP (const Tick &t1, int64_t t2); \
+        friend RET operator OP (int32_t t1, const Tick &t2); \
+        friend RET operator OP (const Tick &t1, int32_t t2);
 
 #define FRIEND_DECL_ASYMM_OPS(RET, OP)  \
-        friend RET operator OP (const Tick &t1, long long int t2); \
-        friend RET operator OP (const Tick &t1, long int t2); \
-        friend RET operator OP (const Tick &t1, int t2)
+        friend RET operator OP (const Tick &t1, int64_t t2); \
+        friend RET operator OP (const Tick &t1, int32_t t2);
 
 
 #define IMPL_SYMM_OPS(RET, OP) \
     inline RET operator OP(const Tick &t1, const Tick &t2) { \
         return t1.v OP t2.v;                                 \
     }                                                        \
-    inline RET operator OP(const Tick &t1, long long int t2) {    \
+    inline RET operator OP(const Tick &t1, int64_t t2) {    \
         return t1.v OP t2;                                   \
     }                                                        \
-    inline RET operator OP(long long int t1, const Tick &t2) {    \
+    inline RET operator OP(int64_t t1, const Tick &t2) {    \
         return t1 OP t2.v;                                   \
     }                                                        \
-    inline RET operator OP(const Tick &t1, long int t2) {    \
+    inline RET operator OP(const Tick &t1, int32_t t2) {    \
         return t1.v OP t2;                                   \
     }                                                        \
-    inline RET operator OP(long int t1, const Tick &t2) {    \
-        return t1 OP t2.v;                                   \
-    }                                                        \
-    inline RET operator OP(const Tick &t1, int t2) {         \
-        return t1.v OP t2;                                   \
-    }                                                        \
-    inline RET operator OP(int t1, const Tick &t2) {         \
+    inline RET operator OP(int32_t t1, const Tick &t2) {    \
         return t1 OP t2.v;                                   \
     }
 
 #define IMPL_ASYMM_OPS(RET, OP) \
-    inline RET operator OP(const Tick &t1, long long int t2) {    \
+    inline RET operator OP(const Tick &t1, int64_t t2) {    \
         return t1.v OP t2;                                   \
     }                                                        \
-    inline RET operator OP(const Tick &t1, long int t2) {    \
-        return t1.v OP t2;                                   \
-    }                                                        \
-    inline RET operator OP(const Tick &t1, int t2) {         \
+    inline RET operator OP(const Tick &t1, int32_t t2) {    \
         return t1.v OP t2;                                   \
     }
 
@@ -129,8 +117,7 @@ namespace MetaSim {
 //         Tick(long long int t) { v = t; }
 // #endif
         Tick(impl_t t) { v = t; }
-        Tick(int t) { v = t; }
-        Tick(long long int t) { v = t; }
+        Tick(int32_t t) { v = t; }
 
         /// implementation in tick.pp
         Tick(const std::string &s);
@@ -154,8 +141,8 @@ namespace MetaSim {
         Tick& operator+=(const Tick &t) { v += t.v; return *this; }
         Tick& operator-=(const Tick &t) { v -= t.v; return *this; }
 
-        Tick& operator*=(long long int t) { v *= t; return *this; }
-        Tick& operator/=(long long int t) { v /= t; return *this; }
+        Tick& operator*=(int64_t t) { v *= t; return *this; }
+        Tick& operator/=(int64_t t) { v /= t; return *this; }
 
         /// pre-increment
         Tick& operator++() { v++; return *this; }
@@ -170,11 +157,9 @@ namespace MetaSim {
         // automatic conversion to double
         operator double() const { return (double) v; }
         /// automatic conversion to long long int
-        operator long long int () const { return v; }
-        /// automatic conversion to long int
-        operator long int () const { return v; }
-        /// automatic conversion to int (warning, this may be imprecise!)
-        operator int () const { return (int)v; }
+        operator int64_t () const { return v; }
+        /// automatic conversion to int
+        operator int32_t () const { return v; }
 
         static void set_default_unit(Tick::unit_t d) { default_unit = d; }
 
