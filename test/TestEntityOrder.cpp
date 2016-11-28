@@ -1,10 +1,5 @@
-#include <iostream>
-#include <memory>
-#include <string>
-#include <vector>
 #include "myentity.hpp"
 
-//#include "gtest/gtest.h"
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
