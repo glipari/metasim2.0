@@ -9,14 +9,12 @@ using namespace MetaSim;
 
 /*-----------------------------------------------------*/
 
-Node::Node(string const & name) 
-        : Entity(name), _net_interf(0), _interval(0),
-          _nodes(), 
-	  _recv_evt(this, &Node::onReceive), 
-	  _send_evt(this, &Node::onSend)
+Node::Node(string const &name) 
+        : Entity(name), _net_interf(0), _interval(nullptr),
+          _nodes(),
+          _recv_evt(this, &Node::onReceive), 
+          _send_evt(this, &Node::onSend)
 {
-    // register_handler(_recv_evt, this, &Node::onReceive);
-    // register_handler(_send_evt, this, &Node::onSend);
 }
 
 void Node::newRun()
@@ -55,9 +53,9 @@ void Node::onMessageReceived(Message *m)
     DBGTAG(_NODE_DBG, getName() + "::onMessageReceived()");
 }
 
-void Node::setInterval(auto_ptr<RandomVar> i)
+void Node::setInterval(unique_ptr<RandomVar> i)
 {
-    _interval = i;
+    _interval = std::move(i);
 }
 
 void Node::addDestNode(Node &n)

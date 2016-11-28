@@ -18,7 +18,7 @@ class Node : public MetaSim::Entity {
 
   NetInterface* _net_interf;
 
-  std::auto_ptr<MetaSim::RandomVar> _interval;
+  std::unique_ptr<MetaSim::RandomVar> _interval;
 
   std::vector<Node*> _nodes;
 
@@ -32,7 +32,7 @@ public:
   NetInterface *getNetInterface();
   void setNetInterface(NetInterface &n);
   void addDestNode(Node &n);
-  void setInterval(std::auto_ptr<MetaSim::RandomVar> i);
+  void setInterval(std::unique_ptr<MetaSim::RandomVar> i);
 
   void onMessageReceived(Message *m);
   void onReceive(MetaSim::Event *e);

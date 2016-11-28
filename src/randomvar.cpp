@@ -42,7 +42,7 @@ namespace MetaSim {
 
 
     const char * const RandomVar::Exc::_FILEOPEN = "Unable to open RandFile";
-    const char * const RandomVar::Exc::_FILECLOSE = "Too short RandFile";
+   const char * const RandomVar::Exc::_FILECLOSE = "Too short RandFile";
     const char * const RandomVar::Exc::_WRONGPDF = "Malformed PDF";
 
 
@@ -139,7 +139,7 @@ namespace MetaSim {
     double ExponentialVar::get()
     {
         return -log(UniformVar::get()) * _lambda;
-    };
+    }
 
     RandomVar *ExponentialVar::createInstance(vector<string> &par) 
     {
@@ -194,7 +194,7 @@ namespace MetaSim {
         _yes = 1;
   
         return _mu + t2 * r;
-    };
+    }
 #else
     double NormalVar::get()
     {

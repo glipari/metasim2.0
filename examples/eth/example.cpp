@@ -69,9 +69,9 @@ int main()
                 double l2 = l1;
                 double l3 = l1;
 
-                n1.setInterval(auto_ptr<RandomVar>(new UniformVar(1,l1)));
-                n2.setInterval(auto_ptr<RandomVar>(new UniformVar(1,l2)));
-                n3.setInterval(auto_ptr<RandomVar>(new UniformVar(1,l3)));
+                n1.setInterval(unique_ptr<RandomVar>(new UniformVar(1,l1)));
+                n2.setInterval(unique_ptr<RandomVar>(new UniformVar(1,l2)));
+                n3.setInterval(unique_ptr<RandomVar>(new UniformVar(1,l3)));
     
                 SIMUL.dbg.setStream("log.txt");
                 SIMUL.dbg.enable(_ETHLINK_DBG);

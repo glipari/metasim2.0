@@ -45,7 +45,6 @@ namespace MetaSim {
     const RandomVar::BASE_KEY_TYPE GenericName ("PDF");
   
     RandomVar* parsevar(const std::string &str);
-
 } // MetaSim
 
 #endif
