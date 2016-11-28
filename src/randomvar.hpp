@@ -18,6 +18,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <baseexc.hpp>
 
@@ -185,7 +186,7 @@ namespace MetaSim {
             - par1, par2, ... are parameters of the distribution, and their
               number and type depends on the specific distribution.
         */
-        static RandomVar *parsevar(const std::string &str);
+        static unique_ptr<RandomVar> parsevar(const std::string &str);
     };
 
     /**  

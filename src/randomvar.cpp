@@ -311,9 +311,9 @@ namespace MetaSim {
 
 
 
-    RandomVar *RandomVar::parsevar(const std::string &str)
+    unique_ptr<RandomVar> RandomVar::parsevar(const std::string &str)
     {
-        RandomVar *temp;
+        //RandomVar *temp;
                 
         string token = get_token(str);
         DBGPRINT_2("token = ",  token);
@@ -326,14 +326,13 @@ namespace MetaSim {
         for (size_t i = 0; i < parms.size(); ++i) 
             DBGPRINT_4("par[", i, "] = ", parms[i]);
                 
-        unique_ptr<RandomVar> 
-            var(genericFactory<RandomVar>::instance().create(token,parms));
+        unique_ptr<RandomVar> var(FACT(RandomVar).create(token,parms));
                 
-        if (var.get() == 0) throw ParseExc("parsevar", str);
+        if (var.get() == nullptr) throw ParseExc("parsevar", str);
                 
-        temp = var.release();
+        //temp = var.release();
                 
-        return temp;
+        return var;
     }
 
 
