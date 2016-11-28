@@ -176,6 +176,16 @@ namespace MetaSim {
         virtual double getMaximum() throw(MaxException) = 0;
         virtual double getMinimum() throw(MaxException) = 0;
 
+
+        /** Parses a random variable from a string. String is in the
+            form "varname(par1, par2, ...)", where 
+
+            - varname is one of the variable names described in file regvar.hpp; 
+
+            - par1, par2, ... are parameters of the distribution, and their
+              number and type depends on the specific distribution.
+        */
+        static RandomVar *parsevar(const std::string &str);
     };
 
     /**  

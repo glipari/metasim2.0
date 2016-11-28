@@ -21,10 +21,7 @@
 #include <randomvar.hpp>
 #include <simul.hpp>
 #include <strtoken.hpp>
-
-#ifdef CEPHES_LIB
-#include "cephes/cephes.h"
-#endif
+#include <factory.hpp>
 
 namespace MetaSim {
 
@@ -312,5 +309,34 @@ namespace MetaSim {
         return new DetVar(par[0]);
     } 
 
+
+
+    RandomVar *RandomVar::parsevar(const std::string &str)
+    {
+        RandomVar *temp;
+                
+        string token = get_token(str);
+        DBGPRINT_2("token = ",  token);
+                
+        string p = get_param(str);
+        DBGPRINT_2("parms = ", p);
+
+        vector<string> parms = split_param(p);
+  
+        for (size_t i = 0; i < parms.size(); ++i) 
+            DBGPRINT_4("par[", i, "] = ", parms[i]);
+                
+        unique_ptr<RandomVar> 
+            var(genericFactory<RandomVar>::instance().create(token,parms));
+                
+        if (var.get() == 0) throw ParseExc("parsevar", str);
+                
+        temp = var.release();
+                
+        return temp;
+    }
+
+
+    
 
 } // namespace MetaSim

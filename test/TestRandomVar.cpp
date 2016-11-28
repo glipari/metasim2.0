@@ -10,7 +10,7 @@ using namespace std;
 
 TEST_CASE("Test random vars", "[random, factory]")
 {
-    MetaSim::RandomVar *p = MetaSim::parsevar("delta(5)");
+    MetaSim::RandomVar *p = MetaSim::RandomVar::parsevar("delta(5)");
 
     REQUIRE(p->get() == 5);
     REQUIRE(p->getMaximum() == 5);

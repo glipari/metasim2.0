@@ -11,20 +11,14 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <cstdlib>
-
 #include <regvar.hpp>
-#include <factory.hpp>
 #include <genericvar.hpp>
-#include <simul.hpp>
-#include <strtoken.hpp>
+#include <factory.hpp>
 
 using namespace std;
-using namespace parse_util;
 
 namespace MetaSim {
-
-
+    
     /**
        This namespace should not be visible, and in any case, users
        should never access objects of this namefile. This is used just
@@ -88,30 +82,5 @@ namespace MetaSim {
                                  RandomVar::BASE_KEY_TYPE>
         registerGeneric(GenericName);
     } // namespace __var_stub
-
-    RandomVar *parsevar(const std::string &str)
-    {
-        RandomVar *temp;
-                
-        string token = get_token(str);
-        DBGPRINT_2("token = ",  token);
-                
-        string p = get_param(str);
-        DBGPRINT_2("parms = ", p);
-
-        vector<string> parms = split_param(p);
-  
-        for (size_t i = 0; i < parms.size(); ++i) 
-            DBGPRINT_4("par[", i, "] = ", parms[i]);
-                
-        unique_ptr<RandomVar> 
-            var(genericFactory<RandomVar>::instance().create(token,parms));
-                
-        if (var.get() == 0) throw ParseExc("parsevar", str);
-                
-        temp = var.release();
-                
-        return temp;
-    }
 
 } // namespace MetaSim

@@ -16,3 +16,5 @@ add_executable(test_metasim myentity.cpp TestEntityOrder.cpp TestEntitySameName.
 
 # Indicate that rtlib need metasim library.
 target_link_libraries(test_metasim metasim)
+
+add_test(NAME tm COMMAND test_metasim)
