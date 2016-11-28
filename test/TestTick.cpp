@@ -50,10 +50,10 @@ TEST_CASE("TestTick3", "testOverflow")
     REQUIRE(i_m == INT_MIN);
     REQUIRE(i_M == INT_MAX);
 	
-    Tick ll_m = LLONG_MIN;
-    Tick ll_M = LLONG_MAX;
-    REQUIRE(ll_m == LLONG_MIN);
-    REQUIRE(ll_M == LLONG_MAX);
+    Tick ll_m = static_cast<int64_t>(LLONG_MIN);
+    Tick ll_M = static_cast<int64_t>(LLONG_MAX);
+    REQUIRE(ll_m == static_cast<int64_t>(LLONG_MIN));
+    REQUIRE(ll_M == static_cast<int64_t>(LLONG_MAX));
 }
 
 
