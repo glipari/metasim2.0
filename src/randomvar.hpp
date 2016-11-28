@@ -148,7 +148,7 @@ namespace MetaSim {
             @param g The random number generator. By default,
             this is NULL, which means that the default
             generator is _pstdgen */
-        RandomVar(RandomGen *g = NULL);
+        RandomVar(RandomGen *g = nullptr);
 
         /**
            Copy constructor.
@@ -200,7 +200,7 @@ namespace MetaSim {
     class UniformVar : public RandomVar {
         double _min, _max;
     public:
-        UniformVar(double min, double max, RandomGen *g = NULL) 
+        UniformVar(double min, double max, RandomGen *g = nullptr)
             : RandomVar(g), _min(min), _max(max) {}
         virtual double get();
         virtual ~UniformVar() {}
@@ -214,7 +214,7 @@ namespace MetaSim {
     class ExponentialVar : public UniformVar {
         double _lambda;
     public :
-        ExponentialVar(double m, RandomGen *g = NULL) : 
+        ExponentialVar(double m, RandomGen *g = nullptr) :
             UniformVar(0, 1, g), _lambda(m) {}
 
         virtual double get();
@@ -231,7 +231,7 @@ namespace MetaSim {
     class ParetoVar : public UniformVar {
         double _mu, _order;
     public :
-        ParetoVar(double m, double k, RandomGen *g = NULL) : 
+        ParetoVar(double m, double k, RandomGen *g = nullptr) :
             UniformVar(0,1,g), _mu(m), _order(k) {};
         virtual double get();
         static RandomVar *createInstance(vector<string> &par);
@@ -251,7 +251,7 @@ namespace MetaSim {
         double _oldv;
   
     public:
-        NormalVar(double m, double s, RandomGen *g = NULL) : 
+        NormalVar(double m, double s, RandomGen *g = nullptr) :
             UniformVar(0,1,g), _mu(m), _sigma(s), _yes(false)
             {}
         virtual double get();
@@ -269,7 +269,7 @@ namespace MetaSim {
         double _lambda;
     public:
         static const unsigned long CUTOFF;
-        PoissonVar(double l, RandomGen *g = NULL) : 
+        PoissonVar(double l, RandomGen *g = nullptr) :
             UniformVar(0, 1, g), _lambda(l) {}
         virtual double get();
 

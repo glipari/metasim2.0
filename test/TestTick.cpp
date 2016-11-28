@@ -1,15 +1,10 @@
-#include <iostream>
-#include <memory>
-#include <string>
-#include <vector>
 #include <tick.hpp>
-#include <stdint.h>
+#include <cstdint>
 #include <climits>
 
 #include "catch.hpp"
 
 using namespace MetaSim;
-using namespace std;
 
 TEST_CASE("TestTick", "testBoolean")
 {
