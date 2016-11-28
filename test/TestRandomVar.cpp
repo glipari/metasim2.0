@@ -10,7 +10,7 @@ using namespace MetaSim;
 TEST_CASE("TestRandomVar - mean", "[random, mean]")
 {
   const unsigned int testSamples = 1e6;
-  for (double lambda = 1; lambda < 10; lambda += 0.3) {
+  for (double lambda = 0.1; lambda < 4; lambda += 0.3) {
     long double mean = 0;
     long double theoreticalMean = 1.0 / lambda;
 
@@ -31,7 +31,7 @@ TEST_CASE("TestRandomVar - PDF", "[random, PDF]")
   const unsigned int testSamples = 1e6;
   const unsigned int histogramDefinition = 10;
 
-  for (double lambda = 1; lambda < 10; lambda += 0.3) {
+  for (double lambda = 0.5; lambda < 4; lambda += 0.3) {
     std::vector<unsigned int> v(histogramDefinition, 0);
 
     ExponentialVar ev(lambda);
