@@ -139,14 +139,30 @@ namespace MetaSim {
         return -log(UniformVar::get()) / _lambda;
     }
 
-    std::unique_ptr<ExponentialVar> ExponentialVar::createInstance(vector<string> &par) 
+    std::unique_ptr<ExponentialVar> ExponentialVar::createInstance(vector<string> &par)
     {
         if (par.size() != 1)
             throw ParseExc("Wrong number of parameters", "ExponentialVar");
 
         double a = atof(par[0].c_str());
         return unique_ptr<ExponentialVar>(new ExponentialVar(a));
+    }
 
+    /*-----------------------------------------------------*/
+
+    double WeibullVar::get()
+    {
+        return _l * pow(-log(UniformVar::get()), 1.0 / _k);
+    }
+
+    std::unique_ptr<WeibullVar> WeibullVar::createInstance(vector<string> &par)
+    {
+        if (par.size() != 2)
+            throw ParseExc("Wrong number of parameters", "WeibullVar");
+
+        double a = atof(par[0].c_str());
+        double b = atof(par[1].c_str());
+        return unique_ptr<WeibullVar>(new WeibullVar(a, b));
     }
 
     /*-----------------------------------------------------*/

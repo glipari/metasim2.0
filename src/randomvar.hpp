@@ -232,6 +232,24 @@ namespace MetaSim {
     };
 
     /**
+      This class implements a Weibull distribution, with shape (k) and scale
+      (l) parameters.
+    */
+    class WeibullVar : public UniformVar {
+        double _l;
+        double _k;
+    public :
+        WeibullVar(double l, double k, RandomGen *g = nullptr) :
+            UniformVar(0, 1), _l(l), _k(k) {}
+
+        virtual double get();
+
+        static std::unique_ptr<WeibullVar> createInstance(vector<string> &par);
+        virtual double getMaximum() throw(MaxException) { throw MaxException("WeibullVar"); }
+        virtual double getMinimum() throw(MaxException) { return 0; }
+    };
+
+    /**
        This class implements a pareto distribution, with parameters m and k */
     class ParetoVar : public UniformVar {
         double _mu, _order;

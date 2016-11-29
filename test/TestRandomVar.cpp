@@ -21,7 +21,7 @@ TEST_CASE("Test random vars", "[random, factory]")
     }
     SECTION ("Testing exp") {
         unique_ptr<MetaSim::RandomVar> q = MetaSim::RandomVar::parsevar("exponential(5)");
-        
+
         double v = q->get();
         REQUIRE (v <= 59);
         REQUIRE (v >= 58);
@@ -51,7 +51,23 @@ TEST_CASE("Test random vars", "[random, factory]")
         vector<shared_ptr<MetaSim::RandomVar> > v2_obj(v_obj);
         REQUIRE(v2_obj[0]->get() == 2);
         REQUIRE_THROWS(v2_obj[1]->getMaximum());
-    }   
+    }
+}
+
+template<class T>
+T expPDF(T lambda, T x)
+{
+  if (x >= 0)
+    return lambda * exp(-lambda * x);
+  return 0;
+}
+
+template<class T>
+T weibullPDF(T lambda, T kappa, T x)
+{
+  if (x >= 0)
+    return (kappa / lambda) * pow(x / lambda, kappa - 1.0) * exp( - pow(x / lambda, kappa));
+  return 0;
 }
 
 TEST_CASE("TestRandomVar - mean", "[random, mean]")
@@ -75,23 +91,115 @@ TEST_CASE("TestRandomVar - mean", "[random, mean]")
 
 TEST_CASE("ExponentialVar - PDF", "[exponential, PDF]")
 {
-  const unsigned int testSamples = 1e6;
-  const unsigned int histogramDefinition = 10;
+  long double binSize = 0.2;
+  long double startingValue = 0;
+  long double finishingValue = 4;
 
-  for (double lambda = 0.1; lambda < 4; lambda += 0.3) {
+  const unsigned int testSamples = 1e6;
+
+  const unsigned int histogramDefinition = (finishingValue - startingValue) / binSize;
+
+  for (long double lambda = 0.1; lambda < 3; lambda += 0.3) {
     std::vector<unsigned int> v(histogramDefinition, 0);
 
     ExponentialVar ev(lambda);
 
     for (unsigned int i=0; i<testSamples; ++i) {
       double value = ev.get();
-      if (value < histogramDefinition) {
-        v[static_cast<unsigned int>(value)]++;
+
+      unsigned int counter = 0;
+      for (double bin_floor = startingValue; bin_floor < finishingValue; bin_floor += binSize) {
+        if (value >= bin_floor && value < bin_floor + binSize) {
+          v[counter]++;
+          break;
+        }
+        counter++;
       }
     }
 
-    for (unsigned int i=1; i<histogramDefinition; ++i) {
-      REQUIRE (v[i-1] >= v[i]);
+    int counter = 0;
+    for (auto vi : v) {
+      long double vPDF = static_cast<double>(vi) / testSamples / binSize;
+      long double ePDF = expPDF(lambda, binSize * counter + binSize / 2.0);
+
+      if (vPDF < 0.01 || ePDF < 0.01)
+        continue;
+
+      REQUIRE (vPDF / ePDF < 1.1);
+      REQUIRE (vPDF / ePDF > 0.9);
+      counter++;
+    }
+  }
+}
+
+TEST_CASE("WeibullVar - mean", "[weibull, mean]")
+{
+  const unsigned int testSamples = 1e6;
+  for (long double lambda = 0.5; lambda < 1.5; lambda += 0.3) {
+    for (long double kappa = 0.5; kappa < 5; kappa += 0.3) {
+      long double mean = 0;
+      long double theoreticalMean = lambda * tgammal(1.0 + 1.0 / kappa);
+
+      WeibullVar ev(lambda, kappa);
+
+      for (unsigned int i=0; i<testSamples; ++i)
+        mean += ev.get();
+
+      mean /= testSamples;
+
+      REQUIRE (mean / theoreticalMean > 0.95);
+      REQUIRE (mean / theoreticalMean < 1.05);
+    }
+  }
+}
+
+TEST_CASE("WeibullVar - PDF", "[weibull, CDF]")
+{
+  long double binSize = 0.4;
+  long double startingValue = 0;
+  long double finishingValue = 3;
+
+  const unsigned int testSamples = 1e6;
+
+  const unsigned int histogramDefinition = (finishingValue - startingValue) / binSize;
+
+  for (long double lambda = 0.5; lambda < 1.5; lambda += 0.3) {
+    for (long double kappa = 0.5; kappa < 5; kappa += 0.3) {
+      std::vector<unsigned int> v(histogramDefinition, 0);
+
+      WeibullVar ev(lambda, kappa);
+
+      for (unsigned int i=0; i<testSamples; ++i) {
+        double value = ev.get();
+
+        unsigned int counter = 0;
+        for (double bin_floor = startingValue; bin_floor < finishingValue; bin_floor += binSize) {
+          if (value >= bin_floor && value < bin_floor + binSize) {
+            v[counter]++;
+            break;
+          }
+          counter++;
+        }
+      }
+
+      double vPDFSum = 0;
+      for (auto vi : v) {
+        vPDFSum += static_cast<double>(vi) / testSamples / binSize;
+      }
+
+      int counter = 0;
+      for (auto vi : v) {
+        long double vPDF = static_cast<double>(vi) / testSamples / binSize / vPDFSum;
+        long double ePDF = weibullPDF(lambda, kappa, binSize * counter + binSize / 2.0);
+
+        if (vPDF < 0.01 || ePDF < 0.01)
+          continue;
+
+        if (abs(vPDF - ePDF) > 1.5 && (vPDF / ePDF > 1.3 || vPDF / ePDF < 0.7)) {
+          REQUIRE (false);
+        }
+        counter++;
+      }
     }
   }
 }
