@@ -62,7 +62,7 @@ namespace MetaSim {
       _os.open(_filename.c_str(), ios::binary | ios::out);
   } 
 
-  Trace::Trace(string filename, Type type, bool tof)
+  Trace::Trace(const string &filename, Type type, bool tof)
     : _filename(filename)
   {
     if (tof == false) return;

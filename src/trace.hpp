@@ -101,7 +101,7 @@ namespace MetaSim {
      */
     Trace(const char *filename, Type type = BINARY, bool tof = true);
 
-    Trace(std::string filename, Type type = BINARY, bool tof = true);
+    Trace(const std::string &filename, Type type = BINARY, bool tof = true);
 
     /**
       This is a virtual function that must be overridden in the
@@ -132,7 +132,7 @@ namespace MetaSim {
   */
   class TraceAscii : public Trace {
   public:
-    TraceAscii(char* file) : Trace(file, ASCII){}
+    TraceAscii(const string &file) : Trace(file, ASCII){}
 
     /// Records the value on the file, one value per line.
     //@{

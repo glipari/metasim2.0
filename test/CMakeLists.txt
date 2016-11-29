@@ -12,7 +12,27 @@ elseif(WIN32)
 endif()
 
 # Create the executable.
-add_executable(test_metasim myentity.cpp TestEntityOrder.cpp TestEntitySameName.cpp TestParseUtil.cpp TestTick.cpp TestFactory.cpp)
+add_executable(TestEntityOrder myentity.cpp TestEntityOrder.cpp)
+add_executable(TestEntitySameName myentity.cpp TestEntitySameName.cpp)
+add_executable(TestParseUtil TestParseUtil.cpp)
+add_executable(TestTick TestTick.cpp)
+add_executable(TestRandomVar TestRandomVar.cpp)
 
 # Indicate that rtlib need metasim library.
-target_link_libraries(test_metasim metasim)
+target_link_libraries(TestEntityOrder metasim)
+target_link_libraries(TestEntitySameName metasim)
+target_link_libraries(TestParseUtil metasim)
+target_link_libraries(TestTick metasim)
+target_link_libraries(TestRandomVar metasim)
+
+# Add tests for CTest
+add_test (NAME TestEntityOrder COMMAND TestEntityOrder)
+add_test (NAME TestEntitySameName COMMAND TestEntitySameName)
+add_test (NAME TestParseUtil COMMAND TestParseUtil)
+add_test (NAME TestTick COMMAND TestTick)
+add_test (NAME TestRandomVar COMMAND TestRandomVar)
+
+#add_executable(test_metasim myentity.cpp TestEntityOrder.cpp
+#  TestEntitySameName.cpp TestParseUtil.cpp TestTick.cpp
+#  TestRandomVar.cpp)
+#target_link_libraries(test_metasim metasim)
