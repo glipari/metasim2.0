@@ -26,7 +26,7 @@ target_link_libraries(TestEntityOrder TestMain metasim)
 target_link_libraries(TestEntitySameName TestMain metasim)
 target_link_libraries(TestParseUtil TestMain metasim)
 target_link_libraries(TestTick TestMain metasim)
-target_link_libraries(TestRandomVar TestMain metasim m)
+target_link_libraries(TestRandomVar TestMain metasim)
 
 # Add tests for CTest
 add_test (NAME TestEntityOrder COMMAND TestEntityOrder)
