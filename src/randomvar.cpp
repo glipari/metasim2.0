@@ -130,22 +130,23 @@ namespace MetaSim {
         a = atof(par[0].c_str());
         b = atof(par[1].c_str());
         return unique_ptr<UniformVar>(new UniformVar(a,b));
-    } 
+    }
 
     /*-----------------------------------------------------*/
 
     double ExponentialVar::get()
     {
         return -log(UniformVar::get()) / _lambda;
-    };
+    }
 
     std::unique_ptr<ExponentialVar> ExponentialVar::createInstance(vector<string> &par) 
     {
         if (par.size() != 1)
             throw ParseExc("Wrong number of parameters", "ExponentialVar");
 
-        double a = atof(par[0].c_str());      
+        double a = atof(par[0].c_str());
         return unique_ptr<ExponentialVar>(new ExponentialVar(a));
+
     }
 
     /*-----------------------------------------------------*/

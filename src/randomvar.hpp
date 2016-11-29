@@ -215,7 +215,7 @@ namespace MetaSim {
     };
 
     /**
-       This class implements an exponential distribution, with mean m. */ 
+       This class implements an exponential distribution, with mean m. */
     class ExponentialVar : public UniformVar {
         double _lambda;
     public :
