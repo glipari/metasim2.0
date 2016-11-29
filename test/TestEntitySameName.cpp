@@ -1,8 +1,7 @@
-#include <iostream>
-#include <memory>
 #include <entity.hpp>
 #include "myentity.hpp"
-#include <catch.hpp>
+
+#include "catch.hpp"
 
 using namespace MetaSim;
 

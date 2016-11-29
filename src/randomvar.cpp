@@ -136,8 +136,8 @@ namespace MetaSim {
 
     double ExponentialVar::get()
     {
-        return -log(UniformVar::get()) * _lambda;
-    }
+        return -log(UniformVar::get()) / _lambda;
+    };
 
     std::unique_ptr<ExponentialVar> ExponentialVar::createInstance(vector<string> &par) 
     {

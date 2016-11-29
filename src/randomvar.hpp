@@ -206,6 +206,7 @@ namespace MetaSim {
     public:
         UniformVar(double min, double max) 
             : RandomVar(), _min(min), _max(max) {}
+
         virtual double get();
         virtual ~UniformVar() {}
         static std::unique_ptr<UniformVar> createInstance(vector<string> &par);
@@ -237,6 +238,7 @@ namespace MetaSim {
     public :
         ParetoVar(double m, double k) : 
             UniformVar(0,1), _mu(m), _order(k) {};
+
         virtual double get();
         static std::unique_ptr<ParetoVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException)
@@ -275,6 +277,7 @@ namespace MetaSim {
         static const unsigned long CUTOFF;
         PoissonVar(double l) : 
             UniformVar(0, 1), _lambda(l) {}
+
         virtual double get();
 
         static std::unique_ptr<PoissonVar> createInstance(vector<string> &par);

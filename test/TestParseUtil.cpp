@@ -1,9 +1,5 @@
-#include <iostream>
-#include <memory>
 #include <string>
-#include <vector>
 #include <entity.hpp>
-#include "myentity.hpp"
 
 #include "catch.hpp"
 
