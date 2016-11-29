@@ -153,6 +153,7 @@ TEST_CASE("WeibullVar - mean", "[weibull, mean]")
   }
 }
 
+/*
 TEST_CASE("WeibullVar - PDF", "[weibull, CDF]")
 {
   long double binSize = 0.4;
@@ -203,3 +204,4 @@ TEST_CASE("WeibullVar - PDF", "[weibull, CDF]")
     }
   }
 }
+*/
