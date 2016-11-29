@@ -18,6 +18,9 @@
 
 #include <cstdlib>
 
+#include <limits>
+#include <cmath>
+
 #include <randomvar.hpp>
 #include <simul.hpp>
 #include <strtoken.hpp>
@@ -39,7 +42,7 @@ namespace MetaSim {
 
 
     const char * const RandomVar::Exc::_FILEOPEN = "Unable to open RandFile";
-   const char * const RandomVar::Exc::_FILECLOSE = "Too short RandFile";
+    const char * const RandomVar::Exc::_FILECLOSE = "Too short RandFile";
     const char * const RandomVar::Exc::_WRONGPDF = "Malformed PDF";
 
 
@@ -71,10 +74,8 @@ namespace MetaSim {
 
     const unsigned long PoissonVar::CUTOFF = 10000;
 
-    RandomVar::RandomVar(RandomGen* gen) : _gen(gen)
+    RandomVar::RandomVar() : _gen(_pstdgen)
     {
-        if (_gen == NULL) 
-            _gen = _pstdgen;
     }
 
     RandomVar::RandomVar(const RandomVar &r) : _gen(r._gen)
@@ -100,12 +101,12 @@ namespace MetaSim {
 
     /*-----------------------------------------------------*/
 
-    RandomVar* DeltaVar::createInstance(vector<string> &par) 
+    unique_ptr<DeltaVar> DeltaVar::createInstance(vector<string> &par) 
     {
         if (par.size() != 1) 
             throw ParseExc("Wrong number of parameters", "DeltaVar");
         double a = atof(par[0].c_str());
-        return new DeltaVar(a);
+        return unique_ptr<DeltaVar>(new DeltaVar(a));
     }
 
     /*-----------------------------------------------------*/
@@ -119,7 +120,7 @@ namespace MetaSim {
         return tmp;
     };
 
-    RandomVar *UniformVar::createInstance(vector<string> &par) 
+    unique_ptr<UniformVar> UniformVar::createInstance(vector<string> &par) 
     {
         double a,b;
 
@@ -128,7 +129,7 @@ namespace MetaSim {
 
         a = atof(par[0].c_str());
         b = atof(par[1].c_str());
-        return new UniformVar(a,b);
+        return unique_ptr<UniformVar>(new UniformVar(a,b));
     } 
 
     /*-----------------------------------------------------*/
@@ -138,13 +139,13 @@ namespace MetaSim {
         return -log(UniformVar::get()) * _lambda;
     }
 
-    RandomVar *ExponentialVar::createInstance(vector<string> &par) 
+    std::unique_ptr<ExponentialVar> ExponentialVar::createInstance(vector<string> &par) 
     {
         if (par.size() != 1)
             throw ParseExc("Wrong number of parameters", "ExponentialVar");
 
         double a = atof(par[0].c_str());      
-        return new ExponentialVar(a);
+        return unique_ptr<ExponentialVar>(new ExponentialVar(a));
     }
 
     /*-----------------------------------------------------*/
@@ -155,7 +156,7 @@ namespace MetaSim {
         return _mu * pow (UniformVar::get(), -1/_order);
     };
 
-    RandomVar *ParetoVar::createInstance(vector<string> &par) 
+    unique_ptr<ParetoVar> ParetoVar::createInstance(vector<string> &par) 
     {
         double a,b;
 
@@ -164,42 +165,39 @@ namespace MetaSim {
 
         a = atof(par[0].c_str());
         b = atof(par[1].c_str());
-        return new ParetoVar(a,b);
+        return unique_ptr<ParetoVar>(new ParetoVar(a,b));
     } 
 
     /*-----------------------------------------------------*/
 
-#ifndef CEPHES_LIB
-    double NormalVar::get() 
-    {
-        double t1,t2,r;
-  
-        if (_yes) {
-            _yes = false;
-            return _oldv;
-        }
-  
-        do {
-            t1 = 2 * UniformVar::get() - 1;
-            t2 = 2 * UniformVar::get() - 1;
-    
-            r = t1*t1 + t2*t2;
-        } while (r >= 1);
-  
-        r = sqrt(-2*log(r)/r) * _sigma;
-        _oldv = _mu + t1 * r;
-        _yes = 1;
-  
-        return _mu + t2 * r;
-    }
-#else
     double NormalVar::get()
     {
-        return _mu + _sigma * ndtri(UniformVar::get());
-    }
-#endif
+        const double epsilon = std::numeric_limits<double>::min();
+        const double two_pi = 2.0*3.14159265358979323846;
 
-    RandomVar *NormalVar::createInstance(vector<string> &par) 
+        static double z0, z1;
+        static bool generate;
+        generate = !generate;
+        
+        if (!generate)
+            return z1 * _sigma + _mu;
+        
+        // generate two uniform samples
+        double u1, u2;
+        do
+        {
+            u1 = UniformVar::get();
+            u2 = UniformVar::get();
+        }
+        while ( u1 <= epsilon );
+        
+        z0 = sqrt(-2.0 * log(u1)) * cos(two_pi * u2);
+        z1 = sqrt(-2.0 * log(u1)) * sin(two_pi * u2);
+        return z0 * _sigma + _mu;
+    }
+
+
+    std::unique_ptr<NormalVar> NormalVar::createInstance(vector<string> &par) 
     {
         double a,b;
 
@@ -208,7 +206,7 @@ namespace MetaSim {
 
         a = atof(par[0].c_str());
         b = atof(par[1].c_str());
-        return new NormalVar(a,b);
+        return unique_ptr<NormalVar>(new NormalVar(a,b));
     } 
 
 
@@ -228,14 +226,14 @@ namespace MetaSim {
         return CUTOFF;
     }
 
-    RandomVar* PoissonVar::createInstance(vector<string> &par) 
+    unique_ptr<PoissonVar> PoissonVar::createInstance(vector<string> &par) 
     {
         double a;
 
         if (par.size() != 1)
             throw ParseExc("Wrong number of parameters", "PoissonVar");
         a = atof(par[0].c_str());
-        return new PoissonVar(a);
+        return unique_ptr<PoissonVar>(new PoissonVar(a));
     } 
 
 
@@ -301,20 +299,18 @@ namespace MetaSim {
         return min;
     }
 
-    RandomVar *DetVar::createInstance(vector<string> &par) 
+    unique_ptr<DetVar> DetVar::createInstance(vector<string> &par) 
     {
         if (par.size() != 1) 
             throw ParseExc("Wrong number of parameters", "DetVar");
 
-        return new DetVar(par[0]);
+        return unique_ptr<DetVar>(new DetVar(par[0]));
     } 
 
 
 
     unique_ptr<RandomVar> RandomVar::parsevar(const std::string &str)
     {
-        //RandomVar *temp;
-                
         string token = get_token(str);
         DBGPRINT_2("token = ",  token);
                 
@@ -329,9 +325,7 @@ namespace MetaSim {
         unique_ptr<RandomVar> var(FACT(RandomVar).create(token,parms));
                 
         if (var.get() == nullptr) throw ParseExc("parsevar", str);
-                
-        //temp = var.release();
-                
+                                
         return var;
     }
 

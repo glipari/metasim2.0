@@ -137,22 +137,15 @@ namespace MetaSim {
             MaxException(string m, string cl) :Exc(m, cl) {}
             virtual ~MaxException() throw() {}
             virtual const char* what() const throw() 
-                {return _what.c_str();}
+                { return _what.c_str(); }
 
         };
 
-        /** Constructor for RandomVar. It takes as argument
-            the random number generator. By default, this is
-            equal to _pstdgen. It is possible to change the
-            default generator with changeGenerator().
-     
-            @param g The random number generator. By default,
-            this is NULL, which means that the default
-            generator is _pstdgen */
-        RandomVar(RandomGen *g = NULL);
+        /** Constructor for RandomVar. */
+        RandomVar();
 
         /**
-           Copy constructor.
+           Copy constructor
         */
         RandomVar(const RandomVar &r);
 
@@ -163,7 +156,7 @@ namespace MetaSim {
         static inline void init(RandNum s) { _pstdgen->init(s); }
   
         /// Change the standard generator
-        static RandomGen * changeGenerator(RandomGen *g);
+        static RandomGen *changeGenerator(RandomGen *g);
 
         /// Restore the standard generator
         static void restoreGenerator();
@@ -200,7 +193,7 @@ namespace MetaSim {
         DeltaVar(double a) : RandomVar(), _var(a) {}
         virtual double get() { return _var; } 
         virtual ~DeltaVar() {};
-        static RandomVar *createInstance(vector<string> &par);  
+        static std::unique_ptr<DeltaVar> createInstance(vector<string> &par);  
         virtual double getMaximum() throw(MaxException) {return _var;}
         virtual double getMinimum() throw(MaxException) {return _var;}
     };
@@ -211,11 +204,11 @@ namespace MetaSim {
     class UniformVar : public RandomVar {
         double _min, _max;
     public:
-        UniformVar(double min, double max, RandomGen *g = NULL) 
-            : RandomVar(g), _min(min), _max(max) {}
+        UniformVar(double min, double max) 
+            : RandomVar(), _min(min), _max(max) {}
         virtual double get();
         virtual ~UniformVar() {}
-        static RandomVar *createInstance(vector<string> &par);
+        static std::unique_ptr<UniformVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException) {return _max;}
         virtual double getMinimum() throw(MaxException) {return _min;}
     };
@@ -225,12 +218,12 @@ namespace MetaSim {
     class ExponentialVar : public UniformVar {
         double _lambda;
     public :
-        ExponentialVar(double m, RandomGen *g = NULL) : 
-            UniformVar(0, 1, g), _lambda(m) {}
+        ExponentialVar(double m) : 
+            UniformVar(0, 1), _lambda(m) {}
 
         virtual double get();
 
-        static RandomVar *createInstance(vector<string> &par);
+        static std::unique_ptr<ExponentialVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("ExponentialVar");}
         virtual double getMinimum() throw(MaxException)
@@ -242,10 +235,10 @@ namespace MetaSim {
     class ParetoVar : public UniformVar {
         double _mu, _order;
     public :
-        ParetoVar(double m, double k, RandomGen *g = NULL) : 
-            UniformVar(0,1,g), _mu(m), _order(k) {};
+        ParetoVar(double m, double k) : 
+            UniformVar(0,1), _mu(m), _order(k) {};
         virtual double get();
-        static RandomVar *createInstance(vector<string> &par);
+        static std::unique_ptr<ParetoVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("ExponentialVar");}
         virtual double getMinimum() throw(MaxException)
@@ -262,11 +255,11 @@ namespace MetaSim {
         double _oldv;
   
     public:
-        NormalVar(double m, double s, RandomGen *g = NULL) : 
-            UniformVar(0,1,g), _mu(m), _sigma(s), _yes(false)
+        NormalVar(double m, double s) : 
+            UniformVar(0, 1), _mu(m), _sigma(s), _yes(false)
             {}
         virtual double get();
-        static RandomVar *createInstance(vector<string> &par);
+        static std::unique_ptr<NormalVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("NormalVar");}
         virtual double getMinimum() throw(MaxException)
@@ -280,11 +273,11 @@ namespace MetaSim {
         double _lambda;
     public:
         static const unsigned long CUTOFF;
-        PoissonVar(double l, RandomGen *g = NULL) : 
-            UniformVar(0, 1, g), _lambda(l) {}
+        PoissonVar(double l) : 
+            UniformVar(0, 1), _lambda(l) {}
         virtual double get();
 
-        static RandomVar *createInstance(vector<string> &par);
+        static std::unique_ptr<PoissonVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("PoissonVar");}
         virtual double getMinimum() throw(MaxException)
@@ -311,7 +304,7 @@ namespace MetaSim {
         virtual double getMaximum() throw(MaxException);
         virtual double getMinimum() throw(MaxException);
 
-        static RandomVar *createInstance(vector<string> &par);
+        static std::unique_ptr<DetVar> createInstance(vector<string> &par);
     };
     //@}
 
