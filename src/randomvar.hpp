@@ -210,7 +210,7 @@ namespace MetaSim {
     };
 
     /**
-       This class implements an exponential distribution, with mean m. */ 
+       This class implements an exponential distribution, with mean m. */
     class ExponentialVar : public UniformVar {
         double _lambda;
     public :
@@ -224,6 +224,24 @@ namespace MetaSim {
             {throw MaxException("ExponentialVar");}
         virtual double getMinimum() throw(MaxException)
             {return 0;}
+    };
+
+    /**
+      This class implements a Weibull distribution, with shape (k) and scale
+      (l) parameters.
+    */
+    class WeibullVar : public UniformVar {
+        double _l;
+        double _k;
+    public :
+        WeibullVar(double l, double k, RandomGen *g = nullptr) :
+            UniformVar(0, 1, g), _l(l), _k(k) {}
+
+        virtual double get();
+
+        static RandomVar *createInstance(vector<string> &par);
+        virtual double getMaximum() throw(MaxException) { throw MaxException("WeibullVar"); }
+        virtual double getMinimum() throw(MaxException) { return 0; }
     };
 
     /**
