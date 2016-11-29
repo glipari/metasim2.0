@@ -11,6 +11,9 @@ elseif(WIN32)
 
 endif()
 
+# Create Catch library to decrease compile times
+add_library(TestMain STATIC TestMain.cpp)
+
 # Create the executable.
 add_executable(TestEntityOrder myentity.cpp TestEntityOrder.cpp)
 add_executable(TestEntitySameName myentity.cpp TestEntitySameName.cpp)
@@ -19,11 +22,11 @@ add_executable(TestTick TestTick.cpp)
 add_executable(TestRandomVar TestRandomVar.cpp)
 
 # Indicate that rtlib need metasim library.
-target_link_libraries(TestEntityOrder metasim)
-target_link_libraries(TestEntitySameName metasim)
-target_link_libraries(TestParseUtil metasim)
-target_link_libraries(TestTick metasim)
-target_link_libraries(TestRandomVar metasim)
+target_link_libraries(TestEntityOrder TestMain metasim)
+target_link_libraries(TestEntitySameName TestMain metasim)
+target_link_libraries(TestParseUtil TestMain metasim)
+target_link_libraries(TestTick TestMain metasim)
+target_link_libraries(TestRandomVar TestMain metasim m)
 
 # Add tests for CTest
 add_test (NAME TestEntityOrder COMMAND TestEntityOrder)

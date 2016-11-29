@@ -1,7 +1,6 @@
 #include <entity.hpp>
 #include "myentity.hpp"
 
-#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
 using namespace MetaSim;
