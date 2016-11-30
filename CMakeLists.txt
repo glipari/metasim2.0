@@ -1,9 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 project (metasim)
 
-# Set compile optimization flags
-SET(CMAKE_CXX_FLAGS "-Ofast")
-SET(CMAKE_C_FLAGS "-Ofast")
+#set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 # Include dirs.
 add_subdirectory (src)

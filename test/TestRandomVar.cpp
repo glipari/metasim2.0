@@ -23,8 +23,8 @@ TEST_CASE("Test random vars", "[random, factory]")
         unique_ptr<MetaSim::RandomVar> q = MetaSim::RandomVar::parsevar("exponential(5)");
 
         double v = q->get();
-        REQUIRE (v <= 59);
-        REQUIRE (v >= 58);
+        REQUIRE (v <= 1e6);
+        REQUIRE (v >= 0);
         REQUIRE (q->getMinimum() == 0);
         REQUIRE_THROWS(q->getMaximum());
     }
@@ -54,8 +54,52 @@ TEST_CASE("Test random vars", "[random, factory]")
     }
 }
 
+class Histogram {
+  double _bucketSize;
+  double _startValue;
+  double _endValue;
+  unsigned int _samples;
+
+  std::vector<unsigned int> _histogram;
+  unsigned int _buckets;
+
+public:
+  Histogram(double bucketSize, double startValue, double endValue) :
+    _bucketSize(bucketSize), _startValue(startValue), _endValue(endValue), _samples(0)
+  {
+    _buckets = static_cast<unsigned int>(ceil((_endValue - _startValue) / _bucketSize));
+    _histogram.resize(_buckets);
+    fill(_histogram.begin(), _histogram.end(), 0);
+  }
+
+  inline void add(double v)
+  {
+    if (v < _startValue || v > _endValue)
+      return;
+
+    unsigned int index = static_cast<unsigned int>(floor(v / _bucketSize));
+    _histogram[index]++;
+    _samples++;
+  }
+
+  long double sum() const
+  {
+    long double PDFSum = 0.0;
+
+    for (auto v : _histogram)
+      PDFSum += static_cast<long double>(v) / _samples / _bucketSize;
+
+    return PDFSum;
+  }
+
+  inline const unsigned int &operator[](std::size_t idx) const { return _histogram[idx]; }
+  inline unsigned int size() const { return _buckets; }
+  inline unsigned int samples() const { return _samples; }
+  inline long double pdf(unsigned int index) const { return static_cast<double>(_histogram[index]) / _samples / _bucketSize; }
+};
+
 template<class T>
-T expPDF(T lambda, T x)
+inline T expPDF(T lambda, T x)
 {
   if (x >= 0)
     return lambda * exp(-lambda * x);
@@ -63,7 +107,7 @@ T expPDF(T lambda, T x)
 }
 
 template<class T>
-T weibullPDF(T lambda, T kappa, T x)
+inline T weibullPDF(T lambda, T kappa, T x)
 {
   if (x >= 0)
     return (kappa / lambda) * pow(x / lambda, kappa - 1.0) * exp( - pow(x / lambda, kappa));
@@ -91,44 +135,29 @@ TEST_CASE("TestRandomVar - mean", "[random, mean]")
 
 TEST_CASE("ExponentialVar - PDF", "[exponential, PDF]")
 {
-  long double binSize = 0.2;
+  long double bucketSize = 0.2;
   long double startingValue = 0;
   long double finishingValue = 4;
 
   const unsigned int testSamples = 1e6;
 
-  const unsigned int histogramDefinition = (finishingValue - startingValue) / binSize;
-
   for (long double lambda = 0.1; lambda < 3; lambda += 0.3) {
-    std::vector<unsigned int> v(histogramDefinition, 0);
-
+    Histogram h(bucketSize, startingValue, finishingValue);
     ExponentialVar ev(lambda);
 
-    for (unsigned int i=0; i<testSamples; ++i) {
-      double value = ev.get();
+    for (unsigned int i=0; i<testSamples; ++i)
+      h.add(ev.get());
 
-      unsigned int counter = 0;
-      for (double bin_floor = startingValue; bin_floor < finishingValue; bin_floor += binSize) {
-        if (value >= bin_floor && value < bin_floor + binSize) {
-          v[counter]++;
-          break;
-        }
-        counter++;
-      }
+    long double mse = 0;
+    for (unsigned int i=0; i<h.size(); ++i) {
+      long double vPDF = h.pdf(i);
+      long double ePDF = expPDF(lambda, bucketSize * (i + 0.5));
+
+      mse += (vPDF - ePDF) * (vPDF - ePDF);
     }
+    mse /= h.size();
 
-    int counter = 0;
-    for (auto vi : v) {
-      long double vPDF = static_cast<double>(vi) / testSamples / binSize;
-      long double ePDF = expPDF(lambda, binSize * counter + binSize / 2.0);
-
-      if (vPDF < 0.01 || ePDF < 0.01)
-        continue;
-
-      REQUIRE (vPDF / ePDF < 1.1);
-      REQUIRE (vPDF / ePDF > 0.9);
-      counter++;
-    }
+    REQUIRE(mse < 0.1);
   }
 }
 
@@ -153,55 +182,32 @@ TEST_CASE("WeibullVar - mean", "[weibull, mean]")
   }
 }
 
-/*
-TEST_CASE("WeibullVar - PDF", "[weibull, CDF]")
+TEST_CASE("WeibullVar - PDF", "[weibull, PDF]")
 {
-  long double binSize = 0.4;
+  long double bucketSize = 0.2;
   long double startingValue = 0;
   long double finishingValue = 3;
 
   const unsigned int testSamples = 1e6;
 
-  const unsigned int histogramDefinition = (finishingValue - startingValue) / binSize;
-
   for (long double lambda = 0.5; lambda < 1.5; lambda += 0.3) {
     for (long double kappa = 0.5; kappa < 5; kappa += 0.3) {
-      std::vector<unsigned int> v(histogramDefinition, 0);
-
+      Histogram h(bucketSize, startingValue, finishingValue);
       WeibullVar ev(lambda, kappa);
 
-      for (unsigned int i=0; i<testSamples; ++i) {
-        double value = ev.get();
+      for (unsigned int i=0; i<testSamples; ++i)
+        h.add(ev.get());
 
-        unsigned int counter = 0;
-        for (double bin_floor = startingValue; bin_floor < finishingValue; bin_floor += binSize) {
-          if (value >= bin_floor && value < bin_floor + binSize) {
-            v[counter]++;
-            break;
-          }
-          counter++;
-        }
+      long double mse = 0;
+      for (unsigned int i=0; i<h.size(); ++i) {
+        long double vPDF = h.pdf(i);
+        long double ePDF = weibullPDF(lambda, kappa, bucketSize * (i + 0.5));
+
+        mse += (vPDF - ePDF) * (vPDF - ePDF);
       }
+      mse /= h.size();
 
-      double vPDFSum = 0;
-      for (auto vi : v) {
-        vPDFSum += static_cast<double>(vi) / testSamples / binSize;
-      }
-
-      int counter = 0;
-      for (auto vi : v) {
-        long double vPDF = static_cast<double>(vi) / testSamples / binSize / vPDFSum;
-        long double ePDF = weibullPDF(lambda, kappa, binSize * counter + binSize / 2.0);
-
-        if (vPDF < 0.01 || ePDF < 0.01)
-          continue;
-
-        if (abs(vPDF - ePDF) > 1.5 && (vPDF / ePDF > 1.3 || vPDF / ePDF < 0.7)) {
-          REQUIRE (false);
-        }
-        counter++;
-      }
+      REQUIRE(mse < 0.1);
     }
   }
 }
-*/
