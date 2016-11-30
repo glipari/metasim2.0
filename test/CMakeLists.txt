@@ -1,15 +1,6 @@
-# Add include directory
+# Add include directories
 include_directories(.)
-include_directories(../src/)
-
-# Environment-based settings.
-if(APPLE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
-elseif(UNIX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
-elseif(WIN32)
-
-endif()
+include_directories(../src)
 
 # Create Catch library to decrease compile times
 add_library(TestMain STATIC TestMain.cpp)
@@ -21,6 +12,13 @@ add_executable(TestParseUtil TestParseUtil.cpp)
 add_executable(TestTick TestTick.cpp)
 add_executable(TestRandomVar TestRandomVar.cpp)
 add_executable(TestFactory TestFactory.cpp)
+
+target_compile_features(TestEntityOrder PRIVATE cxx_range_for)
+target_compile_features(TestEntitySameName PRIVATE cxx_range_for)
+target_compile_features(TestParseUtil PRIVATE cxx_range_for)
+target_compile_features(TestTick PRIVATE cxx_range_for)
+target_compile_features(TestRandomVar PRIVATE cxx_range_for)
+target_compile_features(TestFactory PRIVATE cxx_range_for)
 
 # Indicate that rtlib need metasim library.
 target_link_libraries(TestEntityOrder TestMain metasim)
