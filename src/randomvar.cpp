@@ -22,7 +22,6 @@
 #include <cmath>
 
 #include <randomvar.hpp>
-#include <regvar.hpp>
 #include <simul.hpp>
 #include <strtoken.hpp>
 #include <factory.hpp>
@@ -77,7 +76,6 @@ namespace MetaSim {
 
     RandomVar::RandomVar() : _gen(_pstdgen)
     {
-      __regrandvar_init();
     }
 
     RandomVar::RandomVar(const RandomVar &r) : _gen(r._gen)
