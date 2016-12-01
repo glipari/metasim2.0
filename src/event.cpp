@@ -34,15 +34,13 @@ namespace MetaSim {
     Event::Event(int p) :
         _order(0),
         _isInQueue(false),
-        _stats(), 
         _particles(),
         _traces(),
         _time(MAXTICK),
         _lastTime(MAXTICK),
         _priority(p),
         _std_priority(p),
-        _disposable(false)
-                
+        _disposable(false)                
     {
     }
 
@@ -75,21 +73,21 @@ namespace MetaSim {
     void Event::post(Tick myTime, bool disp) throw (Exc, BaseExc)
     {
         if (_isInQueue) {
-	    std::stringstream str;
-	    str << "Time: " << SIMUL.getTime() 
-		<< " -- Event" 
-		<< typeid(*this).name() << " already posted";
-	    throw Exc(str.str());
-	}
+            std::stringstream str;
+            str << "Time: " << SIMUL.getTime() 
+                << " -- Event" 
+                << typeid(*this).name() << " already posted";
+            throw Exc(str.str());
+        }
 
         if (myTime < SIMUL.getTime()) {
-	    std::stringstream str;
-	    str << "Time: " << SIMUL.getTime() 
-		<< " -- Posting event" 
-		<< typeid(*this).name() << " in the past at time: " 
-		<< myTime;
+            std::stringstream str;
+            str << "Time: " << SIMUL.getTime() 
+                << " -- Posting event" 
+                << typeid(*this).name() << " in the past at time: " 
+                << myTime;
             throw Exc(str.str());
-	}
+        }
 
         setTime(myTime);
 
@@ -99,10 +97,10 @@ namespace MetaSim {
         p =_eventQueue.insert(this);
     
         if (!p.second) {
-	    std::stringstream str;
-	    str << "Time: " << SIMUL.getTime() 
-		<< " -- Posting event" 
-		<< typeid(*this).name() << " Already in queue!, at time = " << myTime;
+            std::stringstream str;
+            str << "Time: " << SIMUL.getTime() 
+                << " -- Posting event" 
+                << typeid(*this).name() << " Already in queue!, at time = " << myTime;
             throw Exc(str.str());
         }
 
@@ -129,16 +127,12 @@ namespace MetaSim {
     {
         DBGENTER(_EVENT_DBG_LEV);
         drop();
-//                 setTime(SIMUL.getTime());
         print();
         // WARNING! Changed the behavior completely.  now we
         // do not process the event immediately, but we post
         // in the queue with immediate (maximum) priority.
         setPriority(_IMMEDIATE_PRIORITY);
         post(SIMUL.getTime(), disp);
-
-//                 action();
-        
     }
 
     // Function to set the event time 
@@ -153,7 +147,6 @@ namespace MetaSim {
     // see comment below on exceptions to be thrown by this function
     void Event::action()
     {
-        std::deque<BaseStat *>::iterator its;
         std::deque<Trace *>::iterator itt;
         std::deque<ParticleInterface *>::iterator itp;
 
@@ -162,7 +155,6 @@ namespace MetaSim {
         /* Handles the event ONLY if it has target!!! Otherwise executes
          * its tracing and calls the related stats.....
          */
-
         _lastTime = _time; 
 
         // restore old priority
@@ -174,8 +166,8 @@ namespace MetaSim {
         // It may repost the event
         doit();
 
-        for(its = _stats.begin(); its != _stats.end(); its++)
-            (*its)->probe(this);
+        // for(its = _stats.begin(); its != _stats.end(); its++)
+        //     (*its)->probe(this);
 
         // the new way of doing statistics. The old way
         // remains valid, but it is deprecated.

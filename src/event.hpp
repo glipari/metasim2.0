@@ -126,11 +126,11 @@ namespace MetaSim {
         /// Tells if the element is in the event queue;
         bool _isInQueue;
   
-        /// A queue of all the statistical object. All these
-        /// objects will be "invoked" after the event handler
-        /// (doit()) has been processed.  @todo will be
-        /// removed, eventually
-        std::deque<BaseStat *> _stats;
+        // /// A queue of all the statistical object. All these
+        // /// objects will be "invoked" after the event handler
+        // /// (doit()) has been processed.  @todo will be
+        // /// removed, eventually
+        // std::deque<BaseStat *> _stats;
 
         /// NEW
         std::deque<ParticleInterface *> _particles;
@@ -311,18 +311,18 @@ namespace MetaSim {
 
         inline bool isInQueue() { return _isInQueue; }
 
-        /** 
-            Add a new stat probe to this event. All the
-            statistical objects that are related to this event
-            will be invoked when the event is triggered, but
-            remember, AFTER the event is processed!
+        // /** 
+        //     Add a new stat probe to this event. All the
+        //     statistical objects that are related to this event
+        //     will be invoked when the event is triggered, but
+        //     remember, AFTER the event is processed!
 	
-            @todo deprecated, will be removed, and substituted
-            by a different kind of mechanisms.
-        */
-        inline void addStat(BaseStat *actStat) { 
-            _stats.push_back(actStat);
-        }
+        //     @todo deprecated, will be removed, and substituted
+        //     by a different kind of mechanisms.
+        // */
+        // inline void addStat(BaseStat *actStat) { 
+        //     _stats.push_back(actStat);
+        // }
 
         /** 
             Add a new particle to this event.  This is the new

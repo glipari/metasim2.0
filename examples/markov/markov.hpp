@@ -101,6 +101,6 @@ public:
                 if (s == NULL) throw MetaSim::BaseExc("Cannot dynamic_cast<State*>",
                                                       "markov.hpp",
                                                       "AvgTimeStateStat");
-                (s->_event).addStat(this);
+                //(s->_event).addStat(this);
         }
 };
