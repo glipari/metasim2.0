@@ -18,12 +18,13 @@ class MyEntity : public MetaSim::Entity {
     bool bfirst;
     
     int count;
-    
+
+public:
+
     MetaSim::GEvent<MyEntity> eventA;
     MetaSim::GEvent<MyEntity> eventB;
     MetaSim::GEvent<MyEntity> eventC;
     
-public:
     MyEntity();
     MyEntity(const std::string &n);
     

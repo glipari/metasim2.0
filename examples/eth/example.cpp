@@ -28,9 +28,9 @@ public:
         record(1);
     }
     
-    void attach(EthernetLink &e) {
-        sp = new Particle<GEvent<EthernetLink>, CollisionStat>(&e._collision_evt, this);
-    }
+    // void attach(EthernetLink &e) {
+    //     sp = new Particle<GEvent<EthernetLink>, CollisionStat>(e._collision_evt, *this);
+    // }
 };
     
 int main() {
@@ -52,7 +52,7 @@ int main() {
     EthernetInterface int3("Interface_3", n3, link);
     
     CollisionStat stat("coll.txt");
-    stat.attach(link);
+    attach_stat(stat, link._collision_evt);
     
     GnuPlotOutput output;
     output.init();

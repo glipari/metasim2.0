@@ -1,16 +1,3 @@
-/***************************************************************************
-    begin                : Thu Apr 24 15:54:58 CEST 2003
-    copyright            : (C) 2003 by Giuseppe Lipari
-    email                : lipari@sssup.it
- ***************************************************************************/
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
 #ifndef __EVENT_HPP__
 #define __EVENT_HPP__
 
@@ -18,12 +5,14 @@
 #include <iostream>
 #include <limits>
 #include <typeinfo>
+#include <memory>
 
 #include <simul.hpp>
 #include <basestat.hpp>
 #include <particle.hpp>
 #include <plist.hpp>
 #include <trace.hpp>
+
 
 namespace MetaSim {
 
@@ -126,14 +115,10 @@ namespace MetaSim {
         /// Tells if the element is in the event queue;
         bool _isInQueue;
   
-        // /// A queue of all the statistical object. All these
-        // /// objects will be "invoked" after the event handler
-        // /// (doit()) has been processed.  @todo will be
-        // /// removed, eventually
-        // std::deque<BaseStat *> _stats;
-
-        /// NEW
-        std::deque<ParticleInterface *> _particles;
+        /// A queue of all the statistical object. All these
+        /// objects will be "invoked" after the event handler
+        /// (doit()) has been processed.  
+        std::deque<std::unique_ptr<ParticleInterface> > _particles;
 
         /// A queue of object which manage the tracing
         /// process. All these objects will be "invoked" after
@@ -328,7 +313,7 @@ namespace MetaSim {
             Add a new particle to this event.  This is the new
             way to add statistics and traces to this object.
         */
-        void addParticle(ParticleInterface *s);
+        void addParticle(std::unique_ptr<ParticleInterface> s);
 
         /** 
             Add a new trace probe to this event. It is useful

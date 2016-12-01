@@ -91,10 +91,14 @@ int main()
                 AvgTimeStateStat stat_state2("stato2"); 
                 AvgTimeStateStat stat_state1("stato1"); 
                 AvgTimeStateStat stat_state0("stato0"); 
- 
-                stat_state2.attach(&S2);
-                stat_state1.attach(&S1);
-                stat_state0.attach(&S0);
+
+                attach_stat(stat_state2, S2._event);
+                attach_stat(stat_state1, S1._event);
+                attach_stat(stat_state0, S0._event);
+                
+                // stat_state2.attach(&S2);
+                // stat_state1.attach(&S1);
+                // stat_state0.attach(&S0);
 
                 BaseStat::setTransitory(2000);
   

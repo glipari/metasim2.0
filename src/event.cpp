@@ -46,9 +46,9 @@ namespace MetaSim {
 
     Event::~Event()
     {
-        std::deque<ParticleInterface *>::iterator itp;
-        for (itp=_particles.begin(); itp!=_particles.end(); itp++) 
-            delete (*itp);
+        // std::deque<ParticleInterface *>::iterator itp;
+        // for (itp=_particles.begin(); itp!=_particles.end(); itp++) 
+        //     delete (*itp);
     }
 
     bool Event::Cmp::operator() (Event* e1, Event* e2) const {
@@ -148,7 +148,7 @@ namespace MetaSim {
     void Event::action()
     {
         std::deque<Trace *>::iterator itt;
-        std::deque<ParticleInterface *>::iterator itp;
+        //std::deque<ParticleInterface *>::iterator itp;
 
         DBGENTER(_EVENT_DBG_LEV);
 
@@ -173,7 +173,7 @@ namespace MetaSim {
         // remains valid, but it is deprecated.
         DBGPRINT_2("Calling the particle probes, size = ", 
                    _particles.size());
-        for (itp = _particles.begin(); itp != _particles.end(); itp++) {
+        for (auto itp = _particles.begin(); itp != _particles.end(); itp++) {
             DBGPRINT("Calling probe");
             (*itp)->probe();
         }
@@ -191,11 +191,11 @@ namespace MetaSim {
                    "] event=", typeid(*this).name());
     }
 
-    void Event::addParticle(ParticleInterface *s)
+    void Event::addParticle(unique_ptr<ParticleInterface> s)
     {
         DBGENTER(_EVENT_DBG_LEV);
         DBGPRINT_2("Event name ", typeid(*this).name());
-        _particles.push_back(s);
+        _particles.push_back(std::move(s));
         DBGPRINT_2("size is now: ", _particles.size());
     }
 

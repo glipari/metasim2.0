@@ -31,7 +31,8 @@ int main()
         Source source(&que, &at, "source");
 
         AvgQueueSizeStat avgSizeStat(que, "avg_queue_size");
-        avgSizeStat.attach(&source);
+        //avgSizeStat.attach(&source);
+        attach_stat(avgSizeStat, source._prodEvent);
 
         BaseStat::setTransitory(2000);
   

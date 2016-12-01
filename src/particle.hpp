@@ -53,12 +53,12 @@ namespace MetaSim {
        requirement is that 
 
        -1) class E has a method named
-       addParticle(ParticleInterface *), 
+           addParticle(ParticleInterface *), 
        -2) and class S has a method called
-       probe(E &). 
+           probe(E &). 
 
        \b WARNING : if the second condition does not hold, user
-       could get horrible error messages!
+          could get horrible error messages!
     */
     template<class E, class S>
     class Particle : public ParticleInterface {
@@ -88,18 +88,24 @@ namespace MetaSim {
            @param e  pointer to the event to be traced.
            @param s  pointer to the tracing object. 
         */
-        Particle(E *e, S *s) 
-            : evtptr_(e), staptr_(s)
-            {
-                evtptr_->addParticle(this);
-            }
+        Particle(E &e, S &s) 
+            : evtptr_(&e), staptr_(&s) {
+            //evtptr_->addParticle(this);
+        }
 
+        // there is nothing to be destroyed
         virtual ~Particle() {}
     
         virtual void probe() {
             staptr_->probe(*evtptr_);
         }
     };
+
+    template<class Event, class StatClass>
+    void attach_stat(StatClass &s, Event &e) {
+        std::unique_ptr< ParticleInterface > p(new Particle<Event, StatClass>(e, s));
+        e.addParticle(std::move(p));
+    }
     /**
        @}
     */

@@ -182,6 +182,6 @@ public:
     }
     
     virtual void attach(Source *n) {
-        sp = new Particle<Source::ProduceEvent, AvgQueueSizeStat>(&n->_prodEvent, this);
+        sp = new Particle<Source::ProduceEvent, AvgQueueSizeStat>(n->_prodEvent, *this);
     }
 };
