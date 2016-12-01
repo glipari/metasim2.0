@@ -3,7 +3,7 @@ include_directories(.)
 include_directories(../src)
 
 # Create Catch library to decrease compile times
-add_library(TestMain SHARED TestMain.cpp)
+add_library(TestMain STATIC TestMain.cpp)
 
 # Create the executable.
 add_executable(TestEntityOrder myentity.cpp TestEntityOrder.cpp)
