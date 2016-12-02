@@ -181,7 +181,7 @@ public:
         record(_queue.getSize() - 1);
     }
     
-    virtual void attach(Source *n) {
-        sp = new Particle<Source::ProduceEvent, AvgQueueSizeStat>(n->_prodEvent, *this);
-    }
+    // virtual void attach(Source *n) {
+    //     sp = new Particle<Source::ProduceEvent, AvgQueueSizeStat>(n->_prodEvent, *this);
+    // }
 };

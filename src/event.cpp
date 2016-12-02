@@ -35,7 +35,6 @@ namespace MetaSim {
         _order(0),
         _isInQueue(false),
         _particles(),
-        _traces(),
         _time(MAXTICK),
         _lastTime(MAXTICK),
         _priority(p),
@@ -46,9 +45,7 @@ namespace MetaSim {
 
     Event::~Event()
     {
-        // std::deque<ParticleInterface *>::iterator itp;
-        // for (itp=_particles.begin(); itp!=_particles.end(); itp++) 
-        //     delete (*itp);
+        drop();
     }
 
     bool Event::Cmp::operator() (Event* e1, Event* e2) const {
@@ -69,7 +66,7 @@ namespace MetaSim {
         }
         else return false;
     }
-
+    
     void Event::post(Tick myTime, bool disp) throw (Exc, BaseExc)
     {
         if (_isInQueue) {
@@ -128,9 +125,6 @@ namespace MetaSim {
         DBGENTER(_EVENT_DBG_LEV);
         drop();
         print();
-        // WARNING! Changed the behavior completely.  now we
-        // do not process the event immediately, but we post
-        // in the queue with immediate (maximum) priority.
         setPriority(_IMMEDIATE_PRIORITY);
         post(SIMUL.getTime(), disp);
     }
@@ -147,9 +141,6 @@ namespace MetaSim {
     // see comment below on exceptions to be thrown by this function
     void Event::action()
     {
-        std::deque<Trace *>::iterator itt;
-        //std::deque<ParticleInterface *>::iterator itp;
-
         DBGENTER(_EVENT_DBG_LEV);
 
         /* Handles the event ONLY if it has target!!! Otherwise executes
@@ -176,11 +167,7 @@ namespace MetaSim {
         for (auto itp = _particles.begin(); itp != _particles.end(); itp++) {
             DBGPRINT("Calling probe");
             (*itp)->probe();
-        }
- 
-        for(itt = _traces.begin(); itt != _traces.end(); itt++)
-            (*itt)->record(this);
- 
+        } 
     }
 
     // DEBUG!!! Prints events data on the dbg stream.

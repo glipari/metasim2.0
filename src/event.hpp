@@ -120,11 +120,6 @@ namespace MetaSim {
         /// (doit()) has been processed.  
         std::deque<std::unique_ptr<ParticleInterface> > _particles;
 
-        /// A queue of object which manage the tracing
-        /// process. All these objects will be "invoked" after
-        /// the event handler (doit()) has been processed.
-        std::deque<Trace *> _traces;
-
         /// Triggering time of the event.
         Tick _time;
   
@@ -147,7 +142,6 @@ namespace MetaSim {
 	
         /// We hide operator= to avoid improper use.
         Event& operator=(Event &);
-
     protected:
         /// Indicates if the event has to be destroyed after
         /// bein processed. Normally, this flag is set to
@@ -296,30 +290,11 @@ namespace MetaSim {
 
         inline bool isInQueue() { return _isInQueue; }
 
-        // /** 
-        //     Add a new stat probe to this event. All the
-        //     statistical objects that are related to this event
-        //     will be invoked when the event is triggered, but
-        //     remember, AFTER the event is processed!
-	
-        //     @todo deprecated, will be removed, and substituted
-        //     by a different kind of mechanisms.
-        // */
-        // inline void addStat(BaseStat *actStat) { 
-        //     _stats.push_back(actStat);
-        // }
-
         /** 
             Add a new particle to this event.  This is the new
             way to add statistics and traces to this object.
         */
         void addParticle(std::unique_ptr<ParticleInterface> s);
-
-        /** 
-            Add a new trace probe to this event. It is useful
-            for defining different kinds of tracing all at the
-            same time.  */
-        inline void addTrace(Trace *t) { _traces.push_back(t); }  
 
         /** 
             This method is called when the event is triggered.
