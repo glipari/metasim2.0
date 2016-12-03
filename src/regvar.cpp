@@ -19,6 +19,18 @@ using namespace std;
 
 namespace MetaSim {
     
+    const RandomVar::BASE_KEY_TYPE DeltaName("delta");
+    const RandomVar::BASE_KEY_TYPE UnifName1 ("unif");
+    const RandomVar::BASE_KEY_TYPE UnifName2 ("uniform");
+    const RandomVar::BASE_KEY_TYPE NormalName1 ("normal");
+    const RandomVar::BASE_KEY_TYPE NormalName2 ("gauss");
+    const RandomVar::BASE_KEY_TYPE ExponentialName1 ("exp");
+    const RandomVar::BASE_KEY_TYPE ExponentialName2 ("exponential");
+    const RandomVar::BASE_KEY_TYPE ParetoName ("pareto");
+    const RandomVar::BASE_KEY_TYPE PoissonName ("poisson");
+    const RandomVar::BASE_KEY_TYPE DetName ("trace");
+    const RandomVar::BASE_KEY_TYPE GenericName ("PDF");
+
     /**
        This namespace should not be visible, and in any case, users
        should never access objects of this namefile. This is used just
@@ -82,5 +94,7 @@ namespace MetaSim {
                                  RandomVar::BASE_KEY_TYPE>
         registerGeneric(GenericName);
     } // namespace __var_stub
+
+    void __regrandvar_init() {}
 
 } // namespace MetaSim

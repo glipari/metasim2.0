@@ -4,10 +4,11 @@ project (metasim)
 #set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_BUILD_TYPE Release)
 
+set(LIBRARY_TYPE STATIC)
+
 # Include dirs.
 add_subdirectory (src)
 add_subdirectory (examples)
 
-enable_testing(true)
+enable_testing (true)
 add_subdirectory (test)
-
