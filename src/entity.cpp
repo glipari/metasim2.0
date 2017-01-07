@@ -47,13 +47,8 @@ namespace MetaSim {
         DBGPRINT_2("Entity type: ",  typeid(*this).name());
         DBGPRINT_2("Entity name:", _name);
 
-	_index[_name] = this;
+        _index[_name] = this;
     }
-
-    // Entity::Entity(const char *n) : _name(n) 
-    //         {
-    //                 _init();
-    //         }
 
     Entity::Entity(const string &n) : _name(n) 
     {

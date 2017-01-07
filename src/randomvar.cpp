@@ -326,8 +326,6 @@ namespace MetaSim {
         return unique_ptr<DetVar>(new DetVar(par[0]));
     } 
 
-
-
     unique_ptr<RandomVar> RandomVar::parsevar(const std::string &str)
     {
         string token = get_token(str);
@@ -347,8 +345,4 @@ namespace MetaSim {
                                 
         return var;
     }
-
-
-    
-
 } // namespace MetaSim

@@ -81,7 +81,7 @@ namespace MetaSim {
 
 
     GenericVar::GenericVar(const std::string &fileName) : 
-        UniformVar(0, 1)
+        CloneableBase(0, 1)
     {
         ifstream inFile(fileName.c_str());
 
