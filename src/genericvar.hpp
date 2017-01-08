@@ -59,17 +59,18 @@ namespace MetaSim {
     /**
        This random variable is used to model a generic distribution.
     */
-    class GenericVar: public Cloneable<RandomVar, UniformVar, GenericVar> {
+    class GenericVar: public UniformVar {
         std::map<int, double> _pdf;
         void readPDF(std::ifstream &f, int mode = 0);// throw(Exc);
     public:
         GenericVar(const std::string &filename);
 
-        virtual ~GenericVar() {}
-  
+        CLONEABLE(RandomVar, GenericVar)
+        
+        static RandomVar *createInstance(vector<string> &par);
+        
         virtual double get(void);
 
-        static RandomVar *createInstance(vector<string> &par);
   };
 
 } // namespace metasim

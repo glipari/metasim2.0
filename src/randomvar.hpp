@@ -153,7 +153,8 @@ namespace MetaSim {
         /**
            Polymorphic copy through cloning 
         */
-        virtual std::unique_ptr<RandomVar> clone() const = 0;
+//        virtual std::unique_ptr<RandomVar> clone() const = 0;
+        BASE_CLONEABLE(RandomVar)        
         
         virtual ~RandomVar();
         
@@ -185,7 +186,7 @@ namespace MetaSim {
             - par1, par2, ... are parameters of the distribution, and their
               number and type depends on the specific distribution.
         */
-        static unique_ptr<RandomVar> parsevar(const std::string &str);
+        static std::unique_ptr<RandomVar> parsevar(const std::string &str);
     };
 
     /**  
@@ -193,16 +194,16 @@ namespace MetaSim {
          It's a particular case of a random distribution: it's a
          Delta of Dirac.
     */  
-    class DeltaVar : public Cloneable<RandomVar,RandomVar, DeltaVar> {
+    class DeltaVar : public RandomVar {
         double _var;
     public:
-        typedef Cloneable<RandomVar,RandomVar, DeltaVar> CloneableBase; 
+        DeltaVar(double a) : RandomVar(), _var(a) {}
 
-        DeltaVar(double a) : CloneableBase(), _var(a) {}
+        CLONEABLE(RandomVar, DeltaVar)
+
+        static std::unique_ptr<DeltaVar> createInstance(vector<string> &par);  
         
         virtual double get() { return _var; } 
-        virtual ~DeltaVar() {}
-        static std::unique_ptr<DeltaVar> createInstance(vector<string> &par);  
         virtual double getMaximum() throw(MaxException) {return _var;}
         virtual double getMinimum() throw(MaxException) {return _var;}
     };
@@ -210,30 +211,35 @@ namespace MetaSim {
     /** 
         This class implements an uniform distribution, between min
         and max. */
-    class UniformVar : public Cloneable<RandomVar,RandomVar,UniformVar> {
+    class UniformVar : public RandomVar {
         double _min, _max;
     public:
         UniformVar(double min, double max) 
-            : CloneableBase(), _min(min), _max(max) {}
+            : RandomVar(), _min(min), _max(max) {}
 
-        virtual double get();
-        virtual ~UniformVar() {}
+        CLONEABLE(RandomVar, UniformVar)
+
         static std::unique_ptr<UniformVar> createInstance(vector<string> &par);
-        virtual double getMaximum() throw(MaxException) {return _max;}
+        
+        virtual double get();
+                virtual double getMaximum() throw(MaxException) {return _max;}
         virtual double getMinimum() throw(MaxException) {return _min;}
     };
 
     /**
        This class implements an exponential distribution, with mean m. */
-    class ExponentialVar : public Cloneable<RandomVar,UniformVar, ExponentialVar> {
+    class ExponentialVar : public UniformVar {
         double _lambda;
     public :
         ExponentialVar(double m) : 
-            CloneableBase(0, 1), _lambda(m) {}
+            UniformVar(0, 1), _lambda(m) {}
 
-        virtual double get();
+        CLONEABLE(RandomVar, ExponentialVar)
 
         static std::unique_ptr<ExponentialVar> createInstance(vector<string> &par);
+        
+        virtual double get();
+
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("ExponentialVar");}
         virtual double getMinimum() throw(MaxException)
@@ -244,30 +250,37 @@ namespace MetaSim {
       This class implements a Weibull distribution, with shape (k) and scale
       (l) parameters.
     */
-    class WeibullVar : public Cloneable<RandomVar,UniformVar, WeibullVar> {
+    class WeibullVar : public UniformVar {
         double _l;
         double _k;
     public :
         WeibullVar(double l, double k, RandomGen *g = nullptr) :
-            CloneableBase(0, 1), _l(l), _k(k) {}
+            UniformVar(0, 1), _l(l), _k(k) {}
+
+        CLONEABLE(RandomVar, WeibullVar)
+        
+        static std::unique_ptr<WeibullVar> createInstance(vector<string> &par);
 
         virtual double get();
 
-        static std::unique_ptr<WeibullVar> createInstance(vector<string> &par);
         virtual double getMaximum() throw(MaxException) { throw MaxException("WeibullVar"); }
         virtual double getMinimum() throw(MaxException) { return 0; }
     };
 
     /**
        This class implements a pareto distribution, with parameters m and k */
-    class ParetoVar : public Cloneable<RandomVar,UniformVar,ParetoVar> {
+    class ParetoVar : public UniformVar {
         double _mu, _order;
     public :
         ParetoVar(double m, double k) : 
-            CloneableBase(0,1), _mu(m), _order(k) {};
+            UniformVar(0,1), _mu(m), _order(k) {};
+
+        CLONEABLE(RandomVar, ParetoVar)
+        
+        static std::unique_ptr<ParetoVar> createInstance(vector<string> &par);
 
         virtual double get();
-        static std::unique_ptr<ParetoVar> createInstance(vector<string> &par);
+
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("ExponentialVar");}
         virtual double getMinimum() throw(MaxException)
@@ -278,17 +291,21 @@ namespace MetaSim {
        This class implements a normal distribution, with mean m variance
        sigma. In this class, we use the cephes library function
        ndtri(). */
-    class NormalVar : public Cloneable<RandomVar,UniformVar,NormalVar> {
+    class NormalVar : public UniformVar {
         double _mu, _sigma;
         bool _yes;
         double _oldv;
   
     public:
         NormalVar(double m, double s) : 
-            CloneableBase(0, 1), _mu(m), _sigma(s), _yes(false)
+            UniformVar(0, 1), _mu(m), _sigma(s), _yes(false)
             {}
-        virtual double get();
+
+        CLONEABLE(RandomVar, NormalVar)
+        
         static std::unique_ptr<NormalVar> createInstance(vector<string> &par);
+
+        virtual double get();
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("NormalVar");}
         virtual double getMinimum() throw(MaxException)
@@ -298,16 +315,19 @@ namespace MetaSim {
 
     /**
        This class implements a Poisson distribution, with mean lambda */
-    class PoissonVar : public Cloneable<RandomVar,UniformVar, PoissonVar> {
+    class PoissonVar : public UniformVar {
         double _lambda;
     public:
         static const unsigned long CUTOFF;
         PoissonVar(double l) : 
-            CloneableBase(0, 1), _lambda(l) {}
+            UniformVar(0, 1), _lambda(l) {}
 
-        virtual double get();
+        CLONEABLE(RandomVar, PoissonVar)
 
         static std::unique_ptr<PoissonVar> createInstance(vector<string> &par);
+        
+        virtual double get();
+
         virtual double getMaximum() throw(MaxException)
             {throw MaxException("PoissonVar");}
         virtual double getMinimum() throw(MaxException)
@@ -322,19 +342,22 @@ namespace MetaSim {
        the last number in the sequence has been read, the sequence
        starts over.
     */
-    class DetVar : public Cloneable<RandomVar, RandomVar, DetVar> {
+    class DetVar : public RandomVar {
         vector<double> _array;
         unsigned int _count;
     public:
         DetVar(const std::string &filename);
         DetVar(vector<double> &a);
         DetVar(double a[], int s);
+        
+        CLONEABLE(RandomVar, DetVar)
+        
+        static std::unique_ptr<DetVar> createInstance(vector<string> &par);
+
         virtual double get();
-        virtual ~DetVar(){}
         virtual double getMaximum() throw(MaxException);
         virtual double getMinimum() throw(MaxException);
 
-        static std::unique_ptr<DetVar> createInstance(vector<string> &par);
     };
     //@}
 
