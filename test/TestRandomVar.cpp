@@ -211,3 +211,21 @@ TEST_CASE("WeibullVar - PDF", "[weibull, PDF]")
     }
   }
 }
+
+
+TEST_CASE("RandomVar Cloning", "[RandomVar, Cloning]")
+{
+    auto v1 = RandomVar::parsevar("delta(3)");
+    auto v2 = v1->clone();
+
+    auto v3 = RandomVar::parsevar("unif(5,6)");
+    auto v4 = v3->clone();
+    
+    REQUIRE(v1->get() == v2->get());
+    REQUIRE(v1->get() != v3->get());
+    REQUIRE(v1->get() != v4->get());
+
+    v1.release();
+
+    REQUIRE(3 == v2->get());
+}

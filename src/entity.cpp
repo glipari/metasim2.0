@@ -34,8 +34,8 @@ namespace MetaSim {
             _name = string(typeid(*this).name()) + ss.str();
         }
 
-	if (_index.find(_name) != _index.end())
-  	    throw Exc("Creating an entity with the same name " + _name);
+        if (_index.find(_name) != _index.end())
+            throw Exc("Creating an entity with the same name " + _name);
 
         _IDcount++;
         _ID = _IDcount;
@@ -61,9 +61,19 @@ namespace MetaSim {
         _index.erase(_name);
     }
 
+
+    Entity::Entity(const Entity &obj) :
+        _name("")
+    {
+        std::stringstream ss;
+        ss << obj._name << "_copy_" << _IDcount + 1;
+        _name = ss.str();
+        _init();
+    }
+    
+
     void Entity::callNewRun()
     {
-  
         typedef map<int, Entity*>::iterator EI;
 
         EI p = _globMap.begin();
@@ -76,9 +86,7 @@ namespace MetaSim {
 
             p->second->newRun();
             p++;
-        }
-                
-                
+        }           
     }
 
     void Entity::callEndRun()

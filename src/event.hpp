@@ -172,7 +172,7 @@ namespace MetaSim {
             @param p Event priority
         */
         Event(int p = _DEFAULT_PRIORITY);
-  
+
         /// Destructor.
         virtual ~Event();
 

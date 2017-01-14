@@ -17,6 +17,7 @@ endmacro (create_test)
 
 create_test (TestEntityOrder myentity.cpp TestEntityOrder.cpp)
 create_test (TestEntitySameName myentity.cpp TestEntitySameName.cpp)
+create_test (TestParticle myentity.cpp TestParticle.cpp)
 create_test (TestParseUtil TestParseUtil.cpp)
 create_test (TestTick TestTick.cpp)
 create_test (TestRandomVar TestRandomVar.cpp)

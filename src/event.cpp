@@ -48,6 +48,22 @@ namespace MetaSim {
         drop();
     }
 
+    // Copy constructor
+    Event::Event(const Event &e) :
+        _order(0),
+        _isInQueue(false),
+        _particles(),
+        _time(MAXTICK),
+        _lastTime(MAXTICK),
+        _priority(e._priority),
+        _std_priority(e._std_priority),
+        _disposable(e._disposable)
+    {
+        for (auto &p : e._particles) 
+            p->clone_to(*this);
+    }
+
+    
     bool Event::Cmp::operator() (Event* e1, Event* e2) const {
         Tick firstTime, secondTime;
 	

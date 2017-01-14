@@ -67,17 +67,25 @@ namespace MetaSim {
         Pmemfun _fun;
         
     public:
-        /**
-           Copy constructor. Useful when creating many events of the same
-           type for the same \b object. (Remember: all these events point
-           to the same object!)
-        */
-        GEvent(GEvent<X> &e) : Event(e) { 
-            _obj = e._obj; _fun = e._fun; 
-        }
-        
+
         GEvent(X *obj, typename GEvent<X>::Pmemfun fun, int p = Event::_DEFAULT_PRIORITY) :
             Event(p), _obj(obj), _fun(fun) {}
+        
+        /**
+           A copy constructor. Useful when creating many events of the
+           same type for the same \b object. (Remember: all these
+           events point to the same object!)
+        */
+        GEvent(const GEvent<X> &e) : Event(e) { 
+            _obj = e._obj; _fun = e._fun; 
+        }
+
+        /** A more generic constructor: the new copied event points to
+         * a different object of the same type, the function to be
+         * called is the same */
+        GEvent(const GEvent<X> &e, X& obj) : Event(e) { 
+            _obj = &obj; _fun = e._fun; 
+        }
         
         /**
            Simply calls the specified handler on the specified object.

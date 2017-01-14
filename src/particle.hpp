@@ -21,6 +21,9 @@
 #define __PARTICLE_HPP__
 
 namespace MetaSim {
+
+    class Event;
+    
     /**
        \ingroup metasim
 
@@ -35,6 +38,8 @@ namespace MetaSim {
         virtual ~ParticleInterface() {};
 
         virtual void probe() = 0;
+
+        virtual void clone_to(Event &e) = 0;
     };
 
     /**
@@ -85,25 +90,34 @@ namespace MetaSim {
       
            An example of usage can be found in examples/queue/queue.cpp
        
-           @param e  pointer to the event to be traced.
-           @param s  pointer to the tracing object. 
+           @param e  reference to the event to be traced.
+           @param s  reference to the tracing object. 
         */
         Particle(E &e, S &s) 
             : evtptr_(&e), staptr_(&s) {
-            //evtptr_->addParticle(this);
         }
 
-        // there is nothing to be destroyed
         virtual ~Particle() {}
     
         virtual void probe() {
             staptr_->probe(*evtptr_);
         }
+
+        /**
+           Copies a particle to a new event. It uses a static_cast<>
+           to force type of event. This is not clean, but for the
+           moment I could not find anything better than this.
+         */
+        virtual void clone_to(Event &e) {
+            E& ent = static_cast<E&>(e);
+            std::unique_ptr< ParticleInterface > p(new Particle<E, S>(ent, *staptr_));
+            ent.addParticle(std::move(p));
+        }
     };
 
-    template<class Event, class StatClass>
-    void attach_stat(StatClass &s, Event &e) {
-        std::unique_ptr< ParticleInterface > p(new Particle<Event, StatClass>(e, s));
+    template<class Evt, class StatClass>
+    void attach_stat(StatClass &s, Evt &e) {
+        std::unique_ptr< ParticleInterface > p(new Particle<Evt, StatClass>(e, s));
         e.addParticle(std::move(p));
     }
     /**

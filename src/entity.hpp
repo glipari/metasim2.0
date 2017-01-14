@@ -55,12 +55,21 @@ namespace MetaSim {
         \ingroup metasim_ee   
     */
     class Entity {
-        // Hide copy constructor and assignment operator. Entities are
-        // not copyable.
-        Entity(const Entity &);
+    private:
+        /** Hide the assignment operator. Entities are not
+            copyable. 
+        */
         Entity &operator=(const Entity &);
-        
-        /** 
+
+
+    protected:
+        /* In general, entities could be cloned, so we
+           make the copy constructor protected
+        */
+        Entity(const Entity &);
+
+    private:
+                /** 
             It contains pairs <ID, pointer to entity>. It's
             used mainly to keep track of all the entities
             present in the system. */

@@ -10,6 +10,7 @@
 
 #include <entity.hpp>
 #include <gevent.hpp>
+#include <cloneable.hpp>
 
 using namespace MetaSim;
 
@@ -27,6 +28,12 @@ public:
     
     MyEntity();
     MyEntity(const std::string &n);
+    MyEntity(const MyEntity &obj) :
+        Entity(obj),
+        eventA(obj.eventA, *this),
+        eventB(obj.eventB, *this),
+        eventC(obj.eventC, *this)
+        {}
     
     void onEventA(MetaSim::Event *);
     void onEventB(MetaSim::Event *);
@@ -38,5 +45,23 @@ public:
     int getCounter();
 };
 
+
+class CloneableEntity : public MyEntity {
+protected:
+    CloneableEntity(const CloneableEntity &obj) : MyEntity(obj) {}
+public:
+    using MyEntity::MyEntity;
+    
+    BASE_CLONEABLE(CloneableEntity)
+};
+
+class EntityClone : public CloneableEntity {
+protected:
+    EntityClone(const EntityClone &obj) : CloneableEntity(obj) {}
+public:
+    using CloneableEntity::CloneableEntity;
+    
+    CLONEABLE(CloneableEntity, EntityClone)
+};
 
 #endif /* MYENTITY_HPP_ */

@@ -11,11 +11,6 @@ public:
     void probe(MetaSim::GEvent<MyEntity> &e) {
         record(1);
     }
-
-    // void attach(MyEntity &ent) {
-    //     //new Particle<GEvent<MyEntity>, MyStat>(ent.eventA, *this);
-    //     attach_stat(*this, ent.eventA);
-    // }
 };
 
 TEST_CASE("Test Particle interface", "[statistics]")
@@ -27,5 +22,19 @@ TEST_CASE("Test Particle interface", "[statistics]")
     SIMUL.run(12);
 
     REQUIRE(s.getValue() == 4);
+}
+
+TEST_CASE("Test Particle copying", "[statistics]")
+{
+    MyEntity me("Pippo");
+    MyStat s;
+    attach_stat(s, me.eventA);
+
+    // the statistic is duplicated when you copy the entity
+    MyEntity you("Pluto");
+    
+    SIMUL.run(12);
+
+    REQUIRE(s.getValue() == 8);
 }
 
