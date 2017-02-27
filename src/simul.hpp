@@ -204,7 +204,7 @@ namespace MetaSim {
 
     class DbgObj {
     public:
-        DbgObj(const std::string &x, const string &y) {
+        DbgObj(const std::string &x, const std::string &y) {
             Simulation::getInstance().dbgEnter(x,y);
         }
         ~DbgObj() {

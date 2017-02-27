@@ -29,8 +29,6 @@
 
 namespace MetaSim {
 
-    using namespace std;
-
     typedef long int RandNum;
     const int MAX_SEEDS = 1000;
 
@@ -111,7 +109,7 @@ namespace MetaSim {
 
     public:
 
-        typedef string BASE_KEY_TYPE;
+        typedef std::string BASE_KEY_TYPE;
 
         /**
            \ingroup metasim_exc
@@ -124,7 +122,7 @@ namespace MetaSim {
             static const char* const _FILECLOSE;
             static const char* const _WRONGPDF;
 
-            Exc(string wh, string cl) : 
+            Exc(std::string wh, std::string cl) : 
                 BaseExc(wh, cl, "randomvar.hpp") 
                 {
                 }
@@ -133,9 +131,9 @@ namespace MetaSim {
         class MaxException: public Exc
         {
         public:
-            MaxException(string cl)
+            MaxException(std::string cl)
                 :Exc("Maximum value cannot be computed for this variable type", cl) {}
-            MaxException(string m, string cl) :Exc(m, cl) {}
+            MaxException(std::string m, std::string cl) :Exc(m, cl) {}
             virtual ~MaxException() throw() {}
             virtual const char* what() const throw() 
                 { return _what.c_str(); }
@@ -201,7 +199,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, DeltaVar)
 
-        static std::unique_ptr<DeltaVar> createInstance(vector<string> &par);  
+        static std::unique_ptr<DeltaVar> createInstance(std::vector<std::string> &par);  
         
         virtual double get() { return _var; } 
         virtual double getMaximum() throw(MaxException) {return _var;}
@@ -219,7 +217,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, UniformVar)
 
-        static std::unique_ptr<UniformVar> createInstance(vector<string> &par);
+        static std::unique_ptr<UniformVar> createInstance(std::vector<std::string> &par);
         
         virtual double get();
                 virtual double getMaximum() throw(MaxException) {return _max;}
@@ -236,7 +234,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, ExponentialVar)
 
-        static std::unique_ptr<ExponentialVar> createInstance(vector<string> &par);
+        static std::unique_ptr<ExponentialVar> createInstance(std::vector<std::string> &par);
         
         virtual double get();
 
@@ -259,7 +257,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, WeibullVar)
         
-        static std::unique_ptr<WeibullVar> createInstance(vector<string> &par);
+        static std::unique_ptr<WeibullVar> createInstance(std::vector<std::string> &par);
 
         virtual double get();
 
@@ -277,7 +275,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, ParetoVar)
         
-        static std::unique_ptr<ParetoVar> createInstance(vector<string> &par);
+        static std::unique_ptr<ParetoVar> createInstance(std::vector<std::string> &par);
 
         virtual double get();
 
@@ -303,7 +301,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, NormalVar)
         
-        static std::unique_ptr<NormalVar> createInstance(vector<string> &par);
+        static std::unique_ptr<NormalVar> createInstance(std::vector<std::string> &par);
 
         virtual double get();
         virtual double getMaximum() throw(MaxException)
@@ -324,7 +322,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, PoissonVar)
 
-        static std::unique_ptr<PoissonVar> createInstance(vector<string> &par);
+        static std::unique_ptr<PoissonVar> createInstance(std::vector<std::string> &par);
         
         virtual double get();
 
@@ -343,16 +341,16 @@ namespace MetaSim {
        starts over.
     */
     class DetVar : public RandomVar {
-        vector<double> _array;
+        std::vector<double> _array;
         unsigned int _count;
     public:
         DetVar(const std::string &filename);
-        DetVar(vector<double> &a);
+        DetVar(std::vector<double> &a);
         DetVar(double a[], int s);
         
         CLONEABLE(RandomVar, DetVar)
         
-        static std::unique_ptr<DetVar> createInstance(vector<string> &par);
+        static std::unique_ptr<DetVar> createInstance(std::vector<std::string> &par);
 
         virtual double get();
         virtual double getMaximum() throw(MaxException);

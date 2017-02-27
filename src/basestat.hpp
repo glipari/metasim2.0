@@ -481,7 +481,7 @@ namespace MetaSim {
                             throw Exc("Cannot open file " + p->getName());	
                         f << t << '\t' << p->getMean() 
                           << '\t' << p->getConfInterval()
-                          << endl;
+                          << std::endl;
                     }
                     ++i;
                 }

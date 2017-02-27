@@ -194,7 +194,7 @@ namespace MetaSim {
                    "] event=", typeid(*this).name());
     }
 
-    void Event::addParticle(unique_ptr<ParticleInterface> s)
+    void Event::addParticle(std::unique_ptr<ParticleInterface> s)
     {
         DBGENTER(_EVENT_DBG_LEV);
         DBGPRINT_2("Event name ", typeid(*this).name());

@@ -74,8 +74,6 @@
 
 namespace MetaSim {
 
-    using namespace std;
-
     DECL_EXC(NegativeTickException, "Tick");
 
     /**

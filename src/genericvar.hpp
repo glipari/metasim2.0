@@ -67,7 +67,7 @@ namespace MetaSim {
 
         CLONEABLE(RandomVar, GenericVar)
         
-        static RandomVar *createInstance(vector<string> &par);
+        static RandomVar *createInstance(std::vector<std::string> &par);
         
         virtual double get(void);
 

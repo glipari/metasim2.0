@@ -68,7 +68,7 @@ namespace MetaSim {
     */
     class TraceAscii : public Trace {
     public:
-        TraceAscii(const string &file) : Trace(file, ASCII){}
+        TraceAscii(const std::string &file) : Trace(file, ASCII){}
 
         /// Records the value on the file, one value per line.
         //@{

@@ -30,13 +30,11 @@
  */
 namespace parse_util {
 
-    using namespace std;
-
     /**
        Removes trailing spaces from the beginning and from the end of
        the string \c tk.
     */
-    string remove_spaces(const string &tk);
+    std::string remove_spaces(const std::string &tk);
 
     /**
        Given a string \c code, consisting of many substrings separated
@@ -44,7 +42,7 @@ namespace parse_util {
        For example, given the string "fixed(1);wait(R);" returns the
        vector containing strings "fixed(1)" and "wait(R)".
     */
-    vector<string> split(const string &code, const string &sep);
+    std::vector<std::string> split(const std::string &code, const std::string &sep);
 
     /**
        Given a sequence of "instructions" spearated by ';', returns a
@@ -53,33 +51,33 @@ namespace parse_util {
 
        @todo add sintax error checking!
     */
-    vector<string> split_instr(const string &code);
+    std::vector<std::string> split_instr(const std::string &code);
 
     /**
        Given an instruction \c instr of the form "token(p1)" returns the
        token.
     */
-    string get_token(const string &instr, const string &open_par = "(");
+    std::string get_token(const std::string &instr, const std::string &open_par = "(");
 
     /**
        Given an instruction \c instr of the form "token(p1,p2)" returns the
        parameters "p1,p2".
     */
-    string get_param(const string &instr, const string &open_par = "(",
-                     const string &close_par = ")");
+    std::string get_param(const std::string &instr, const std::string &open_par = "(",
+                     const std::string &close_par = ")");
 
     /**
        Given an instruction \c instr of the form "token = param1,
        param2" returns the parameters "param1, param2" (i.e. it returns
        everything after the separation symbol)
     */
-    string get_param2(const string &instr, const string &open_par = "=");
+    std::string get_param2(const std::string &instr, const std::string &open_par = "=");
 
     /**
        Given a string containing the parameters "(p1,p2)", returns a
        vector of strings containing the parameters p1 and p2.
     */
-    vector<string> split_param(const string &p, const string &sep = ",",
+    std::vector<std::string> split_param(const std::string &p, const std::string &sep = ",",
                                char open_par = '(', char close_par = ')');
 
     /**
@@ -87,7 +85,7 @@ namespace parse_util {
        at the beginning of the string in res and the unit of measure in
        unit.
     */
-    void parse_double(const string &nums, double &res, string &unit);
+    void parse_double(const std::string &nums, double &res, std::string &unit);
 
     /**
        Exception raised by the above functions
@@ -95,7 +93,7 @@ namespace parse_util {
     class ParseExc : public std::runtime_error {
 
     public:
-        ParseExc(const string &where, const string &par);
+        ParseExc(const std::string &where, const std::string &par);
         virtual ~ParseExc() throw () {}
     };
 }
