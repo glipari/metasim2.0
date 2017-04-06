@@ -232,23 +232,24 @@ extern "C" {
 #define DBGFORCE(x)   do {\
                       SIMUL.dbg.enable("__FORCE__");  \
                       SIMUL.dbg.enter("__FORCE__");   \
-                      SIMUL.dbg << x << endl;         \
+                      SIMUL.dbg << x << std::endl;         \
                       SIMUL.dbg.exit();               \
                       SIMUL.dbg.disable("__FORCE__"); } while(0)
 
-#define DBGPRINT(x)   SIMUL.dbg << x << endl
-#define DBGPRINT_2(x,y) SIMUL.dbg << x << y << endl
-#define DBGPRINT_3(x,y,z) SIMUL.dbg << x << y << z << endl
-#define DBGPRINT_4(x,y,z,w) SIMUL.dbg << x << y << z << w << endl
-#define DBGPRINT_5(x,y,z,w,r) SIMUL.dbg << x << y << z << w << r << endl
-#define DBGPRINT_6(x,y,z,w,r,s) SIMUL.dbg << x << y << z << w << r << s << endl
+#define DBGPRINT(x)   SIMUL.dbg << x << std::endl
+#define DBGPRINT_2(x,y) SIMUL.dbg << x << y << std::endl
+#define DBGPRINT_3(x,y,z) SIMUL.dbg << x << y << z << std::endl
+#define DBGPRINT_4(x,y,z,w) SIMUL.dbg << x << y << z << w << std::endl
+#define DBGPRINT_5(x,y,z,w,r) SIMUL.dbg << x << y << z << w << r << std::endl
+#define DBGPRINT_6(x,y,z,w,r,s) SIMUL.dbg << x << y << z << w << r << s << std::endl
 
 #define DBGVAR(x) DBGPRINT_2("  --> " #x " = ", x)
 
 template<class X>
 void __print_elem__(const X &obj)
 {
-    MetaSim::SIMUL.dbg << "--> " <<  obj << MetaSim::endl;
+    //MetaSim::SIMUL.dbg << "--> " <<  obj << MetaSim::endl;
+    MetaSim::SIMUL.dbg << "--> " <<  obj << std::endl;
 }
 
 #include <algorithm>

@@ -6,6 +6,10 @@ set(CMAKE_BUILD_TYPE Debug)
 
 set(LIBRARY_TYPE STATIC)
 
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+   add_definitions(-D__DEBUG__)
+endif()
+
 # Include dirs.
 add_subdirectory (src)
 add_subdirectory (examples)
