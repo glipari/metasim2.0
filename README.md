@@ -70,7 +70,7 @@ The steps to build and install the software are the usual ones:
     cd metasim2.0
     mkdir build
     cd build
-    ccmake ..
+    cmake ..
     
 The execution of "ccmake .." command cause CMake program execution.
 To generate the makefile needed to compile the library, you have to
@@ -87,6 +87,11 @@ the examples included with the library.  Output directories are:
 	- examples/
 	
 The library is located in src/
+
+In order to export the headers file to use the library, the last command
+to be executed is
+
+    make install
 
 ### 3.3. Compiling under Windows
 
