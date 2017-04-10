@@ -237,7 +237,7 @@ namespace MetaSim {
         double F = exp(-_lambda);
         double S = F;
 
-        for (register unsigned int i = 1; i < CUTOFF; ++i) {
+        for (unsigned int i = 1; i < CUTOFF; ++i) {
             if (u < S) return i - 1;
             F = F * _lambda / double(i);
             S += F;
