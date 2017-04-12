@@ -214,7 +214,6 @@ namespace MetaSim {
 
 }
 
-
 extern "C" {
     void libmetasim_is_present();
 }
@@ -232,7 +231,7 @@ extern "C" {
 #define DBGFORCE(x)   do {\
                       SIMUL.dbg.enable("__FORCE__");  \
                       SIMUL.dbg.enter("__FORCE__");   \
-                      SIMUL.dbg << x << std::endl;    \
+                      SIMUL.dbg << x << std::endl;         \
                       SIMUL.dbg.exit();               \
                       SIMUL.dbg.disable("__FORCE__"); } while(0)
 

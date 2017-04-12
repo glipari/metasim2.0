@@ -17,9 +17,6 @@ MyEntity::MyEntity() : Entity(""),
 		       eventB(this, &MyEntity::onEventB),
 		       eventC(this, &MyEntity::onEventC)
 {
-    // register_handler(eventA, this, &MyEntity::onEventA);
-    // register_handler(eventB, this, &MyEntity::onEventB);
-    // register_handler(eventC, );
 }
 
 MyEntity::MyEntity(const std::string &n) : Entity(n),
@@ -30,24 +27,24 @@ MyEntity::MyEntity(const std::string &n) : Entity(n),
 					   eventB(this, &MyEntity::onEventB),
 					   eventC(this, &MyEntity::onEventC)
 {
-    // register_handler(eventA, this, &MyEntity::onEventA);
-    // register_handler(eventB, this, &MyEntity::onEventB);
-    // register_handler(eventC, this, &MyEntity::onEventC);
 }
 
-void MyEntity::onEventA(Event *) {
+void MyEntity::onEventA(Event *)
+{
     if (!bfirst) afirst = true;
     eventA.post(SIMUL.getTime() + 5);
 }
 
-void MyEntity::onEventB(Event *) {
+void MyEntity::onEventB(Event *)
+{
     if (!afirst) bfirst = true;
     eventB.post(SIMUL.getTime()+10);
 }
 
-void MyEntity::onEventC(Event *) {
+void MyEntity::onEventC(Event *)
+{
     if (afirst)
-	count ++;
+        count ++;
     afirst = bfirst = false;
     eventC.post(SIMUL.getTime()+5);
 }
@@ -60,6 +57,7 @@ void MyEntity::newRun()
     eventC.post(1);
     count = 0;
 }
+
 void MyEntity::endRun() {}
 bool MyEntity::isAFirst() { return afirst; }
 int MyEntity::getCounter() { return count; }
