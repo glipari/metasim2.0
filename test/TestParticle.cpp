@@ -19,9 +19,13 @@ TEST_CASE("Test Particle interface", "[statistics]")
     MyStat s;
     attach_stat(s, me.eventA);
     
-    SIMUL.run(2);
+    SIMUL.run(12);
 
-    REQUIRE(s.getValue() == 4);
+    REQUIRE(s.getValue() == 4); // 0, 5, 10, 15
+                                /* the last one is executed because it is the first after the sim limit */
+                                /* maybe we should change this behaviour */
+
+    /* check that last value is correctly updated */ 
     REQUIRE(s.getLastValue() == 4);
 }
 
@@ -31,12 +35,13 @@ TEST_CASE("Test Particle copying", "[statistics]")
     MyStat s;
     attach_stat(s, me.eventA);
 
-    // the statistic is duplicated when you copy the entity
-    MyEntity you("Pluto");
+    // the particle is duplicated when you copy the entity
+    MyEntity you(me);
     
     SIMUL.run(12);
 
-    REQUIRE(s.getValue() == 8);
+    // 0, 0, 5, 5, 10, 10, 15
+    REQUIRE(s.getValue() == 7);
 }
 
 TEST_CASE("Test Particle getLastValue()", "[statistics]")
@@ -46,8 +51,10 @@ TEST_CASE("Test Particle getLastValue()", "[statistics]")
     attach_stat(s, me.eventA);
     attach_stat(s, me.eventB);
     
-    SIMUL.run(25);  // 
+    SIMUL.run(25); 
 
-    REQUIRE(s.getValue() == 4);
-    REQUIRE(s.getLastValue() == 4);
+    // 0, 5, 10, 15, 20, 25 for eventA
+    // 0, 10, 20 for eventB
+    REQUIRE(s.getValue() == 9);
+    REQUIRE(s.getLastValue() == 9);
 }
