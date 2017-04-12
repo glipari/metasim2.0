@@ -232,7 +232,11 @@ extern "C" {
 #define DBGFORCE(x)   do {\
                       SIMUL.dbg.enable("__FORCE__");  \
                       SIMUL.dbg.enter("__FORCE__");   \
+<<<<<<< HEAD
                       SIMUL.dbg << x << std::endl;         \
+=======
+                      SIMUL.dbg << x << std::endl;    \
+>>>>>>> b111a3e5cf5ee7cb16449d21ceebb4f6875036b1
                       SIMUL.dbg.exit();               \
                       SIMUL.dbg.disable("__FORCE__"); } while(0)
 
@@ -248,7 +252,10 @@ extern "C" {
 template<class X>
 void __print_elem__(const X &obj)
 {
+<<<<<<< HEAD
     //MetaSim::SIMUL.dbg << "--> " <<  obj << MetaSim::endl;
+=======
+>>>>>>> b111a3e5cf5ee7cb16449d21ceebb4f6875036b1
     MetaSim::SIMUL.dbg << "--> " <<  obj << std::endl;
 }
 

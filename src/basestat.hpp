@@ -185,7 +185,7 @@ namespace MetaSim {
             dynamic casts. By now it is deprecated. Substituted by 
             addParticle() (see particle.hpp).
         */
-        virtual void attach(Entity *e) {};
+        virtual void attach(Entity *e) {}
 
         /*--------------------------------------------*/
     

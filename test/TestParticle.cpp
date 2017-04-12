@@ -19,9 +19,10 @@ TEST_CASE("Test Particle interface", "[statistics]")
     MyStat s;
     attach_stat(s, me.eventA);
     
-    SIMUL.run(12);
+    SIMUL.run(2);
 
-    REQUIRE(s.getValue() == 4);
+    REQUIRE(s.getValue() == 0);
+    REQUIRE(s.getLastValue() == 0);
 }
 
 TEST_CASE("Test Particle copying", "[statistics]")
@@ -38,3 +39,15 @@ TEST_CASE("Test Particle copying", "[statistics]")
     REQUIRE(s.getValue() == 8);
 }
 
+TEST_CASE("Test Particle getLastValue()", "[statistics]")
+{
+    MyEntity me("Pippo");
+    MyStat s;
+    attach_stat(s, me.eventA);
+    attach_stat(s, me.eventB);
+    
+    SIMUL.run(25);  // 
+
+    REQUIRE(s.getValue() == 4);
+    REQUIRE(s.getLastValue() == 4);
+}

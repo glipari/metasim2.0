@@ -147,35 +147,35 @@ namespace MetaSim {
     void Simulation::run(Tick endTick, int nRuns) 
     {
         DBGENTER(_SIMUL_DBG_LEV);
-	bool initializeRuns = true;
-	bool terminateSim = true;
+        bool initializeRuns = true;
+        bool terminateSim = true;
 	
-	if (nRuns < -1) {
-	    cout << "Initialize stats" << endl;
-	    initializeRuns = true;
-	    terminateSim = false;
-	    numRuns = 1;
-	    nRuns = -nRuns;
-	}
-	else if (nRuns == -1) {
-	    cout << "Will not initialize stats" << endl;
-	    initializeRuns = false;
-	    terminateSim = false;
-	    numRuns = 1;
-	}
-	else if (nRuns == 0) {
-	    cout << "Last Sim in the batch" << endl;
-	    initializeRuns = false;
-	    terminateSim = true;
-	    numRuns = 1;	    
-	}
-	else if (nRuns == 1) {
-	    cout << "One single run" << endl;
-	    initializeRuns = true;
-	    terminateSim = true; 
-	    numRuns = 1;	    
-	}
-	else numRuns = nRuns;
+        if (nRuns < -1) {
+            cout << "Initialize stats" << endl;
+            initializeRuns = true;
+            terminateSim = false;
+            numRuns = 1;
+            nRuns = -nRuns;
+        }
+        else if (nRuns == -1) {
+            cout << "Will not initialize stats" << endl;
+            initializeRuns = false;
+            terminateSim = false;
+            numRuns = 1;
+        }
+        else if (nRuns == 0) {
+            cout << "Last Sim in the batch" << endl;
+            initializeRuns = false;
+            terminateSim = true;
+            numRuns = 1;	    
+        }
+        else if (nRuns == 1) {
+            cout << "One single run" << endl;
+            initializeRuns = true;
+            terminateSim = true; 
+            numRuns = 1;	    
+        }
+        else numRuns = nRuns;
 
         if (numRuns == 2) {
             cout << "Warning: Simulation cannot be "
@@ -184,7 +184,7 @@ namespace MetaSim {
             numRuns = 3;
         }
 
-	if (initializeRuns) initRuns(numRuns);
+        if (initializeRuns) initRuns(numRuns);
 
         // Ok, now starts the main cycle of the simulation.
         // remember that actRuns is the actual run number
