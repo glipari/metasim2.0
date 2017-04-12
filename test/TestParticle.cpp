@@ -21,8 +21,8 @@ TEST_CASE("Test Particle interface", "[statistics]")
     
     SIMUL.run(2);
 
-    REQUIRE(s.getValue() == 0);
-    REQUIRE(s.getLastValue() == 0);
+    REQUIRE(s.getValue() == 4);
+    REQUIRE(s.getLastValue() == 4);
 }
 
 TEST_CASE("Test Particle copying", "[statistics]")
