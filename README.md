@@ -88,11 +88,6 @@ the examples included with the library.  Output directories are:
 	
 The library is located in src/
 
-In order to export the headers file to use the library, the last command
-to be executed is
-
-    make install
-
 ### 3.3. Compiling under Windows
 
     execute CMake

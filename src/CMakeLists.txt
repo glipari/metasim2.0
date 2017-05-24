@@ -41,7 +41,8 @@ add_library (${PROJECT_NAME} ${LIBRARY_TYPE} ${SOURCE_FILES})
 
 target_compile_features (${PROJECT_NAME} PRIVATE cxx_range_for)
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+             ${PROJECT_SOURCE_DIR}/src)
 # Export.
 export (TARGETS ${PROJECT_NAME} FILE "./metasimConfig.cmake")
 export (PACKAGE ${PROJECT_NAME})
-install(FILES ${HEADER_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include)
