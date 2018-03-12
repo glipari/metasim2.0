@@ -9,45 +9,54 @@ class Node;
 class NetInterface;
 
 class Message {
-
-  int _len;
-
-  //  partito dal nodo e arrivato all'interfaccia
-  MetaSim::Tick _start_time;
-  // partito dall'interfaccia e arrivato sul link
-  MetaSim::Tick _trans_time;
-  // fine della trasmission, arrivo sull'interfaccia destinazione
-  MetaSim::Tick _arr_time;
-
-  Node *_dst;
-  Node *_src;
-
-  NetInterface *_dst_net_interf;
-  NetInterface *_src_net_interf;
+    
+    int _len;
+    
+    //  Started from node and arrived at the link 
+    MetaSim::Tick _start_time;
+    // Started from interface anr arrived at the link 
+    MetaSim::Tick _trans_time;
+    // end of transmission, arrived at destination interface 
+    MetaSim::Tick _arr_time;
+    
+    // destination node
+    Node *_dst;
+    // source node
+    Node *_src;
+    // destination interface
+    NetInterface *_dst_net_interf;
+    // source interface 
+    NetInterface *_src_net_interf;
 
 public:
 
-  Message(int l, Node *s, Node *d);
+    // constructor
+    Message(int l, Node *s, Node *d);
 
-  void setStartTime(MetaSim::Tick t);
-  MetaSim::Tick getStartTime();
+    // set the starting time of the message
+    void setStartTime(MetaSim::Tick t);
+    MetaSim::Tick getStartTime();
 
-  void setTransTime(MetaSim::Tick t);
-  MetaSim::Tick getTransTime();
+    // transmission time
+    void setTransTime(MetaSim::Tick t);
+    MetaSim::Tick getTransTime();
 
-  void setArrTime(MetaSim::Tick t);
-  MetaSim::Tick getArrTime();
+    // arrival time
+    void setArrTime(MetaSim::Tick t);
+    MetaSim::Tick getArrTime();
 
-  int getLength();
+    // message lenght
+    int getLength();
 
-  void setSourceInterface(NetInterface *n);
-  void setDestInterface(NetInterface *n);
+    
+    void setSourceInterface(NetInterface *n);
+    void setDestInterface(NetInterface *n);
 
-  NetInterface *getSourceInterface();
-  NetInterface *getDestInterface();
+    NetInterface *getSourceInterface();
+    NetInterface *getDestInterface();
 
-  Node *getSourceNode();
-  Node *getDestNode();
+    Node *getSourceNode();
+    Node *getDestNode();
 };
 
 #endif
