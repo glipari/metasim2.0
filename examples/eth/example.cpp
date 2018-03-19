@@ -20,17 +20,9 @@ const unsigned AVG_LEN = 800;
 const Tick SIM_LEN = (int) (AVG_LEN * 1000);
 
 class CollisionStat : public StatCount {
-    Particle<GEvent<EthernetLink>, CollisionStat> *sp;
 public:
     CollisionStat(const char *name) : StatCount(name) {}
-    
-    void probe(GEvent<EthernetLink> &e) {
-        record(1);
-    }
-    
-    // void attach(EthernetLink &e) {
-    //     sp = new Particle<GEvent<EthernetLink>, CollisionStat>(e._collision_evt, *this);
-    // }
+    void probe(GEvent<EthernetLink> &e) { record(1); }
 };
     
 int main() {
@@ -63,9 +55,9 @@ int main() {
         double l2 = l1;
         double l3 = l1;
         
-        n1.setInterval(unique_ptr<RandomVar>(new UniformVar(1,l1)));
-        n2.setInterval(unique_ptr<RandomVar>(new UniformVar(1,l2)));
-        n3.setInterval(unique_ptr<RandomVar>(new UniformVar(1,l3)));
+        n1.setInterval(make_unique<UniformVar>(1,l1));
+        n2.setInterval(make_unique<UniformVar>(1,l2));
+        n3.setInterval(make_unique<UniformVar>(1,l3));
         
         SIMUL.dbg.setStream("log.txt");
         SIMUL.dbg.enable(_ETHLINK_DBG);
