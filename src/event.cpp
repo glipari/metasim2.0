@@ -59,8 +59,7 @@ namespace MetaSim {
         _std_priority(e._std_priority),
         _disposable(e._disposable)
     {
-        for (auto &p : e._particles) 
-            p->clone_to(*this);
+        for (auto &p : e._particles) p->clone_to(*this);
     }
 
     
@@ -106,8 +105,7 @@ namespace MetaSim {
 
         _order = counter++;
 
-        std::pair<EventQueue::iterator,bool> p;
-        p =_eventQueue.insert(this);
+        auto p =_eventQueue.insert(this);
     
         if (!p.second) {
             std::stringstream str;
@@ -122,7 +120,6 @@ namespace MetaSim {
 
         DBGENTER(_EVENT_DBG_LEV);
         print();
-        
     }
 
     // erase the event from the event queue

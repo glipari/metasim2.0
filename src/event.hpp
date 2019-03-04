@@ -30,7 +30,7 @@ namespace MetaSim {
         need to derive a class from this, overriding the virtual
         doit() method.
 
-        This class also inclides a static qevent queue, where all
+        This class also includes a static qevent queue, where all
         "active" events are enqueued. To insert an event in the
         queue, you can call the post() method specyfing a
         triggering time. Events are ordered in the queue by
@@ -95,7 +95,6 @@ namespace MetaSim {
         };
                 
         typedef priority_list<Event*, Cmp> EventQueue;
-  
         /**
            Event queue. This is the global event queue, used
            by the simulation engine.
@@ -208,9 +207,9 @@ namespace MetaSim {
         void process(bool disp=false);
 
         /** 
-            Drop the event from the event queue. The event is
-            simply extracted from the queue, and hence will
-            not be processed, but it is not destroyed.
+            Drop the event from the event queue. The event is simply
+            extracted from the queue, and hence will not be
+            processed. However, it is not destroyed.
         */
         void drop();
 
@@ -233,30 +232,29 @@ namespace MetaSim {
             were distinguished by their class. For simplicity
             we decided to introduce this identifier.
         */
-        inline int getPriority() const {return _priority;};
+        inline int getPriority() const { return _priority; }
 
         /** 
             Set the event priority.  It is a identifier for
             the event priority. The lower the number, the
             higher the priority.
         */
-        inline void setPriority(int p) { _priority = p;};
+        inline void setPriority(int p) { _priority = p; }
 
         /** 
             Restore the standard priority (the one defined in
             the constructor).
         */
-        inline void restorePriority() { _priority = _std_priority;};
+        inline void restorePriority() { _priority = _std_priority; }
 
         /** 
-            Returns the event time. Warning: if you try to get
-            this field after the event has been triggered, the
-            field could be inconsistent. Use getLastTime
-            instead.
+            Returns the event time. Warning: if you try to get this
+            field after the event has been triggered, the value
+            obtained could be inconsistent. Use getLastTime instead.
      
             @see getLastTime.  
         */
-        inline Tick getTime() const {return _time;};
+        inline Tick getTime() const { return _time; }
 
         /** 
             Return the last time in which event was triggered.
@@ -274,7 +272,7 @@ namespace MetaSim {
             has been triggered with getLastTime().
      
             @see getTime */
-        inline Tick getLastTime() const { return _lastTime; };
+        inline Tick getLastTime() const { return _lastTime; }
 
         /** 
             Returns the value of the disposable flag Indicates
@@ -285,10 +283,10 @@ namespace MetaSim {
             class, only if the following flas is true.
      
             @see post */
-        inline bool isDisposable() {return _disposable;};  
+        inline bool isDisposable() const { return _disposable; }
 
 
-        inline bool isInQueue() { return _isInQueue; }
+        inline bool isInQueue() const { return _isInQueue; }
 
         /** 
             Add a new particle to this event.  This is the new
