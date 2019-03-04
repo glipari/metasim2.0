@@ -212,6 +212,7 @@ namespace MetaSim {
         
         z0 = sqrt(-2.0 * log(u1)) * cos(two_pi * u2);
         z1 = sqrt(-2.0 * log(u1)) * sin(two_pi * u2);
+        
         return z0 * _sigma + _mu;
     }
 

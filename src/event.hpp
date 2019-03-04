@@ -94,7 +94,8 @@ namespace MetaSim {
             bool operator() (Event* e1, Event* e2) const;
         };
                 
-        typedef priority_list<Event*, Cmp> EventQueue;
+        //typedef priority_list<Event*, Cmp> EventQueue;
+        typedef std::set<Event *, Cmp> EventQueue;
         /**
            Event queue. This is the global event queue, used
            by the simulation engine.
@@ -223,7 +224,7 @@ namespace MetaSim {
             if (_eventQueue.empty()) 
                 return NULL;
             else
-                return _eventQueue.front();
+                return *_eventQueue.begin();
         }
 
         /** 

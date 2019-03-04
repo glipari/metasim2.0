@@ -11,17 +11,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
- * $Id: plist.hpp,v 1.6 2005/04/28 01:34:47 cesare Exp $
- *
- * $Log: plist.hpp,v $
- * Revision 1.6  2005/04/28 01:34:47  cesare
- * Moved to sstream. Headers install. Code cleaning.
- *
- * Revision 1.5  2004/11/24 14:12:13  lipari
- * Merge between the branch and the main trunk.
- *
- */
 #ifndef __PLIST_HPP__
 #define __PLIST_HPP__
 
@@ -74,10 +63,8 @@ public:
   };
   
   void erase(const_reference x) { Impl::erase(x); }
-  // Peppe: does not compile on gcc 3.3.3 on cygwin 
-  // reference front() { return *begin(); } 
   const_reference front() const { return *begin(); }
-  reference back() { return *(--end()); }
+    //reference back() { return *(--end()); }
   const_reference back() const { return *(--end()); }
   bool empty() {return Impl::empty(); }
   void clear() { Impl::clear(); }

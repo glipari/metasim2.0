@@ -11,20 +11,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
- * $Id: factory.hpp,v 1.3 2005/04/28 01:34:47 cesare Exp $
- *
- * $Log: factory.hpp,v $
- * Revision 1.3  2005/04/28 01:34:47  cesare
- * Moved to sstream. Headers install. Code cleaning.
- *
- * Revision 1.2  2004/11/22 00:35:24  cesare
- * *** empty log message ***
- *
- * Revision 1.2  2003/04/24 14:55:53  lipari
- * *** empty log message ***
- * 
- */
 #ifndef __FACTORY_HPP__
 #define __FACTORY_HPP__
 
@@ -130,7 +116,7 @@ class registerInFactory {
   }
 };
 
+/// Macro to help with the use of the factory
 #define FACT(xxx) genericFactory<xxx>::instance()
-
 
 #endif

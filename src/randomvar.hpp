@@ -151,7 +151,6 @@ namespace MetaSim {
         /**
            Polymorphic copy through cloning 
         */
-//        virtual std::unique_ptr<RandomVar> clone() const = 0;
         BASE_CLONEABLE(RandomVar)        
         
         virtual ~RandomVar();
@@ -174,7 +173,6 @@ namespace MetaSim {
 
         virtual double getMaximum() = 0;
         virtual double getMinimum() = 0;
-
 
         /** Parses a random variable from a string. String is in the
             form "varname(par1, par2, ...)", where 
@@ -287,8 +285,7 @@ namespace MetaSim {
 
     /**
        This class implements a normal distribution, with mean m variance
-       sigma. In this class, we use the cephes library function
-       ndtri(). */
+       sigma. */
     class NormalVar : public UniformVar {
         double _mu, _sigma;
         bool _yes;
