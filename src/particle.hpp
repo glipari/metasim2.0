@@ -77,12 +77,17 @@ namespace MetaSim {
 
            - it is forbidden to add the same particle to two different
            events (however, we do not check this, cause it would be too
-           much of a hassle). If you need to collect the same statistic
-           from two events, create two particles, the memory overhead is
-           much smaller compared to the code and data structures needed to 
-           add a reference counter.
+           much of a hassle). 
       
-           An example of usage can be found in examples/queue/queue.cpp
+           Therefore, to install a statistic s to an event e, just
+           call the global template function:
+
+             attach_stat(s, e);
+           
+           The global function will create the particle and add it to
+           the event. 
+           
+           Another example of usage can be found in examples/queue/queue.cpp
        
            @param e  reference to the event to be traced.
            @param s  reference to the tracing object. 
@@ -99,7 +104,7 @@ namespace MetaSim {
 
         /**
            Copies a particle to a new event. It uses a static_cast<>
-           to force type of event. This is not clean, but for the
+           to force the type of event. This is not clean, but for the
            moment I could not find anything better than this.
          */
         virtual void clone_to(Event &e) {

@@ -11,24 +11,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
- * $Id: basetype.hpp,v 1.8 2005/05/20 19:34:20 cesare Exp $
- *
- * $Log: basetype.hpp,v $
- * Revision 1.8  2005/05/20 19:34:20  cesare
- * Fixed the problem with debug messages.
- *
- * Revision 1.7  2005/04/28 01:34:47  cesare
- * Moved to sstream. Headers install. Code cleaning.
- *
- * Revision 1.6  2005/03/03 10:08:44  scordino
- * I need bigger values for MAX_RUN
- *
- * Revision 1.5  2004/11/24 14:12:13  lipari
- * Merge between the branch and the main trunk.
- *
- * 
- */
 #ifndef NULL
 #define NULL 0
 #endif
