@@ -11,41 +11,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
- * $Id: genericvar.hpp,v 1.3 2005/04/28 01:34:47 cesare Exp $
- *
- * $Log: genericvar.hpp,v $
- * Revision 1.3  2005/04/28 01:34:47  cesare
- * Moved to sstream. Headers install. Code cleaning.
- *
- * Revision 1.2  2004/11/24 14:12:13  lipari
- * Merge between the branch and the main trunk.
- *
- * Revision 1.1.2.5  2004/11/17 11:03:23  lipari
- * Solved discrepancy btw genericvar.hhp and genericvar.cpp,
- * function declaration and implementation should throw the same
- * exceptions!
- * Modified the basetype.hpp, removed forward declarations of Entity and
- * Event, they should be moved in the appropriate hpp files.
- *
- * Revision 1.1.2.4  2004/11/03 13:28:00  lipari
- * Added documentation to most classes. Also, added a documentation file in
- * doc/include. The documentation has to be compiled with doxygen,
- * The configuration file is doc.conf
- *
- * Revision 1.1.2.3  2004/10/29 17:03:48  lipari
- * Added tick.hpp and tick.cpp. By now the development is not finished!
- * They define a class called MyTick which is tested alone. Added also the
- * relative test file testtick.cpp.
- * Added function parse_double in parse_util (strtoken.hpp and .cpp).
- *
- * Revision 1.1.2.1  2004/10/29 15:37:04  lipari
- * Cambiato nome a GenericVar.hpp --> genericvar.hpp
- *
- * Revision 1.2  2003/04/24 14:55:54  lipari
- * *** empty log message ***
- * 
- */
 #ifndef __GENERICVAR_HPP__
 #define __GENERICVAR_HPP__
 

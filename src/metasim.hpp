@@ -11,11 +11,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
- * $Id$
- *
- * $Log$
- */
 #ifndef __METASIM_HPP__
 #define __METASIM_HPP__
 
@@ -29,7 +24,6 @@
 #include <genericvar.hpp>
 #include <gevent.hpp>
 #include <history.hpp>
-#include <plist.hpp>
 #include <randomvar.hpp>
 #include <regvar.hpp>
 #include <simul.hpp>

@@ -11,12 +11,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
- * $Id$
- *
- * $Log$
- */
-
 #ifndef __PARTICLE_HPP__
 #define __PARTICLE_HPP__
 
