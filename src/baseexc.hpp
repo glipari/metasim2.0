@@ -60,12 +60,11 @@ namespace MetaSim {
     };
     
 
-    // a couple of useful macros
 #define DECL_EXC(EXC, CLASS)             \
     class EXC : public BaseExc { public:                                \
         EXC(const std::string &m) : BaseExc(m, CLASS, __FILE__) {} }
     
-#define THROW_EXC(EXC, MSG) throw EXC(MSG  ":" __LINE__)
+//#define THROW_EXC(EE, MSG) throw EE(MSG  ":" __LINE__)
     
 } // namespace MetaSim
 

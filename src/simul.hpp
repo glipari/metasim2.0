@@ -22,7 +22,10 @@
 namespace MetaSim {
 
 #define _SIMUL_DBG_LEV "Simul"
-  
+
+    /** Exception launched by class Simulation */
+    DECL_EXC(NoMoreEventsInQueue, "Simulation");
+    
     /** 
         \ingroup metasim_ee
   

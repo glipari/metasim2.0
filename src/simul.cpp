@@ -15,6 +15,7 @@
 
 #include <sstream>
 
+#include <baseexc.hpp>
 #include <entity.hpp>
 #include <simul.hpp>
 
@@ -23,9 +24,6 @@ namespace MetaSim {
 
     Simulation *Simulation::instance_ = 0;
         
-    class NoMoreEventsInQueue {};
-
-
     Simulation::Simulation() : dbg(), numRuns(0), 
                                actRuns(0),
                                globTime (0),
@@ -62,7 +60,7 @@ namespace MetaSim {
         DBGENTER(_SIMUL_DBG_LEV);
 
         temp = Event::getFirst();   // takes the first event in the queue ...
-        if (temp == NULL) throw NoMoreEventsInQueue();
+        if (temp == NULL) throw NoMoreEventsInQueue("No events");
         temp->drop();               // ... and extract it!
           
         mytime = temp->getTime();   // stores the current time 
@@ -88,7 +86,7 @@ namespace MetaSim {
     const Tick Simulation::getNextEventTime()
     {
         Event *temp = Event::getFirst();
-        if (temp == NULL) throw NoMoreEventsInQueue();
+        if (temp == NULL) throw NoMoreEventsInQueue("No events");
         else return Event::getFirst()->getTime();
     }
 
