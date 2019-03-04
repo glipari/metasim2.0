@@ -10,7 +10,7 @@ using namespace MetaSim;
 /*-----------------------------------------------------*/
 
 Node::Node(string const &name) 
-        : Entity(name), _net_interf(0), _interval(nullptr),
+        : Entity(name), _net_interf(nullptr), _interval(nullptr),
           _nodes(),
           _recv_evt(this, &Node::onReceive), 
           _send_evt(this, &Node::onSend)

@@ -50,8 +50,8 @@ TEST_CASE("Factory1", "factory1")
 
     SECTION("check type") {
     
-        std::unique_ptr<A> ptr1 = FACT(A).create("B", parameters);
-        std::unique_ptr<A> ptr2 = FACT(A).create("C", parameters);
+        auto ptr1 = FACT(A).create("B", parameters);
+        auto ptr2 = FACT(A).create("C", parameters);
         
         REQUIRE(ptr1->getIndex() == 1);
         REQUIRE(ptr2->getIndex() == 2);
@@ -60,8 +60,8 @@ TEST_CASE("Factory1", "factory1")
         parameters.push_back("First");
         parameters.push_back("Second");
         
-        std::unique_ptr<A> ptr1 = FACT(A).create("B", parameters);
-        std::unique_ptr<A> ptr2 = FACT(A).create("C", parameters);
+        auto ptr1 = FACT(A).create("B", parameters);
+        auto ptr2 = FACT(A).create("C", parameters);
         
         REQUIRE(ptr1->getParam() == "First");
         REQUIRE(ptr2->getParam() == "Error");

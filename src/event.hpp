@@ -150,7 +150,7 @@ namespace MetaSim {
 
         /// Checks that the event is not queued, and set the
         /// _time field;
-        void setTime(Tick actTime) throw(Exc);
+        void setTime(Tick actTime);
 
         /** 
             Copy constructor. This is defined to allow dynamic
@@ -200,7 +200,7 @@ namespace MetaSim {
             @param disp set it to true if the event object
             must be disposed.
         */
-        void post(Tick myTime, bool disp = false) throw(Exc, BaseExc);
+        void post(Tick myTime, bool disp = false);
 
         /**
            Processes the event immediately. 
@@ -304,10 +304,6 @@ namespace MetaSim {
             not touch if you don't know what you are doing.
             Also, this method should never be invoked by any
             entity.
-     
-            It can throw any type of exceptions, in principle,
-            so I can't specify any particular type of
-            exception in the interface
         */
         void action();
 

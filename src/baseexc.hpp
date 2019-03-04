@@ -47,26 +47,26 @@ namespace MetaSim {
         BaseExc(const std::string &message,
                 const std::string &cl="unknown",
                 const std::string &md="unknown") :
-          std::runtime_error("")
-              {
-                  std::stringstream ss;
-                  ss << "Class=" << cl
-                     << " Module=" << md
-                     << " Message:" << message;
-                  static_cast<std::runtime_error&>(*this) = std::runtime_error(ss.str());
-              }
-
+            std::runtime_error("")
+            {
+                std::stringstream ss;
+                ss << "Class=" << cl
+                   << " Module=" << md
+                   << " Message:" << message;
+                static_cast<std::runtime_error&>(*this) = std::runtime_error(ss.str());
+            }
+        
         virtual ~BaseExc() throw() {}
     };
-
+    
 
     // a couple of useful macros
-#define DECL_EXC(EXC, CLASS) \
-    class EXC : public BaseExc { public: \
-            EXC(const std::string &m) : BaseExc(m, CLASS, __FILE__) {} }
-
+#define DECL_EXC(EXC, CLASS)             \
+    class EXC : public BaseExc { public:                                \
+        EXC(const std::string &m) : BaseExc(m, CLASS, __FILE__) {} }
+    
 #define THROW_EXC(EXC, MSG) throw EXC(MSG  ":" __LINE__)
-
+    
 } // namespace MetaSim
 
 #endif

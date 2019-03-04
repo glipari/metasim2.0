@@ -9,7 +9,6 @@ class Node;
 class NetInterface;
 
 class Message {
-    
     int _len;
     
     //  Started from node and arrived at the link 
@@ -23,34 +22,41 @@ class Message {
     Node *_dst;
     // source node
     Node *_src;
-    // destination interface
-    NetInterface *_dst_net_interf;
-    // source interface 
-    NetInterface *_src_net_interf;
+    
+    // // destination interface (obtained from the dst node)
+    // NetInterface *_dst_net_interf;
+    // // source interface (obtained from the src node)
+    // NetInterface *_src_net_interf;
 
 public:
 
-    // constructor
-    Message(int l, Node *s, Node *d);
+    /** Constructor
+      
+        @param l lenght of the message 
+        @param src address of the source node
+        @param dst address of the destination node
+    */
+    Message(int l, Node *src, Node *dest);
 
-    // set the starting time of the message
+    // Copy constructor is automatically defined by the compiler
+    
+    // Set the starting time of the message
     void setStartTime(MetaSim::Tick t);
     MetaSim::Tick getStartTime();
 
-    // transmission time
+    // Transmission time
     void setTransTime(MetaSim::Tick t);
     MetaSim::Tick getTransTime();
 
-    // arrival time
+    // Arrival time
     void setArrTime(MetaSim::Tick t);
     MetaSim::Tick getArrTime();
 
-    // message lenght
+    // Message lenght
     int getLength();
 
-    
-    void setSourceInterface(NetInterface *n);
-    void setDestInterface(NetInterface *n);
+    // void setSourceInterface(NetInterface *n);
+    // void setDestInterface(NetInterface *n);
 
     NetInterface *getSourceInterface();
     NetInterface *getDestInterface();

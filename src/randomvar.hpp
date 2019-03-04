@@ -172,8 +172,8 @@ namespace MetaSim {
             distriibution. */
         virtual double get() = 0;
 
-        virtual double getMaximum() throw(MaxException) = 0;
-        virtual double getMinimum() throw(MaxException) = 0;
+        virtual double getMaximum() = 0;
+        virtual double getMinimum() = 0;
 
 
         /** Parses a random variable from a string. String is in the
@@ -202,8 +202,8 @@ namespace MetaSim {
         static std::unique_ptr<DeltaVar> createInstance(std::vector<std::string> &par);  
         
         virtual double get() { return _var; } 
-        virtual double getMaximum() throw(MaxException) {return _var;}
-        virtual double getMinimum() throw(MaxException) {return _var;}
+        virtual double getMaximum() {return _var;}
+        virtual double getMinimum() {return _var;}
     };
 
     /** 
@@ -220,8 +220,8 @@ namespace MetaSim {
         static std::unique_ptr<UniformVar> createInstance(std::vector<std::string> &par);
         
         virtual double get();
-                virtual double getMaximum() throw(MaxException) {return _max;}
-        virtual double getMinimum() throw(MaxException) {return _min;}
+        virtual double getMaximum() {return _max;}
+        virtual double getMinimum()  {return _min;}
     };
 
     /**
@@ -238,9 +238,9 @@ namespace MetaSim {
         
         virtual double get();
 
-        virtual double getMaximum() throw(MaxException)
+        virtual double getMaximum() 
             {throw MaxException("ExponentialVar");}
-        virtual double getMinimum() throw(MaxException)
+        virtual double getMinimum() 
             {return 0;}
     };
 
@@ -261,8 +261,8 @@ namespace MetaSim {
 
         virtual double get();
 
-        virtual double getMaximum() throw(MaxException) { throw MaxException("WeibullVar"); }
-        virtual double getMinimum() throw(MaxException) { return 0; }
+        virtual double getMaximum() { throw MaxException("WeibullVar"); }
+        virtual double getMinimum() { return 0; }
     };
 
     /**
@@ -279,9 +279,9 @@ namespace MetaSim {
 
         virtual double get();
 
-        virtual double getMaximum() throw(MaxException)
+        virtual double getMaximum() 
             {throw MaxException("ExponentialVar");}
-        virtual double getMinimum() throw(MaxException)
+        virtual double getMinimum() 
             {throw MaxException("ExponentialVar");}
     };
 
@@ -304,9 +304,9 @@ namespace MetaSim {
         static std::unique_ptr<NormalVar> createInstance(std::vector<std::string> &par);
 
         virtual double get();
-        virtual double getMaximum() throw(MaxException)
+        virtual double getMaximum() 
             {throw MaxException("NormalVar");}
-        virtual double getMinimum() throw(MaxException)
+        virtual double getMinimum() 
             {throw MaxException("NormalVar");}
     };
 
@@ -326,9 +326,9 @@ namespace MetaSim {
         
         virtual double get();
 
-        virtual double getMaximum() throw(MaxException)
+        virtual double getMaximum() 
             {throw MaxException("PoissonVar");}
-        virtual double getMinimum() throw(MaxException)
+        virtual double getMinimum() 
             {throw MaxException("PoissonVar");}
     };
 
@@ -353,8 +353,8 @@ namespace MetaSim {
         static std::unique_ptr<DetVar> createInstance(std::vector<std::string> &par);
 
         virtual double get();
-        virtual double getMaximum() throw(MaxException);
-        virtual double getMinimum() throw(MaxException);
+        virtual double getMaximum(); 
+        virtual double getMinimum(); 
 
     };
     //@}

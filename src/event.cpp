@@ -83,7 +83,7 @@ namespace MetaSim {
         else return false;
     }
     
-    void Event::post(Tick myTime, bool disp) throw (Exc, BaseExc)
+    void Event::post(Tick myTime, bool disp)
     {
         if (_isInQueue) {
             std::stringstream str;
@@ -147,14 +147,13 @@ namespace MetaSim {
 
     // Function to set the event time 
     // (only if the event is not in any queue).
-    void Event::setTime(Tick actTime) throw(Exc)
+    void Event::setTime(Tick actTime)
     {
         if (_isInQueue)
             throw Exc("Cannot set the time if the event is already queued\n");
         else _time = actTime;
     }
 
-    // see comment below on exceptions to be thrown by this function
     void Event::action()
     {
         DBGENTER(_EVENT_DBG_LEV);

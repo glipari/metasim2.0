@@ -102,8 +102,7 @@ namespace MetaSim {
         _totalNumOfExp = n;
         _endOfSim = false;
         _initFlag = true;
-        for_each(_statList.begin(), _statList.end(),
-                 mem_fun(&BaseStat::init));
+        for_each(_statList.begin(), _statList.end(), [] (auto x) { x->init(); }); 
     }
   
     void BaseStat::init()
@@ -144,8 +143,7 @@ namespace MetaSim {
     //
     void BaseStat::endRun()
     {
-        for_each(_statList.begin(), _statList.end(),
-                 mem_fun(&BaseStat::collect));
+        for_each(_statList.begin(), _statList.end(), [](auto x) { x->collect(); }); 
         if (++_expNum >= MAX_RUN)
             throw Exc(TOO_MUCH_RUNS);
     }
@@ -160,8 +158,7 @@ namespace MetaSim {
     //
     void BaseStat::newRun()
     {
-        for_each(_statList.begin(), _statList.end(),
-                 mem_fun(&BaseStat::initValue));
+        for_each(_statList.begin(), _statList.end(), [](auto x) { x->initValue(); });
     }
 
     //
@@ -218,21 +215,17 @@ namespace MetaSim {
 
     double BaseStat::getConfInterval(CONFIDENCE_INTERVAL c)
     {
-        double mu;		// the mean
-        double s;		// the variance
-  
         if (!_endOfSim) throw Exc(GET);
         if (!_initFlag) throw Exc(NO_INIT);
         if (_expNum < 3) throw Exc(NEED_3);
 
-        mu = getMean();
-        s = getVariance();
+        double s = getVariance();
         return t_student(c, (unsigned int) _expNum - 1) * s;
     }
 
     void BaseStat::printAll()
     {
-        for_each(BaseStat::begin(), BaseStat::end(), mem_fun(&BaseStat::print));
+        for_each(BaseStat::begin(), BaseStat::end(), [](auto x) { x->print(); });
     }	 
   
     void BaseStat::print()
@@ -314,58 +307,3 @@ namespace MetaSim {
         }
     }
 }
-
-/* ------------------------------------------ */
-
-#ifdef __BASESTAT_TEST__
-
-#include "event.hpp"
-#include "randomvar.hpp"
-
-using namespace MetaSim;
-
-// only for debug!!
-
-class Dummy : public StatMean {
-    NormalVar nv;
-public:
-    Dummy(int v) : StatMean("StatMean",0), nv(v, 1) {};
-    virtual void probe(Event *e) { record(nv.get()); }
-    virtual void attach(Entity* e) {}
-};
-
-Dummy *d1;
-Dummy *d2;
-
-int main()
-{
-    int n;
-    int i,j;
-
-    try {  
-        cout << "Insert n (n > 3): ";
-        cin >> n;
-        BaseStat::init(n);
-    
-        d1 = new Dummy(7);
-        d2 = new Dummy(10);
-    
-        for (j = 0; j < n; j++) {
-            for (i = 0; i < 1000; i++) {
-                d1->probe(0);
-                d2->probe(0);
-            }
-      
-            BaseStat::endRun();
-      
-            if (j < n-1) BaseStat::newRun();
-        }
-    
-        BaseStat::printall();
-    } catch (exception& e) {
-        cout << "Exception: " << e.what() << endl;
-    }
-
-} // namespace MetaSim
-
-#endif // __TEST__

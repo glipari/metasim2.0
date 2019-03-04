@@ -39,14 +39,6 @@
 #include <limits>
 #include <tick.hpp>
 
-// #ifndef MAXTICK
-// #ifndef __LONG_MAX__
-// #error "Cannot find definition of __LONG_MAX__"
-// #else
-// #define MAXTICK Tick(__LONG_MAX__)
-// #endif
-// #endif
-
 namespace MetaSim {
   /* MAX_RUN is the maximum number of runs allowable in this simulator
    * it is an arbitrary value, feel free to increase it.

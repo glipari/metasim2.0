@@ -3,8 +3,8 @@ project (metasim)
 
 #set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall") 
+set(CMAKE_CXX_STANDARD 14)  # -std=c++14 
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   add_definitions(-D__DEBUG__)

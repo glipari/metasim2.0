@@ -23,16 +23,6 @@
 #include <baseexc.hpp>
 #include <strtoken.hpp>
 
-
-#ifdef _MSC_VER
-#pragma warning(disable: 4290) // A function is declared using exception specification,
-                               // which Visual C++ accepts but does not implement.
-                               // http://msdn.microsoft.com/en-us/library/sa28fef8.aspx
-/*#if _MSC_VER >= 1400
-#define sprintf sprintf_s
-#endif*/
-#endif
-
 #define MAXTICK INT64_MAX
 
 #define FRIEND_DECL_SYMM_OPS(RET, OP)  \
@@ -111,9 +101,6 @@ namespace MetaSim {
 
     public:
         Tick() { v = 0; }
-// #if __WORDSIZE == 64
-//         Tick(long long int t) { v = t; }
-// #endif
         Tick(impl_t t) { v = t; }
         Tick(int32_t t) { v = t; }
 
@@ -162,7 +149,7 @@ namespace MetaSim {
         static void set_default_unit(Tick::unit_t d) { default_unit = d; }
 
         /// implementation in tick.pp
-        static void set_resolution(const std::string &t) throw (parse_util::ParseExc);
+        static void set_resolution(const std::string &t);
 
         FRIEND_DECL_SYMM_OPS(bool, <);
         FRIEND_DECL_SYMM_OPS(bool, <=);

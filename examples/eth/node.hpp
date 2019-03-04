@@ -16,30 +16,31 @@ class NetInterface;
 
 class Node : public MetaSim::Entity {
 
-  NetInterface* _net_interf;
+    // Every node has a single net interface
+    NetInterface* _net_interf;
 
-  std::unique_ptr<MetaSim::RandomVar> _interval;
+    std::unique_ptr<MetaSim::RandomVar> _interval;
 
-  std::vector<Node*> _nodes;
+    std::vector<Node*> _nodes;
 
 public:
 
-  MetaSim::GEvent<Node> _recv_evt;
-  MetaSim::GEvent<Node> _send_evt;
+    MetaSim::GEvent<Node> _recv_evt;
+    MetaSim::GEvent<Node> _send_evt;
 
-  Node(string const &name);
+    Node(string const &name);
 
-  NetInterface *getNetInterface();
-  void setNetInterface(NetInterface &n);
-  void addDestNode(Node &n);
-  void setInterval(std::unique_ptr<MetaSim::RandomVar> i);
+    NetInterface *getNetInterface();
+    void setNetInterface(NetInterface &n);
+    void addDestNode(Node &n);
+    void setInterval(std::unique_ptr<MetaSim::RandomVar> i);
 
-  void onMessageReceived(Message *m);
-  void onReceive(MetaSim::Event *e);
-  void onSend(MetaSim::Event *e);
+    void onMessageReceived(Message *m);
+    void onReceive(MetaSim::Event *e);
+    void onSend(MetaSim::Event *e);
 
-  void newRun();
-  void endRun();
+    void newRun();
+    void endRun();
 };
 
 #endif
