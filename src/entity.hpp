@@ -18,7 +18,6 @@
 #include <string>
 
 #include <baseexc.hpp>
-#include <basetype.hpp>
 
 namespace MetaSim {
 

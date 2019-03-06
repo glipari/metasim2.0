@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include <baseexc.hpp>
-#include <basetype.hpp>
 
 namespace MetaSim {
     class Event;

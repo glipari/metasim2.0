@@ -17,7 +17,6 @@ set(SOURCE_FILES
 set(HEADER_FILES
   baseexc.hpp
   basestat.hpp
-  basetype.hpp
   cloneable.hpp
   debugstream.hpp
   entity.hpp

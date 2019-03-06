@@ -21,9 +21,11 @@
 #include <vector>
 #include <algorithm>
 
-#include <basetype.hpp>
+#include <tick.hpp>
 
 namespace MetaSim {
+
+    static const size_t MAX_RUN = 100000;
 
     class Event;
     class Entity;

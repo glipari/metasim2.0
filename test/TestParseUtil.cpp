@@ -3,6 +3,8 @@
 
 #include "catch.hpp"
 
+#include <strtoken.hpp>
+
 using namespace MetaSim;
 using namespace std;
 

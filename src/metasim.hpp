@@ -16,7 +16,6 @@
 
 #include <baseexc.hpp>
 #include <basestat.hpp>
-#include <basetype.hpp>
 #include <debugstream.hpp>
 #include <entity.hpp>
 #include <event.hpp>

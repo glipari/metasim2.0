@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include <basetype.hpp>
+#include <tick.hpp>
 
 namespace MetaSim {
     /**

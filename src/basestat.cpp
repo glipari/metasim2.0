@@ -19,7 +19,6 @@
 
 #include <baseexc.hpp>
 #include <basestat.hpp>
-#include <basetype.hpp>
 #include <simul.hpp>
 #include <functional>
 

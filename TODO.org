@@ -4,4 +4,6 @@
 ** TODO Add a "tail" element
    If the vector is empty, and we invoke back, we obtain a pointer to
    non-initialized memory.
+
 * TODO Eliminate basetype.hpp
+
