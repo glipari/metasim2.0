@@ -342,7 +342,6 @@ namespace MetaSim {
         }
 
     };
-
 }
 
 #endif

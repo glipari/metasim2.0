@@ -3,16 +3,12 @@
 #include <metasim.hpp>
 #include <particle.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4355)
-#endif
-
 using namespace MetaSim;
 
 /**
  *  The Node class represents a generic node in the system. A node can
  *  be a sink, a source, or a queue. It has a pure virtual method,
- *  <i>put()</i>, that inserts a packet in the node. */
+ *  <i>put()</i> that inserts a packet in the node. */
 class Node : public Entity {
 public:
     Node(const char *n) : Entity(n) {}
@@ -31,60 +27,35 @@ public:
 class Sink : public Node {
     int _consumed;
 public:
-    Sink(const char *n) : Node(n), _consumed(0) {}
-    virtual void put() { _consumed ++;}
-    virtual void newRun() { _consumed = 0;}
-    virtual void endRun() {}
-    virtual void print() {}
+    Sink(const char *n);
+    virtual void put(); 
+    virtual void newRun();
+    virtual void endRun();
 };
 
 
+/**
+ * This class models a source. The put method does nothing. The source
+ * produces packets that will be inserted into the destination node. 
+*/
 class Source : public Node {
     RandomVar* _at;
     Node* _dest;
-public:
-    class ProduceEvent : public Event {
-        Source& _n;
-    public:
-        ProduceEvent(Source &n) : 
-            Event(),
-            _n(n) {}
+public:   
+    GEvent<Source> _prodEvent;
     
-        virtual void doit() {
-            _n.produce();
-        }
-        
-    };
+    Source(Node* d, RandomVar* a, const char* n);
     
-    ProduceEvent _prodEvent;
-    
-    Source(Node* d, RandomVar* a, const char* n) : 
-        Node(n),
-        _at(a),
-        _dest(d),
-        _prodEvent(*this)
-        {
-        }
-    
-    virtual void put() {}
-    
-    void produce() {
-        _dest->put();
-        _prodEvent.post(SIMUL.getTime() + Tick(_at->get()));
-    }
-    
-    virtual void newRun() {
-        _prodEvent.post(Tick(_at->get()));
-    }
-    
-    virtual void endRun() {}
-    virtual void print() {}
+    void put();
+    void produce(Event *);
+    void newRun();
+    void endRun();
 };
 
 /**
  * This class implements a generic queue with one server, with
  * randomly distributed service times. The service time is independent
- * form the packet!! After servicing a packet, the queue node will
+ * form the packet. After servicing a packet, the queue node will
  * send the packet to the destination node, that can be another queue
  * or a sink. In this way we can specify simple networks of queues. */
 class Queue: public Node {
@@ -111,22 +82,9 @@ public:
      *  ready to be served, an event of this type is <i>posted</i> in the
      *  future. When that time comes, the <i>doit()</i> method is
      *  invoked. */
-    class ServiceEvent : public Event {
-        Queue& _queue;
-    public:
-        ServiceEvent(Queue &q) : 
-            Event(_DEFAULT_PRIORITY - 1),
-            _queue(q) 
-            {
-            }
-        
-        virtual void doit() {
-            _queue.serve();
-        }
-    };
     
     /// The event of served packet.
-    ServiceEvent _servEvent;
+    GEvent<Queue> _servEvent;
     
     /**
      * Constructor for a queue. 
@@ -134,54 +92,29 @@ public:
      * @param st  service time random variable
      * @param n   a simbolyc name for the queue.
      */
-    Queue(Node* d, RandomVar* st, const char* n) : 
-        Node(n),
-        _dest(d),
-        _q(),
-        _st(st),
-        _servEvent(*this) 
-        {}
+    Queue(Node* d, RandomVar* st, const char* n);
     
-    virtual void put() {
-        _q.push_back(1);
-        if (_q.size() == 1)
-            _servEvent.post(SIMUL.getTime() + Tick(_st->get()));
-    }
-    
-    void serve() {
-        _q.pop_front();
-        if (_q.size() != 0) 
-            _servEvent.post(SIMUL.getTime() + Tick(_st->get()));
-        _dest->put();
-    }
-    
+    void put();
+    void serve(Event *e);
     inline int getSize() { return (int) _q.size(); }
-    
-    virtual void newRun() {
-        _q.clear();
-    } 
-    
-    virtual void endRun() {}
-    virtual void print() {}
-}; //xxx
+    void newRun();
+    void endRun();
+}; 
 
 
 /* ----------------------------------------------------------------------*/
 
+/**
+   This statistics measures the average lenght of the queue. 
+ */
 class AvgQueueSizeStat : public StatMean {
     Queue &_queue;
-    Particle<Source::ProduceEvent,AvgQueueSizeStat> *sp; 
 public:
     AvgQueueSizeStat(Queue &q, const char *n) :
         StatMean(n),
-        _queue(q), 
-        sp(0) {}
+        _queue(q) {}
     
-    void probe(Source::ProduceEvent &e) {
+    void probe(Event &e) {
         record(_queue.getSize() - 1);
     }
-    
-    // virtual void attach(Source *n) {
-    //     sp = new Particle<Source::ProduceEvent, AvgQueueSizeStat>(n->_prodEvent, *this);
-    // }
 };
