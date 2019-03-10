@@ -2,8 +2,8 @@
 include_directories (.)
 include_directories (../../src)
 
-set (EXECUTABLE_NAME queue)
-set (EXECUTABLE_SOURCES queue.cpp)
+set (EXECUTABLE_NAME main_step)
+set (EXECUTABLE_SOURCES queue.cpp main_step.cpp)
 
 # Create the executable.
 add_executable (${EXECUTABLE_NAME} ${EXECUTABLE_SOURCES})
