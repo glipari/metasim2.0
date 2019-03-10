@@ -35,7 +35,7 @@ void Source::produce(Event *e)
 {
     DBGENTER(QueueDbgLevel);
 
-    Tick next = Tick::ceil(_at->get());
+    Tick next = Tick::round(_at->get());
     _dest->put();
     _prodEvent.post(SIMUL.getTime() + next);
 

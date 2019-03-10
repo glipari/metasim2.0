@@ -7,15 +7,29 @@ int main()
 {
     double lambda, mu;
 
-    lambda = 0.05;
-    mu = 0.075;
+    lambda = 0.2;
+    mu = 0.1;
 
-    ExponentialVar st(lambda);
-    ExponentialVar at(mu);
-        
-    cout << "service : " << st.get() << endl;
-    cout << "interarr: " << at.get() << endl;
-        
+    ExponentialVar at(lambda);
+    ExponentialVar st(mu);
+
+    vector<double> va;
+    vector<double> vs;
+    
+    for(int i=0; i<10; i++) {
+        va.push_back(at.get());
+        vs.push_back(st.get());
+    }
+    
+    cout << "Arrivals" << endl;
+    for (auto x : va) cout << x << ", ";
+    cout << endl;
+    cout << "Services" << endl;
+    for (auto x : vs) cout << x << ", ";
+    cout << endl;
+
+    /*----------------------------------------*/
+    
     Sink sink("sink");
     Queue que(&sink, &st, "M/M/1 queue");
     Source source(&que, &at, "source");
@@ -26,7 +40,7 @@ int main()
     SIMUL.initRuns();
     SIMUL.initSingleRun();
     while ((t = SIMUL.sim_step()) < 200) {
-        cout << "Time: " << t << endl;
+        //cout << "Time: " << t << endl;
         getchar();
     }
 }//end main

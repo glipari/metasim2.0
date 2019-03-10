@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <random>
 
 #include <baseexc.hpp>
 #include <cloneable.hpp>

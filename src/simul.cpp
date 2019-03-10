@@ -237,9 +237,7 @@ namespace MetaSim {
     {
         stringstream ss;    
         
-        ss << "t = [" << globTime << "] --> " + header;
-//string h = "t = [" + string(globTime) + "] --> " + header; 
-        //dbg.enter(lev, h);
+        ss << "[t = " << globTime << "] --> " + header;
         dbg.enter(lev, ss.str());
     }
                 

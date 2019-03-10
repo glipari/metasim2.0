@@ -264,5 +264,4 @@ void __print_set__(T const &x)
         __print_set__(x);          \
     } while (0)
 
-
 #endif
