@@ -182,7 +182,6 @@ namespace MetaSim {
         } 
     }
 
-    // DEBUG!!! Prints events data on the dbg stream.
     void Event::print()
     {
         DBGPRINT_6("t=[", _time,

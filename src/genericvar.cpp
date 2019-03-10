@@ -51,9 +51,6 @@ namespace MetaSim {
         while(!f.eof()) {
             f >> n;
             f >> p;
-#ifdef __DEBUG__
-            cout << n << "\t" << p << "\n";
-#endif
             if (!f.eof()) {
                 if (_pdf[n] != 0) {
                     string errMsg = Exc::_WRONGPDF + string("\n");

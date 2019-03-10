@@ -19,14 +19,8 @@ int main()
     Sink sink("sink");
     Queue que(&sink, &st, "M/M/1 queue");
     Source source(&que, &at, "source");
-
-    AvgQueueSizeStat avgSizeStat(que, "avg_queue_size");
-    attach_stat(avgSizeStat, source._prodEvent);
-
-    BaseStat::setTransitory(20);
   
-    SIMUL.dbg.setStream("log.txt");
-    SIMUL.dbg.enable("All");
+    SIMUL.dbg.enable(QueueDbgLevel);
 
     Tick t;
     SIMUL.initRuns();
@@ -35,9 +29,4 @@ int main()
         cout << "Time: " << t << endl;
         getchar();
     }
-
-    cout << "The average queue length is " 
-         << avgSizeStat.getMean() << endl;
-    cout << "with a 95% confidence interval of " 
-         << avgSizeStat.getConfInterval(BaseStat::C95) << endl;
 }//end main

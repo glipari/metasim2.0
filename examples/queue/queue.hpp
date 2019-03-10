@@ -5,6 +5,8 @@
 
 using namespace MetaSim;
 
+const std::string QueueDbgLevel("Queue DBG");
+
 /**
  *  The Node class represents a generic node in the system. A node can
  *  be a sink, a source, or a queue. It has a pure virtual method,
