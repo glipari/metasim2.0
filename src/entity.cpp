@@ -102,7 +102,7 @@ namespace MetaSim {
                 
     }
 
-    Entity *Entity::_find(string n)
+    Entity *Entity::_find(const string &n)
     {
         Entity *res = 0;
  

@@ -40,7 +40,6 @@ int main()
     SIMUL.initRuns();
     SIMUL.initSingleRun();
     while ((t = SIMUL.sim_step()) < 200) {
-        //cout << "Time: " << t << endl;
         getchar();
     }
 }//end main

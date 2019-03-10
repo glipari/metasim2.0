@@ -79,11 +79,9 @@ namespace MetaSim {
         
         /**
            Simply calls the specified handler on the specified object.
-           
-           \sa register_handler
         */
         virtual void doit() { 
-            if ((_obj != NULL) && (_fun != NULL))
+            if ((_obj != nullptr) && (_fun != nullptr))
                 (_obj->*_fun)(this);
         }
     };

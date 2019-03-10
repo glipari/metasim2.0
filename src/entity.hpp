@@ -53,7 +53,7 @@ namespace MetaSim {
         Entity(const Entity &);
 
     private:
-                /** 
+        /** 
             It contains pairs <ID, pointer to entity>. It's
             used mainly to keep track of all the entities
             present in the system. */
@@ -122,7 +122,7 @@ namespace MetaSim {
             Returns the pointer to the entity with the
             spoecified name or NULL if such entity does not
             exists.  */
-        static Entity * _find(std::string n);  
+        static Entity * _find(const std::string &n);  
         
         /** 
             Calls newRun() on every entity in the system.  It is
