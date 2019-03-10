@@ -223,7 +223,6 @@ extern "C" {
 
 #define SIMUL         Simulation::getInstance()
 
-//#ifdef __DEBUG__
 
 #define DBGENTER(x) DbgObj __dbg_obj__(x,__PRETTY_FUNCTION__)
 
@@ -264,26 +263,6 @@ void __print_set__(T const &x)
         DBGPRINT("VECTOR: " #x);   \
         __print_set__(x);          \
     } while (0)
-
-//#endif
-
-// #ifndef __DEBUG__
-// #define DBGENTER(x) 
-// #define DBGTAG(x,y)
-// #define DBGFORCE(x)
-// #define DBGPRINT(x)   
-// #define DBGPRINT_2(x,y)
-// #define DBGPRINT_3(x,y,z)
-// #define DBGPRINT_4(x,y,z,w)
-// #define DBGPRINT_5(x,y,z,w,r)
-// #define DBGPRINT_6(x,y,z,w,r,s)
-
-// #define DBGVAR(x)
-
-// #define DBGVECTOR(x)
-
-// #endif
-
 
 
 #endif
