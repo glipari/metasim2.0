@@ -287,13 +287,12 @@ namespace MetaSim {
         _count = 0;
     }
 
-    DetVar::DetVar(double *a, int s)
+    DetVar::DetVar(std::initializer_list<double> a) : _array(a)
     {
-        for (int i = 0; i < s; ++i) 
-            _array.push_back(a[i]);
         _count = 0;
     }
-
+        
+    
     double DetVar::get() 
     {
         if (_count >= _array.size())

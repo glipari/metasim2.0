@@ -327,9 +327,9 @@ namespace MetaSim {
         virtual double get();
 
         virtual double getMaximum() 
-            {throw MaxException("PoissonVar");}
+            { throw MaxException("PoissonVar"); }
         virtual double getMinimum() 
-            {throw MaxException("PoissonVar");}
+            { throw MaxException("PoissonVar"); }
     };
 
     /**
@@ -345,9 +345,9 @@ namespace MetaSim {
         unsigned int _count;
     public:
         DetVar(const std::string &filename);
+        DetVar(std::initializer_list<double> a);
         DetVar(const std::vector<double> &a);
-        DetVar(double a[], int s);
-        
+         
         CLONEABLE(RandomVar, DetVar)
         
         static std::unique_ptr<DetVar> createInstance(std::vector<std::string> &par);
