@@ -19,7 +19,6 @@ using namespace std;
 
 namespace MetaSim {
     
-    const RandomVar::BASE_KEY_TYPE DeltaName("delta");
     const RandomVar::BASE_KEY_TYPE UnifName1 ("unif");
     const RandomVar::BASE_KEY_TYPE UnifName2 ("uniform");
     const RandomVar::BASE_KEY_TYPE NormalName1 ("normal");
@@ -29,6 +28,7 @@ namespace MetaSim {
     const RandomVar::BASE_KEY_TYPE ParetoName ("pareto");
     const RandomVar::BASE_KEY_TYPE PoissonName ("poisson");
     const RandomVar::BASE_KEY_TYPE DetName ("trace");
+    const RandomVar::BASE_KEY_TYPE DetName2 ("delta");
     const RandomVar::BASE_KEY_TYPE GenericName ("PDF");
 
     /**
@@ -39,10 +39,10 @@ namespace MetaSim {
     */
     namespace __var_stub
     {
-        static registerInFactory<RandomVar, 
-                                 DeltaVar,
-                                 RandomVar::BASE_KEY_TYPE>
-        registerDelta(DeltaName);
+        // static registerInFactory<RandomVar, 
+        //                          DeltaVar,
+        //                          RandomVar::BASE_KEY_TYPE>
+        // registerDelta(DeltaName);
     
         static registerInFactory<RandomVar,
                                  UniformVar,
@@ -88,6 +88,11 @@ namespace MetaSim {
                                  DetVar,
                                  RandomVar::BASE_KEY_TYPE>
         registerDet(DetName);
+
+        static registerInFactory<RandomVar,
+                                 DetVar,
+                                 RandomVar::BASE_KEY_TYPE>
+        registerDet2(DetName2);
         
         static registerInFactory<RandomVar,
                                  GenericVar,

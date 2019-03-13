@@ -103,13 +103,13 @@ namespace MetaSim {
 
     /*-----------------------------------------------------*/
 
-    unique_ptr<DeltaVar> DeltaVar::createInstance(vector<string> &par) 
-    {
-        if (par.size() != 1) 
-            throw ParseExc("Wrong number of parameters", "DeltaVar");
-        double a = atof(par[0].c_str());
-        return unique_ptr<DeltaVar>(new DeltaVar(a));
-    }
+    // unique_ptr<DeltaVar> DeltaVar::createInstance(vector<string> &par) 
+    // {
+    //     if (par.size() != 1) 
+    //         throw ParseExc("Wrong number of parameters", "DeltaVar");
+    //     double a = atof(par[0].c_str());
+    //     return unique_ptr<DeltaVar>(new DeltaVar(a));
+    // }
 
     /*-----------------------------------------------------*/
 
@@ -282,7 +282,7 @@ namespace MetaSim {
         _count = 0;
     };
 
-    DetVar::DetVar(vector<double> &a) : _array(a) 
+    DetVar::DetVar(const vector<double> &a) : _array(a) 
     {
         _count = 0;
     }
@@ -321,10 +321,15 @@ namespace MetaSim {
 
     unique_ptr<DetVar> DetVar::createInstance(vector<string> &par) 
     {
-        if (par.size() != 1) 
+        if (par.size() < 1) 
             throw ParseExc("Wrong number of parameters", "DetVar");
 
-        return unique_ptr<DetVar>(new DetVar(par[0]));
+        vector<double> pd; 
+        for (auto x : par) pd.push_back(strtod(x.c_str(), nullptr));
+        
+        //par.erase(par.begin());
+
+        return unique_ptr<DetVar>(new DetVar(pd));
     } 
 
     unique_ptr<RandomVar> RandomVar::parsevar(const std::string &str)

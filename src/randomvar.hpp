@@ -107,7 +107,12 @@ namespace MetaSim {
         /** The current random generator (used by this
             object). By default, it is equal to _pstdgen */
         RandomGen *_gen;
-
+        
+        /**
+           Copy constructor
+        */
+        RandomVar(const RandomVar &r);
+        
     public:
 
         typedef std::string BASE_KEY_TYPE;
@@ -145,14 +150,9 @@ namespace MetaSim {
         RandomVar();
 
         /**
-           Copy constructor
-        */
-        RandomVar(const RandomVar &r);
-
-        /**
            Polymorphic copy through cloning 
         */
-        BASE_CLONEABLE(RandomVar)        
+        BASE_CLONEABLE(RandomVar)   
         
         virtual ~RandomVar();
         
@@ -168,8 +168,8 @@ namespace MetaSim {
 
         /** 
             This method must be overloaded in each derived
-            class to return a double according to the propoer
-            distriibution. */
+            class to return a double according to the proper
+            distribution. */
         virtual double get() = 0;
 
         virtual double getMaximum() = 0;
@@ -178,32 +178,34 @@ namespace MetaSim {
         /** Parses a random variable from a string. String is in the
             form "varname(par1, par2, ...)", where 
 
-            - varname is one of the variable names described in file regvar.hpp; 
+            - varname is one of the variable names described in file
+              regvar.hpp; 
 
-            - par1, par2, ... are parameters of the distribution, and their
-              number and type depends on the specific distribution.
+            - par1, par2, ... are parameters of the distribution, and
+              their number and type depends on the specific
+              distribution.
         */
         static std::unique_ptr<RandomVar> parsevar(const std::string &str);
     };
 
-    /**  
-         This class returns always the same number (a constant).
-         It's a particular case of a random distribution: it's a
-         Delta of Dirac.
-    */  
-    class DeltaVar : public RandomVar {
-        double _var;
-    public:
-        DeltaVar(double a) : RandomVar(), _var(a) {}
+    // /**  
+    //      This class returns always the same number (a constant).
+    //      It's a particular case of a random distribution: it's a
+    //      Delta of Dirac.
+    // */  
+    // class DeltaVar : public RandomVar {
+    //     double _var;
+    // public:
+    //     DeltaVar(double a) : RandomVar(), _var(a) {}
 
-        CLONEABLE(RandomVar, DeltaVar)
+    //     CLONEABLE(RandomVar, DeltaVar)
 
-        static std::unique_ptr<DeltaVar> createInstance(std::vector<std::string> &par);  
+    //     static std::unique_ptr<DeltaVar> createInstance(std::vector<std::string> &par);  
         
-        virtual double get() { return _var; } 
-        virtual double getMaximum() {return _var;}
-        virtual double getMinimum() {return _var;}
-    };
+    //     virtual double get() { return _var; } 
+    //     virtual double getMaximum() {return _var;}
+    //     virtual double getMinimum() {return _var;}
+    // };
 
     /** 
         This class implements an uniform distribution, between min
@@ -279,9 +281,9 @@ namespace MetaSim {
         virtual double get();
 
         virtual double getMaximum() 
-            {throw MaxException("ExponentialVar");}
+            {throw MaxException("ParetoVar");}
         virtual double getMinimum() 
-            {throw MaxException("ExponentialVar");}
+            {throw MaxException("ParetoVar");}
     };
 
     /**
@@ -343,7 +345,7 @@ namespace MetaSim {
         unsigned int _count;
     public:
         DetVar(const std::string &filename);
-        DetVar(std::vector<double> &a);
+        DetVar(const std::vector<double> &a);
         DetVar(double a[], int s);
         
         CLONEABLE(RandomVar, DetVar)
