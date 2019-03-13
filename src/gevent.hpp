@@ -85,6 +85,12 @@ namespace MetaSim {
                 (_obj->*_fun)(this);
         }
     };
+
+    template<class X>
+    auto createEvent(const X& obj, typename GEvent<X>::Pmemfum fun, int p = Event::_DEFAULT_PRIORITY)
+    {
+        return GEvent<X>(&obj, fun, p);
+    }
 }  
 
 #endif

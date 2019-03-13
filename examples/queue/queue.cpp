@@ -23,7 +23,7 @@ void Sink::endRun()
 
 Source::Source(Node* d, RandomVar* a, const char* n) : 
     Node(n),
-    _at(a),
+    _at(a->clone()),
     _dest(d),
     _prodEvent(this, &Source::produce)
 {
@@ -55,7 +55,7 @@ Queue::Queue(Node* d, RandomVar* st, const char* n) :
     Node(n),
     _dest(d),
     _q(),
-    _st(st),
+    _st(st->clone()),
     _servEvent(this, &Queue::serve) 
 {}
 

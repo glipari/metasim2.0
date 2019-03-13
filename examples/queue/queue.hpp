@@ -41,7 +41,7 @@ public:
  * produces packets that will be inserted into the destination node. 
 */
 class Source : public Node {
-    RandomVar* _at;
+    std::unique_ptr<RandomVar> _at;
     Node* _dest;
 public:   
     GEvent<Source> _prodEvent;
@@ -76,7 +76,7 @@ class Queue: public Node {
     /**
      * The service time random variable. It is possible to define a
      * general distribution! */
-    RandomVar *_st;
+    std::unique_ptr<RandomVar> _st;
     
 public:
     /**

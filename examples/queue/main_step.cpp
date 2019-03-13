@@ -5,12 +5,9 @@ using namespace std;
 
 int main() 
 {
-    double lambda, mu;
+    double mu = 1.0 / 10;
 
-    lambda = 0.2;
-    mu = 0.1;
-
-    ExponentialVar at(lambda);
+    DetVar at( {15.0} );
     ExponentialVar st(mu);
 
     vector<double> va;
